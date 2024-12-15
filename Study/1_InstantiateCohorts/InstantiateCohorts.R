@@ -139,4 +139,19 @@ nsaids_lists2 <- subsetToCodesInUse(nsaids_lists2,
 # pulmonary embolism
 # heart failure
 
-
+# instantiate outcome cohorts
+cli::cli_alert_info("- Getting outcome definitions")
+    
+# get concept sets from cohorts----
+aesi_outcomes <- CDMConnector::readCohortSet(
+  path = here::here("1_InstantiateCohorts", "cohorts" ))
+    
+# instantiate the cohorts with no prior history 
+cdm <- CDMConnector::generateCohortSet(
+      cdm,
+      cohortSet = aesi_outcomes,
+      name = "aesi_outcomes",
+      overwrite = TRUE)
+    
+cli::cli_alert_success("- Got outcome definitions")
+    
