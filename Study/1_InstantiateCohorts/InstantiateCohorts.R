@@ -128,11 +128,15 @@ nsaids_lists2 <- subsetToCodesInUse(nsaids_lists2,
   
 
 # generate outcome cohorts AESI's
-# gi bleed
-# arrhythmia / atrial fibrillation
+# gi bleed # done upper gi ulcer and generic gi hemorrhage
+# MI (heart attack) 
+# ischemic stroke
+# haemorrhagic stroke 
+# arrhythmia
 # cardiomiopathy
-# venous thromboembolism (VTE), which includes deep vein thrombosis (DVT) and pulmonary embolism
-# stroke (hemmorapgic and ischemic types)
+# heart failure  
+# deep vein thrombosis (DVT)
+# pulmonary embolism
 # heart failure
-# MI (heart attack)
+
 
