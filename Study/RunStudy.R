@@ -37,9 +37,8 @@ if (instantiatedCohorts == TRUE) {
                                     cohort_tables = c("amiodarone",
                                                       "levothyroxine",
                                                       "allopurinol",
-                                                      bm_conditions,
-                                                      ingredient_events,
-                                                      atc_event_name)
+                                                      aesi_outcomes,
+                                                      nsaids)
   )
   
 } else {

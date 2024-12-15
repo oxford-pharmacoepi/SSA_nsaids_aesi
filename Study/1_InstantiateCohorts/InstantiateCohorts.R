@@ -128,7 +128,7 @@ nsaids_lists2 <- subsetToCodesInUse(nsaids_lists2,
   
 
 # generate outcome cohorts AESI's
-# gi bleed # done upper gi ulcer and generic gi hemorrhage
+# gi bleed - upper gi ulcer and generic gi hemorrhage
 # MI (heart attack) 
 # ischemic stroke
 # haemorrhagic stroke 
