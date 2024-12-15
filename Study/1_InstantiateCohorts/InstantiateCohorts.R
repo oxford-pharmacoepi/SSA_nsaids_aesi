@@ -65,7 +65,7 @@ nsaids_lists <- getATCCodes(
 nsaids_lists_ingredients <- nsaids_lists %>% 
   data.table::rbindlist()
 
-# get the ingredients from the list
+# get the ingredients from the list by binding with concept table
 nsaids_lists_ingredients <- cdm$concept %>% filter(concept_id %in% nsaids_lists_ingredients$concept_id) %>% 
   filter(concept_class_id == "Ingredient") %>% 
   collect()
