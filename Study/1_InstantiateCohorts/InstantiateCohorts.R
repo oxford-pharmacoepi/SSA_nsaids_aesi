@@ -152,10 +152,10 @@ aesi_codelists <- CodelistGenerator::codesFromCohort(
 )
 
 # use cohort constructor to create cohort
-cdm$aesi_outcomes <- CohortConstructor::conceptCohort(
+cdm$aesi <- CohortConstructor::conceptCohort(
   cdm = cdm,
   conceptSet = aesi_codelists,
-  name = "aesi_outcomes",
+  name = "aesi",
 ) %>% 
   CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date)))
     
