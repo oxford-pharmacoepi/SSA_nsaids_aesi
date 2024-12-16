@@ -128,7 +128,9 @@ cdm <- generateDrugUtilisationCohortSet(
 
 # restrict to study period
 cdm$nsaids %>% 
-  CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date)))
+  CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date))) %>% 
+  CohortConstructor::requireAge(indexDate = "cohort_start_date",
+             ageRange = list(c(18, 150)))
 
 # generate outcome cohorts AESI's ---------
 # gi bleed - upper gi ulcer and generic gi hemorrhage
@@ -157,7 +159,9 @@ cdm$aesi <- CohortConstructor::conceptCohort(
   conceptSet = aesi_codelists,
   name = "aesi",
 ) %>% 
-  CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date)))
+  CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date))) %>% 
+  CohortConstructor::requireAge(indexDate = "cohort_start_date",
+                                ageRange = list(c(18, 150)))
     
 cli::cli_alert_success("- Got outcome definitions")
 
