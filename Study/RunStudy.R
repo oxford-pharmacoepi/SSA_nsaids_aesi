@@ -37,7 +37,7 @@ if (instantiatedCohorts == TRUE) {
                                     cohort_tables = c("amiodarone",
                                                       "levothyroxine",
                                                       "allopurinol",
-                                                      aesi_outcomes,
+                                                      aesi,
                                                       nsaids)
   )
   
