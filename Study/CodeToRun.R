@@ -16,6 +16,7 @@ library(CodelistGenerator)
 library(CohortSymmetry)
 library(DrugUtilisation)
 library(stringr)
+library(CohortConstructor)
 
 # database metadata and connection details
 # The name/ acronym for the database

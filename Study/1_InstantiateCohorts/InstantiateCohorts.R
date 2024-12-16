@@ -119,15 +119,18 @@ nsaids_lists2 <- subsetToCodesInUse(nsaids_lists2,
 # instantiate the nsaids using drug utilisation package function
 # all ingredients will be in one table but with unique cohort_definition ids
 
-    cdm <- generateDrugUtilisationCohortSet(
+cdm <- generateDrugUtilisationCohortSet(
       cdm = cdm,
       name = "nsaids",
       conceptSet = nsaids_lists2 ,
-      gapEra = 30
+      gapEra = 1
     )
-  
 
-# generate outcome cohorts AESI's
+# restrict to study period
+cdm$nsaids %>% 
+  CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date)))
+
+# generate outcome cohorts AESI's ---------
 # gi bleed - upper gi ulcer and generic gi hemorrhage
 # MI (heart attack) 
 # ischemic stroke
@@ -143,15 +146,19 @@ nsaids_lists2 <- subsetToCodesInUse(nsaids_lists2,
 cli::cli_alert_info("- Getting outcome definitions")
     
 # get concept sets from cohorts----
-aesi_outcomes <- CDMConnector::readCohortSet(
-  path = here::here("1_InstantiateCohorts", "cohorts" ))
-    
-# instantiate the cohorts with no prior history 
-cdm <- CDMConnector::generateCohortSet(
-      cdm,
-      cohortSet = aesi_outcomes,
-      name = "aesi_outcomes",
-      overwrite = TRUE)
+aesi_codelists <- CodelistGenerator::codesFromCohort(
+  path = here::here("1_InstantiateCohorts", "cohorts"),
+  cdm = cdm
+)
+
+# use cohort constructor to create cohort
+cdm$aesi_outcomes <- CohortConstructor::conceptCohort(
+  cdm = cdm,
+  conceptSet = aesi_codelists,
+  name = "aesi_outcomes",
+) %>% 
+  CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date)))
     
 cli::cli_alert_success("- Got outcome definitions")
+
     
