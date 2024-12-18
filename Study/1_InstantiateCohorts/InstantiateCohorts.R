@@ -61,9 +61,30 @@ nsaids_lists <- getATCCodes(
   type = "codelist_with_details"
 )
 
-# collapse the elements of the list
+# other NSAIDs are caputured elsewhere:
+nsaids_lists1 <- getATCCodes(
+  cdm,
+  level = c("ATC 4th"),
+  name = c("Salicylic acid and derivatives",
+           "Pyrazolones",
+           "Other analgesics and antipyretics"),
+  doseForm = NULL,
+  doseUnit = NULL,
+  routeCategory = NULL,
+  type = "codelist_with_details"
+)
+
+# collapse the elements of the lists
 nsaids_lists_ingredients <- nsaids_lists %>% 
   data.table::rbindlist()
+
+nsaids_lists_ingredients1 <- nsaids_lists1 %>% 
+  data.table::rbindlist()
+
+# bind rows to get final list
+nsaids_lists_ingredients <- bind_rows(nsaids_lists_ingredients,
+                                      nsaids_lists_ingredients1)
+
 
 # get the ingredients from the list by binding with concept table
 nsaids_lists_ingredients <- cdm$concept %>% filter(concept_id %in% nsaids_lists_ingredients$concept_id) %>% 
@@ -88,15 +109,17 @@ exclusions <- c("methocarbamol",
                 "ampicillin",
                 "pridinol",
                 "cholestyramine resin",
+                "acetaminophen",
                 "magnesium",
-                "thiamine")
+                "thiamine",
+                "pyridoxine")
 
 # remove the exclusions from the list of nsaid ingredients
 nsaids_lists_ingredients <- nsaids_lists_ingredients %>% 
   filter(!(concept_name %in% exclusions))
 
 # put the nsaids list into codelist generator and do more filtering of concepts
-nsaids_lists1 <- getDrugIngredientCodes(
+nsaids_codelist1 <- getDrugIngredientCodes(
   cdm,
   name = nsaids_lists_ingredients$concept_name,
   nameStyle = "{concept_code}_{concept_name}",
@@ -105,13 +128,13 @@ nsaids_lists1 <- getDrugIngredientCodes(
 )
 
 # remove ingredients with no record counts in database
-nsaids_lists2 <- subsetToCodesInUse(nsaids_lists1, 
+nsaids_codelist2 <- subsetToCodesInUse(nsaids_codelist1, 
                                         minimumCount = 0,
                                         table = c("drug_exposure"),
                                         cdm = cdm)
 
 # remove ingredients with <100 record counts in database
-nsaids_lists2 <- subsetToCodesInUse(nsaids_lists2, 
+nsaids_codelist2 <- subsetToCodesInUse(nsaids_codelist2, 
                                           minimumCount = 100,
                                           table = c("drug_exposure"),
                                           cdm = cdm)
@@ -122,8 +145,8 @@ nsaids_lists2 <- subsetToCodesInUse(nsaids_lists2,
 cdm <- generateDrugUtilisationCohortSet(
       cdm = cdm,
       name = "nsaids",
-      conceptSet = nsaids_lists2 ,
-      gapEra = 1
+      conceptSet = nsaids_codelist2 ,
+      gapEra = 30
     )
 
 # restrict to study period
@@ -132,13 +155,16 @@ cdm$nsaids %>%
   CohortConstructor::requireAge(indexDate = "cohort_start_date",
              ageRange = list(c(18, 150)))
 
+# drop ones which have < 100 records for cohorts
+
+
+
 # generate outcome cohorts AESI's ---------
-# gi bleed - upper gi ulcer and generic gi hemorrhage
-# MI (heart attack) 
+# generic gi hemorrhage
+# acute MI (heart attack) 
 # ischemic stroke
 # haemorrhagic stroke 
 # arrhythmia
-# cardiomiopathy
 # heart failure  
 # deep vein thrombosis (DVT)
 # pulmonary embolism
