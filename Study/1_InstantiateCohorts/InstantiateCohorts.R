@@ -155,12 +155,12 @@ cdm$nsaids %>%
   CohortConstructor::requireAge(indexDate = "cohort_start_date",
              ageRange = list(c(18, 150)))
 
-# drop ones which have < 100 records for cohorts
+# drop ones which have < 100 records for cohorts for study period
 
 
 
 # generate outcome cohorts AESI's ---------
-# generic gi hemorrhage
+# gi hemorrhage
 # acute MI (heart attack) 
 # ischemic stroke
 # haemorrhagic stroke 
