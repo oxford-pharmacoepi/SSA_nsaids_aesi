@@ -141,7 +141,3 @@ srPlotName <- paste0("nsaids_aesi", ".png")
 png(paste0(here::here(output_folder, srPlotName)), width = 18, height = 10, units = "in", res = 1500, type="cairo")
 print(p, newpage = FALSE)
 dev.off()
-
-
-
-
