@@ -84,60 +84,60 @@ exportSummarisedResult(results_cs, path = here::here("Results", paste0(db_name))
 
 cli::cli_alert_info("- Make a pretty plot for nsaids-aesis")
 # get a tidy version so you can make a pretty plot
-sr_tidy <- results_cs |>
-  omopgenerics::tidy() |>
-  dplyr::mutate(
-    index_cohort_name = stringr::str_replace(index_cohort_name, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
-    marker_cohort_name = stringr::str_replace(marker_cohort_name, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", "")
-  ) |>
-  dplyr::filter(variable_level == "sequence_ratio" & variable_name == "adjusted") |>
-  dplyr::mutate(
-    pair = paste0(index_cohort_name, "->", marker_cohort_name)
-  ) %>% 
-  filter(point_estimate > 0) %>% 
-  filter(point_estimate < 10) %>% 
-  # add in some filters to a) look at a drug or b) look at a outcome or can facet
-  # filter(index_cohort_name == "celecoxib" |
-  #          index_cohort_name ==   "etoricoxib")
-  filter(marker_cohort_name == "acute_mi")
-
-
-labs = c("ASR", "Drug Pairs")
-custom_colors <- c("adjusted" = "black")
-
-# creates a facetted plot for all nsaids with aesi in facets
-
-p <- visOmopResults::scatterPlot(
-  sr_tidy,
-  x = "index_cohort_name",
-  y = "point_estimate",
-  line = FALSE,
-  point = TRUE,
-  ribbon = FALSE,
-  ymin = "lower_CI",
-  ymax = "upper_CI",
-  facet = "marker_cohort_name",
-  colour = "variable_name"
-) +
-  ggplot2::ylab(labs[1]) +
-  ggplot2::xlab(labs[2]) +
-  #ggplot2::labs(title = "Figure 1: ASRs") +
-  ggplot2::ylim(c(0,10))+ # restricts the plot
-  ggplot2::coord_flip() +
-  ggplot2::theme_bw() +
-  ggplot2::geom_hline(yintercept = 1, linetype = 2) +
-  ggplot2::scale_shape_manual(values = rep(19, 5)) +
-  ggplot2::scale_colour_manual(values = custom_colors) +
-  ggplot2::theme(panel.border = ggplot2::element_blank(),
-                 axis.line = ggplot2::element_line(),
-                 legend.position="none" ,
-                 legend.title = ggplot2::element_blank(),
-                 plot.title = ggplot2::element_text(hjust = 0.5)) 
-
-
-p
-
-srPlotName <- paste0("nsaids_aesi", ".png")
-png(paste0(here::here(output_folder, srPlotName)), width = 18, height = 10, units = "in", res = 1500, type="cairo")
-print(p, newpage = FALSE)
-dev.off()
+# sr_tidy <- results_cs |>
+#   omopgenerics::tidy() |>
+#   dplyr::mutate(
+#     index_cohort_name = stringr::str_replace(index_cohort_name, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
+#     marker_cohort_name = stringr::str_replace(marker_cohort_name, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", "")
+#   ) |>
+#   dplyr::filter(variable_level == "sequence_ratio" & variable_name == "adjusted") |>
+#   dplyr::mutate(
+#     pair = paste0(index_cohort_name, "->", marker_cohort_name)
+#   ) %>% 
+#   filter(point_estimate > 0) %>% 
+#   filter(point_estimate < 10) %>% 
+#   # add in some filters to a) look at a drug or b) look at a outcome or can facet
+#   # filter(index_cohort_name == "celecoxib" |
+#   #          index_cohort_name ==   "etoricoxib")
+#   filter(marker_cohort_name == "acute_mi")
+# 
+# 
+# labs = c("ASR", "Drug Pairs")
+# custom_colors <- c("adjusted" = "black")
+# 
+# # creates a facetted plot for all nsaids with aesi in facets
+# 
+# p <- visOmopResults::scatterPlot(
+#   sr_tidy,
+#   x = "index_cohort_name",
+#   y = "point_estimate",
+#   line = FALSE,
+#   point = TRUE,
+#   ribbon = FALSE,
+#   ymin = "lower_CI",
+#   ymax = "upper_CI",
+#   facet = "marker_cohort_name",
+#   colour = "variable_name"
+# ) +
+#   ggplot2::ylab(labs[1]) +
+#   ggplot2::xlab(labs[2]) +
+#   #ggplot2::labs(title = "Figure 1: ASRs") +
+#   ggplot2::ylim(c(0,10))+ # restricts the plot
+#   ggplot2::coord_flip() +
+#   ggplot2::theme_bw() +
+#   ggplot2::geom_hline(yintercept = 1, linetype = 2) +
+#   ggplot2::scale_shape_manual(values = rep(19, 5)) +
+#   ggplot2::scale_colour_manual(values = custom_colors) +
+#   ggplot2::theme(panel.border = ggplot2::element_blank(),
+#                  axis.line = ggplot2::element_line(),
+#                  legend.position="none" ,
+#                  legend.title = ggplot2::element_blank(),
+#                  plot.title = ggplot2::element_text(hjust = 0.5)) 
+# 
+# 
+# p
+# 
+# srPlotName <- paste0("nsaids_aesi", ".png")
+# png(paste0(here::here(output_folder, srPlotName)), width = 18, height = 10, units = "in", res = 1500, type="cairo")
+# print(p, newpage = FALSE)
+# dev.off()
