@@ -22,9 +22,15 @@ OmopSketch::exportSummarisedResult(
 )
 
 # this is useful if you have already created the cohorts you can get them back from the database results schema
-instantiatedCohorts <- FALSE
+instantiatedCohorts <- TRUE
 
-if (instantiatedCohorts == TRUE) {
+if (instantiatedCohorts == FALSE) {
+
+  source(here("1_InstantiateCohorts","InstantiateCohorts.R"))
+  
+} else {
+  
+  
   cdm <- CDMConnector::cdm_from_con(con = db, 
                                     cdm_schema = cdm_database_schema,
                                     write_schema = results_database_schema, 
@@ -34,13 +40,9 @@ if (instantiatedCohorts == TRUE) {
                                     cohort_tables = c("amiodarone",
                                                       "levothyroxine",
                                                       "allopurinol",
-                                                      aesi,
-                                                      nsaids)
+                                                      "aesi",
+                                                      "nsaids")
   )
-  
-} else {
-  
-  source(here("1_InstantiateCohorts","InstantiateCohorts.R"))
   
 }
 

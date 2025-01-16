@@ -120,8 +120,8 @@ nsaids_lists_ingredients1 <- cdm$concept %>% filter(concept_id %in% nsaids_lists
   collect()
 
 
-# filter out the ones which are not nsaids
-# exclusions these are ingredients give in combination which are not nsaids
+# filter out the ones which are nsaids
+# inclusions are ingredients which are nsaids
 inclusions <- c("methyl salicylate",
                 "salicylic acid" ,
                 "diflunisal",
