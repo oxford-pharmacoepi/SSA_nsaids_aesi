@@ -4,7 +4,8 @@
 cdm <- DrugUtilisation::generateIngredientCohortSet(
   cdm = cdm,
   name = "amiodarone",
-  ingredient = "amiodarone"
+  ingredient = "amiodarone",
+  gapEra = 30
 )
 
 
