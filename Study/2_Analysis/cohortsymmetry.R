@@ -95,11 +95,11 @@ sr_tidy <- results_cs |>
     pair = paste0(index_cohort_name, "->", marker_cohort_name)
   ) %>% 
   filter(point_estimate > 0) %>% 
-  filter(point_estimate < 10) 
+  filter(point_estimate < 10) %>% 
   # add in some filters to a) look at a drug or b) look at a outcome or can facet
   # filter(index_cohort_name == "celecoxib" |
   #          index_cohort_name ==   "etoricoxib")
-  # filter(marker_cohort_name == "gi_hemorrhage")
+  filter(marker_cohort_name == "acute_mi")
 
 
 labs = c("ASR", "Drug Pairs")
@@ -122,7 +122,7 @@ p <- visOmopResults::scatterPlot(
   ggplot2::ylab(labs[1]) +
   ggplot2::xlab(labs[2]) +
   #ggplot2::labs(title = "Figure 1: ASRs") +
-  ggplot2::ylim(c(0,5))+ # restricts the plot
+  ggplot2::ylim(c(0,10))+ # restricts the plot
   ggplot2::coord_flip() +
   ggplot2::theme_bw() +
   ggplot2::geom_hline(yintercept = 1, linetype = 2) +
