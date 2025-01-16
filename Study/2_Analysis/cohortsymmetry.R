@@ -49,22 +49,6 @@ cli::cli_alert_success("- Generated SequenceCohortSet for negative controls")
 cli::cli_alert_info("- Generate SequenceCohortSet for nsaids-aesis")
 
 tryCatch({
-
-    # check the nsaid (index) and aesi's (markers) are in study period
-    if (
-      cohortDateRangeCheck(cdm = cdm,
-                           cdm[[nsaids[[i]]]],
-                           cohortDateRange = c(starting_date, ending_date))
-    )
-      next
-    
-    if (
-      cohortDateRangeCheck(cdm = cdm,
-                           cdm[[aesi[[i]]]],
-                           cohortDateRange = c(starting_date, ending_date))
-    )
-      next
-    
     
 # generate the sequence cohorts
     cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
