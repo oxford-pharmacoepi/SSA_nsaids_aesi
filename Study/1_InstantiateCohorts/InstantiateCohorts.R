@@ -166,7 +166,7 @@ nsaids_codelist2 <- subsetToCodesInUse(nsaids_codelist1,
                                         table = c("drug_exposure"),
                                         cdm = cdm)
 
-# remove ingredients with <500 record counts in database
+# remove ingredients with <1000 record counts in database
 nsaids_codelist2 <- subsetToCodesInUse(nsaids_codelist2, 
                                           minimumCount = 1000,
                                           table = c("drug_exposure"),

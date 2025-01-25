@@ -12,7 +12,6 @@ cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  markerTable = "levothyroxine",
                                                  daysPriorObservation = 365,
                                                  washoutWindow = 365,
-                                                 indexMarkerGap = NULL, # if null it uses the second argument of the combinationWindow - for acute effects can set this
                                                  combinationWindow = c(0, 180)) # this is where the combination window that we look to see the order
 
 amiodarone_levothyroxin <- CohortSymmetry::summariseSequenceRatios(cohort = cdm$amiodarone_levothyroxine)
@@ -34,7 +33,6 @@ cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  markerTable = "allopurinol",
                                                  daysPriorObservation = 365,
                                                  washoutWindow = 365,
-                                                 indexMarkerGap = NULL, # if null it uses the second argument of the combinationWindow
                                                  combinationWindow = c(0, 180))
 
 amiodarone_allopurinol <- CohortSymmetry::summariseSequenceRatios(cohort = cdm$amiodarone_allopurinol)
