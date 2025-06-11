@@ -109,10 +109,8 @@ nsaids_lists1 <- getATCCodes(
   type = "codelist_with_details"
 )
 
-
 nsaids_lists_ingredients1 <- nsaids_lists1 %>% 
   data.table::rbindlist()
-
 
 # get the ingredients from the list by binding with concept table
 nsaids_lists_ingredients1 <- cdm$concept %>% filter(concept_id %in% nsaids_lists_ingredients1$concept_id) %>% 
@@ -156,21 +154,18 @@ nsaids_codelist1 <- getDrugIngredientCodes(
   cdm,
   name = nsaids_lists_ingredients$concept_name,
   nameStyle = "{concept_code}_{concept_name}",
+  ingredientRange = c(1,1),
   type = "codelist"
-  
 )
 
-# remove ingredients with no record counts in database
-nsaids_codelist2 <- subsetToCodesInUse(nsaids_codelist1, 
-                                        minimumCount = 0,
-                                        table = c("drug_exposure"),
-                                        cdm = cdm)
+nsaids_codelist_dose_units <- stratifyByDoseUnit(nsaids_codelist1, cdm, keepOriginal = FALSE)
+nsaids_codelist_routes <- stratifyByRouteCategory(nsaids_codelist_dose_units, cdm, keepOriginal = FALSE)
 
 # remove ingredients with <1000 record counts in database
-nsaids_codelist2 <- subsetToCodesInUse(nsaids_codelist2, 
-                                          minimumCount = 1000,
-                                          table = c("drug_exposure"),
-                                          cdm = cdm)
+nsaids_codelist2 <- subsetToCodesInUse(nsaids_codelist_routes, 
+                                        minimumCount = 1000,
+                                        table = c("drug_exposure"),
+                                        cdm = cdm)
 
 # instantiate the nsaids using drug utilisation package function
 # all ingredients will be in one table but with unique cohort_definition ids
@@ -200,6 +195,7 @@ cdm$nsaids %>%
 # deep vein thrombosis (DVT)
 # pulmonary embolism
 # heart failure
+# depressive disorder
 
 # instantiate outcome cohorts
 cli::cli_alert_info("- Getting outcome definitions")
