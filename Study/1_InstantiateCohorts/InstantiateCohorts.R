@@ -87,7 +87,6 @@ exclusions <- c("methocarbamol",
                 "ampicillin",
                 "pridinol",
                 "cholestyramine resin",
-                "acetaminophen",
                 "magnesium",
                 "thiamine",
                 "pyridoxine",
@@ -201,12 +200,12 @@ cdm$nsaids %>%
 # acute MI (heart attack) 
 # ischemic stroke
 # haemorrhagic stroke 
+# stroke (is + hs)
 # arrhythmia
 # heart failure  
 # deep vein thrombosis (DVT)
 # pulmonary embolism
 # heart failure
-# depressive disorder
 
 # instantiate outcome cohorts
 cli::cli_alert_info("- Getting outcome definitions")
