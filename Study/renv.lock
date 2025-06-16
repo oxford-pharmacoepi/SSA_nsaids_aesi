@@ -21,7 +21,6 @@
         "cli",
         "dbplyr",
         "dplyr",
-        "fs",
         "generics",
         "glue",
         "jsonlite",
@@ -35,10 +34,9 @@
         "stringr",
         "tidyr",
         "tidyselect",
-        "waldo",
         "withr"
       ],
-      "Hash": "1b6e550b3f742dab03099f3768595b98"
+      "Hash": "5474640ec50d28c7e05304354f51d0a8"
     },
     "CodelistGenerator": {
       "Package": "CodelistGenerator",
@@ -92,31 +90,24 @@
     },
     "CohortSymmetry": {
       "Package": "CohortSymmetry",
-      "Version": "0.2.0",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "CohortSymmetry",
-      "RemoteUsername": "OHDSI",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "704b5745fd31814ee5eb63f9e29608b0af113942",
+      "Version": "0.2.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
       "Requirements": [
         "CDMConnector",
         "CodelistGenerator",
         "DrugUtilisation",
         "PatientProfiles",
+        "R",
         "dplyr",
-        "duckdb",
         "here",
-        "omock",
         "omopgenerics",
         "rlang",
         "stats",
         "tibble",
-        "tidyr",
-        "visOmopResults"
+        "tidyr"
       ],
-      "Hash": "f3edb0d51d04c93fbc341697c7e8656b"
+      "Hash": "b0756fe155316c3dbc2936562fb0b5f7"
     },
     "DBI": {
       "Package": "DBI",
@@ -189,11 +180,9 @@
       "Version": "0.1.1",
       "Source": "GitHub",
       "RemoteType": "github",
-      "Remotes": "darwin-eu/omopgenerics",
       "RemoteHost": "api.github.com",
       "RemoteRepo": "OmopSketch",
       "RemoteUsername": "OHDSI",
-      "RemoteRef": "HEAD",
       "RemoteSha": "e7a8a869edbefe7473bdc113207fd0214a936505",
       "Requirements": [
         "CDMConnector",
@@ -431,21 +420,6 @@
       ],
       "Hash": "39b2e002522bfd258039ee4e889e0fd1"
     },
-    "diffobj": {
-      "Package": "diffobj",
-      "Version": "0.3.5",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "crayon",
-        "methods",
-        "stats",
-        "tools",
-        "utils"
-      ],
-      "Hash": "bcaa8b95f8d7d01a5dedfd959ce88ab8"
-    },
     "dplyr": {
       "Package": "dplyr",
       "Version": "1.1.4",
@@ -469,19 +443,6 @@
       ],
       "Hash": "fedd9d00c2944ff00a0e2696ccf048ec"
     },
-    "duckdb": {
-      "Package": "duckdb",
-      "Version": "1.1.3-1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "DBI",
-        "R",
-        "methods",
-        "utils"
-      ],
-      "Hash": "6a1393b058eee1e542833a0d073ce0ff"
-    },
     "fansi": {
       "Package": "fansi",
       "Version": "1.0.6",
@@ -500,17 +461,6 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "680887028577f3fa2a81e410ed0d6e42"
-    },
-    "fs": {
-      "Package": "fs",
-      "Version": "1.6.5",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "methods"
-      ],
-      "Hash": "7f48af39fa27711ea5fbd183b399920d"
     },
     "generics": {
       "Package": "generics",
@@ -731,35 +681,11 @@
       ],
       "Hash": "ccbb8846be320b627e6aa2b4616a2ded"
     },
-    "omock": {
-      "Package": "omock",
-      "Version": "0.3.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "cli",
-        "dplyr",
-        "lubridate",
-        "methods",
-        "omopgenerics",
-        "purrr",
-        "rlang",
-        "snakecase",
-        "stats"
-      ],
-      "Hash": "64ed55d3f5d88e51e2ce8163473a6743"
-    },
     "omopgenerics": {
       "Package": "omopgenerics",
-      "Version": "0.4.0",
-      "Source": "GitHub",
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteRepo": "omopgenerics",
-      "RemoteUsername": "darwin-eu",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "3778bbd2cd5510a817dbac411b10af401fd25965",
+      "Version": "1.2.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "cli",
@@ -772,11 +698,12 @@
         "purrr",
         "rlang",
         "snakecase",
+        "stringi",
         "stringr",
         "tidyr",
         "vctrs"
       ],
-      "Hash": "28e55bb219ef063055c3775a57ad60a0"
+      "Hash": "96229fba3e33614d2a7b84207b195e6f"
     },
     "pillar": {
       "Package": "pillar",
@@ -870,7 +797,12 @@
     "renv": {
       "Package": "renv",
       "Version": "1.0.11",
-      "Source": "Repository"
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "utils"
+      ],
+      "Hash": "47623f66b4e80b3b0587bc5d7b309888"
     },
     "rlang": {
       "Package": "rlang",
@@ -1113,21 +1045,6 @@
         "withr"
       ],
       "Hash": "390f9315bc0025be03012054103d227c"
-    },
-    "waldo": {
-      "Package": "waldo",
-      "Version": "0.6.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "cli",
-        "diffobj",
-        "glue",
-        "methods",
-        "rlang"
-      ],
-      "Hash": "52f574062a7b66e56926988c3fbdb3b7"
     },
     "withr": {
       "Package": "withr",
