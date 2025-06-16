@@ -63,8 +63,7 @@ cli::cli_alert_success("- Generated SequenceCohortSet for nsaids-aesis")
 
 cli::cli_alert_info("- Generate SequenceRatios for nsaids-aesis")
 # get the sequence rations   
-results_cs <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi"]],
-                                              minCellCount = 5)
+results_cs <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi"]])
 
 cli::cli_alert_success("- Generated SequenceRatios for nsaids-aesis")
   
@@ -78,7 +77,9 @@ cli::cli_alert_success("- Got cohort symmetry results")
 
 cli::cli_alert_info("- Export results for nsaids-aesis")
 # export the results (summarised only)
-exportSummarisedResult(results_cs, path = here::here("Results", paste0(db_name)), fileName = paste0(db_name,"_result.csv"))
+exportSummarisedResult(results_cs, 
+                       path = here::here("Results", paste0(db_name)), 
+                       fileName = paste0(db_name,"_result.csv"))
 
 cli::cli_alert_info("- Make a pretty plot for nsaids-aesis")
 # get a tidy version so you can make a pretty plot
@@ -128,7 +129,7 @@ p <- visOmopResults::scatterPlot(
                  plot.title = ggplot2::element_text(hjust = 0.5)) 
 
 
-#p
+p
  
 srPlotName <- paste0("nsaids_aesi", ".png")
 png(paste0(here::here(output_folder, srPlotName)), width = 8, height = 6, units = "in", res = 1500, type="cairo")
