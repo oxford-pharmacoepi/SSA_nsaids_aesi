@@ -21,6 +21,7 @@
         "cli",
         "dbplyr",
         "dplyr",
+        "fs",
         "generics",
         "glue",
         "jsonlite",
@@ -34,9 +35,10 @@
         "stringr",
         "tidyr",
         "tidyselect",
+        "waldo",
         "withr"
       ],
-      "Hash": "5474640ec50d28c7e05304354f51d0a8"
+      "Hash": "1b6e550b3f742dab03099f3768595b98"
     },
     "CodelistGenerator": {
       "Package": "CodelistGenerator",
@@ -63,6 +65,27 @@
         "visOmopResults"
       ],
       "Hash": "6f3b1e7f2df8ba5441d0ab1ea62486d9"
+    },
+    "CohortCharacteristics": {
+      "Package": "CohortCharacteristics",
+      "Version": "1.0.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "CDMConnector",
+        "PatientProfiles",
+        "R",
+        "cli",
+        "dplyr",
+        "lifecycle",
+        "omopgenerics",
+        "purrr",
+        "rlang",
+        "snakecase",
+        "stringr",
+        "tidyr"
+      ],
+      "Hash": "a3c58c0451b181a2d1198640afb4a597"
     },
     "CohortConstructor": {
       "Package": "CohortConstructor",
@@ -203,7 +226,7 @@
     },
     "PatientProfiles": {
       "Package": "PatientProfiles",
-      "Version": "1.2.3",
+      "Version": "1.4.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -218,7 +241,7 @@
         "stringr",
         "tidyr"
       ],
-      "Hash": "4f2cb7324f2d1d4f04a4aeb52fc6a200"
+      "Hash": "85e6c834f9babd4afee40f5eee53b723"
     },
     "R6": {
       "Package": "R6",
@@ -420,6 +443,21 @@
       ],
       "Hash": "39b2e002522bfd258039ee4e889e0fd1"
     },
+    "diffobj": {
+      "Package": "diffobj",
+      "Version": "0.3.5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "crayon",
+        "methods",
+        "stats",
+        "tools",
+        "utils"
+      ],
+      "Hash": "bcaa8b95f8d7d01a5dedfd959ce88ab8"
+    },
     "dplyr": {
       "Package": "dplyr",
       "Version": "1.1.4",
@@ -461,6 +499,17 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "680887028577f3fa2a81e410ed0d6e42"
+    },
+    "fs": {
+      "Package": "fs",
+      "Version": "1.6.5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "methods"
+      ],
+      "Hash": "7f48af39fa27711ea5fbd183b399920d"
     },
     "generics": {
       "Package": "generics",
@@ -1045,6 +1094,21 @@
         "withr"
       ],
       "Hash": "390f9315bc0025be03012054103d227c"
+    },
+    "waldo": {
+      "Package": "waldo",
+      "Version": "0.6.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "cli",
+        "diffobj",
+        "glue",
+        "methods",
+        "rlang"
+      ],
+      "Hash": "52f574062a7b66e56926988c3fbdb3b7"
     },
     "withr": {
       "Package": "withr",
