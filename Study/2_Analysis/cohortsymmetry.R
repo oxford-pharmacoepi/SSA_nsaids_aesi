@@ -12,7 +12,6 @@ cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  markerTable = "levothyroxine",
                                                  daysPriorObservation = 365,
                                                  washoutWindow = 365,
-                                                 indexMarkerGap = NULL, # if null it uses the second argument of the combinationWindow - for acute effects can set this
                                                  combinationWindow = c(0, 180)) # this is where the combination window that we look to see the order
 
 amiodarone_levothyroxin <- CohortSymmetry::summariseSequenceRatios(cohort = cdm$amiodarone_levothyroxine)
@@ -34,7 +33,6 @@ cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  markerTable = "allopurinol",
                                                  daysPriorObservation = 365,
                                                  washoutWindow = 365,
-                                                 indexMarkerGap = NULL, # if null it uses the second argument of the combinationWindow
                                                  combinationWindow = c(0, 180))
 
 amiodarone_allopurinol <- CohortSymmetry::summariseSequenceRatios(cohort = cdm$amiodarone_allopurinol)
@@ -49,22 +47,6 @@ cli::cli_alert_success("- Generated SequenceCohortSet for negative controls")
 cli::cli_alert_info("- Generate SequenceCohortSet for nsaids-aesis")
 
 tryCatch({
-
-    # check the nsaid (index) and aesi's (markers) are in study period
-    if (
-      cohortDateRangeCheck(cdm = cdm,
-                           cdm[[nsaids[[i]]]],
-                           cohortDateRange = c(starting_date, ending_date))
-    )
-      next
-    
-    if (
-      cohortDateRangeCheck(cdm = cdm,
-                           cdm[[aesi[[i]]]],
-                           cohortDateRange = c(starting_date, ending_date))
-    )
-      next
-    
     
 # generate the sequence cohorts
     cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
@@ -110,13 +92,9 @@ sr_tidy <- results_cs |>
   dplyr::mutate(
     pair = paste0(index_cohort_name, "->", marker_cohort_name)
   ) %>% 
-  filter(point_estimate > 0) %>% 
-  filter(point_estimate < 10) 
-  # add in some filters to a) look at a drug or b) look at a outcome or can facet
-  # filter(index_cohort_name == "celecoxib" |
-  #          index_cohort_name ==   "etoricoxib")
-  # filter(marker_cohort_name == "gi_hemorrhage")
-
+  filter(point_estimate != Inf) %>% 
+  mutate(highlight = ifelse(lower_CI > 1, "Highlighted", "Not Highlighted")) %>% 
+filter(abs(upper_CI - lower_CI) <= 10) 
 
 labs = c("ASR", "Drug Pairs")
 custom_colors <- c("adjusted" = "black")
@@ -132,18 +110,17 @@ p <- visOmopResults::scatterPlot(
   ribbon = FALSE,
   ymin = "lower_CI",
   ymax = "upper_CI",
-  facet = "marker_cohort_name",
-  colour = "variable_name"
+ facet = "marker_cohort_name",
+  colour = "highlight"
 ) +
   ggplot2::ylab(labs[1]) +
   ggplot2::xlab(labs[2]) +
-  #ggplot2::labs(title = "Figure 1: ASRs") +
-  ggplot2::ylim(c(0,5))+ # restricts the plot
+  ggplot2::ylim(c(0,10))+ # restricts the plot
   ggplot2::coord_flip() +
   ggplot2::theme_bw() +
   ggplot2::geom_hline(yintercept = 1, linetype = 2) +
   ggplot2::scale_shape_manual(values = rep(19, 5)) +
-  ggplot2::scale_colour_manual(values = custom_colors) +
+  #ggplot2::scale_colour_manual(values = custom_colors) +
   ggplot2::theme(panel.border = ggplot2::element_blank(),
                  axis.line = ggplot2::element_line(),
                  legend.position="none" ,
@@ -151,13 +128,9 @@ p <- visOmopResults::scatterPlot(
                  plot.title = ggplot2::element_text(hjust = 0.5)) 
 
 
-p
-
+#p
+ 
 srPlotName <- paste0("nsaids_aesi", ".png")
-png(paste0(here::here(output_folder, srPlotName)), width = 18, height = 10, units = "in", res = 1500, type="cairo")
+png(paste0(here::here(output_folder, srPlotName)), width = 8, height = 6, units = "in", res = 1500, type="cairo")
 print(p, newpage = FALSE)
 dev.off()
-
-
-
-

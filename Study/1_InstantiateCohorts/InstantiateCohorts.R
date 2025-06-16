@@ -4,7 +4,8 @@
 cdm <- DrugUtilisation::generateIngredientCohortSet(
   cdm = cdm,
   name = "amiodarone",
-  ingredient = "amiodarone"
+  ingredient = "amiodarone",
+  gapEra = 30
 )
 
 
@@ -121,10 +122,8 @@ nsaids_lists1 <- getATCCodes(
   type = "codelist_with_details"
 )
 
-
 nsaids_lists_ingredients1 <- nsaids_lists1 %>% 
   data.table::rbindlist()
-
 
 # get the ingredients from the list by binding with concept table
 nsaids_lists_ingredients1 <- cdm$concept %>% filter(concept_id %in% nsaids_lists_ingredients1$concept_id) %>% 
@@ -132,12 +131,13 @@ nsaids_lists_ingredients1 <- cdm$concept %>% filter(concept_id %in% nsaids_lists
   collect()
 
 
-# filter out the ones which are not nsaids
-# exclusions these are ingredients give in combination which are not nsaids
+# filter out the ones which are nsaids
+# inclusions are ingredients which are nsaids
 inclusions <- c("methyl salicylate",
                 "salicylic acid" ,
                 "diflunisal",
                 "salsalate",
+                "aspirin",
                 "salicylamide",
                 "magnesium salicylate",
                 "morpholine salicylate",
@@ -146,7 +146,6 @@ inclusions <- c("methyl salicylate",
                 "Salacetamide",
                 "aloxiprin",
                 "ethenzamide",
-                "diflunisal",
                 "dipyrocetyl" ,
                 "phenazone",
                 "propyphenazone",
@@ -173,14 +172,8 @@ nsaids_codelist1 <- getDrugIngredientCodes(
   type = "codelist"
 )
 
-# remove ingredients with no record counts in database
-nsaids_codelist2 <- subsetToCodesInUse(nsaids_codelist1, 
-                                        minimumCount = 0,
-                                        table = c("drug_exposure"),
-                                        cdm = cdm)
 
-# remove ingredients with <1000 record counts in database
-nsaids_codelist2 <- subsetToCodesInUse(nsaids_codelist2, 
+nsaids_codelist2 <- subsetToCodesInUse(nsaids_codelist1, 
                                           minimumCount = 1000,
                                           table = c("drug_exposure"),
                                           cdm = cdm)
@@ -213,6 +206,7 @@ cdm$nsaids %>%
 # deep vein thrombosis (DVT)
 # pulmonary embolism
 # heart failure
+# depressive disorder
 
 # instantiate outcome cohorts
 cli::cli_alert_info("- Getting outcome definitions")
