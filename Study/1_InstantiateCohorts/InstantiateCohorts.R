@@ -41,7 +41,7 @@ cli::cli_alert_success("- Getting nsaids")
 # M01AE Propionic acid derivatives
 # M01AG Fenamates
 # M01AH Coxibs
-# note did not include M01AX (other anti inflammatories)
+# M01AX other anti inflammatories
 
 nsaids_lists <- getATCCodes(
   cdm,
@@ -51,7 +51,8 @@ nsaids_lists <- getATCCodes(
            "Oxicams",
            "Propionic acid derivatives",
            "Fenamates",
-           "Coxibs"),
+           "Coxibs",
+           "Other antiinflammatory and antirheumatic agents, non-steroids"),
   doseForm = NULL,
   doseUnit = NULL,
   routeCategory = NULL,
@@ -88,7 +89,19 @@ exclusions <- c("methocarbamol",
                 "acetaminophen",
                 "magnesium",
                 "thiamine",
-                "pyridoxine")
+                "pyridoxine",
+                "avocado oil",
+                "polysulfated glycosaminoglycan",
+                "avocado soybean unsaponifiables",
+                "diacetylrhein",
+                "orgotein",
+                "soybean oil",
+                "bumadizone",
+                "benzydamine",
+                "oxaceprol",
+                "bufexamac",
+                "chondroitin sulfates",
+                "glucosamine")
 
 # remove the exclusions from the list of nsaid ingredients
 nsaids_lists_ingredients <- nsaids_lists_ingredients %>% 
@@ -155,8 +168,9 @@ nsaids_codelist1 <- getDrugIngredientCodes(
   cdm,
   name = nsaids_lists_ingredients$concept_name,
   nameStyle = "{concept_code}_{concept_name}",
+  routeCategory = "oral",
+  ingredientRange = c(1, 1),
   type = "codelist"
-  
 )
 
 # remove ingredients with no record counts in database
@@ -165,9 +179,9 @@ nsaids_codelist2 <- subsetToCodesInUse(nsaids_codelist1,
                                         table = c("drug_exposure"),
                                         cdm = cdm)
 
-# remove ingredients with <500 record counts in database
+# remove ingredients with <1000 record counts in database
 nsaids_codelist2 <- subsetToCodesInUse(nsaids_codelist2, 
-                                          minimumCount = 500,
+                                          minimumCount = 1000,
                                           table = c("drug_exposure"),
                                           cdm = cdm)
 
