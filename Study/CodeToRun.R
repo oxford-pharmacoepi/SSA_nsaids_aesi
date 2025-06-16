@@ -18,6 +18,7 @@ library(DrugUtilisation)
 library(stringr)
 library(CohortConstructor)
 library(ggplot2)
+library(CohortCharacteristics)
 
 # database metadata and connection details
 # The name/ acronym for the database

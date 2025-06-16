@@ -12,7 +12,7 @@ ending_date <- as.Date("2023-01-01")
 
 # run analysis
 run_symmetry <- TRUE
-run_characterisation <- FALSE
+run_characterisation <- TRUE
 
 # get cdm snapshot
 OmopSketch::exportSummarisedResult(
