@@ -11,34 +11,9 @@
   "Packages": {
     "CDMConnector": {
       "Package": "CDMConnector",
-      "Version": "1.6.1",
+      "Version": "2.0.0",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "DBI",
-        "R",
-        "checkmate",
-        "cli",
-        "dbplyr",
-        "dplyr",
-        "fs",
-        "generics",
-        "glue",
-        "jsonlite",
-        "lifecycle",
-        "methods",
-        "omopgenerics",
-        "purrr",
-        "readr",
-        "rlang",
-        "stringi",
-        "stringr",
-        "tidyr",
-        "tidyselect",
-        "waldo",
-        "withr"
-      ],
-      "Hash": "1b6e550b3f742dab03099f3768595b98"
+      "Repository": "CRAN"
     },
     "CodelistGenerator": {
       "Package": "CodelistGenerator",
@@ -70,22 +45,7 @@
       "Package": "CohortCharacteristics",
       "Version": "1.0.0",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "CDMConnector",
-        "PatientProfiles",
-        "R",
-        "cli",
-        "dplyr",
-        "lifecycle",
-        "omopgenerics",
-        "purrr",
-        "rlang",
-        "snakecase",
-        "stringr",
-        "tidyr"
-      ],
-      "Hash": "a3c58c0451b181a2d1198640afb4a597"
+      "Repository": "CRAN"
     },
     "CohortConstructor": {
       "Package": "CohortConstructor",
