@@ -165,7 +165,7 @@ nsaids_lists_ingredients <- bind_rows(nsaids_lists_ingredients,
 nsaids_codelist1 <- getDrugIngredientCodes(
   cdm,
   name = nsaids_lists_ingredients$concept_name,
-  nameStyle = "{concept_code}_{concept_name}",
+  nameStyle = "{concept_name}",
   routeCategory = "oral",
   ingredientRange = c(1, 1),
   type = "codelist"
