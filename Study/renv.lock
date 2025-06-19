@@ -49,27 +49,9 @@
     },
     "CohortConstructor": {
       "Package": "CohortConstructor",
-      "Version": "0.3.3",
+      "Version": "0.4.0",
       "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "CDMConnector",
-        "PatientProfiles",
-        "R",
-        "checkmate",
-        "cli",
-        "clock",
-        "dbplyr",
-        "dplyr",
-        "glue",
-        "magrittr",
-        "omopgenerics",
-        "purrr",
-        "rlang",
-        "tidyr",
-        "utils"
-      ],
-      "Hash": "39134d2a45be69c48d15de7d0a14c220"
+      "Repository": "CRAN"
     },
     "CohortSymmetry": {
       "Package": "CohortSymmetry",
