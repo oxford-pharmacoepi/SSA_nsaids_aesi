@@ -1,4 +1,4 @@
-# Study Title
+# Determining Cardiovascular Safety Signals of Non-Steroidal Anti-Inflammatory Drugs: A Sequence Symmetry Study
 <img src="https://img.shields.io/badge/Study%20Status-Started-blue.svg" alt="Study Status: Started">
 
 - **Study title**: Determining Cardiovascular Safety Signals of Non-Steroidal Anti-Inflammatory Drugs: A Sequence Symmetry Study
