@@ -136,36 +136,9 @@ snapshotcdm <- bind_rows(snapshotcdm) %>%
          "Database Description" = "cdm_description" )  
 
 
-
-# ATC concepts ------
-atc_concept_files <- results[stringr::str_detect(results, ".csv")]
-atc_concept_files <- results[stringr::str_detect(results, "class_concepts")]
-atc_concepts <- list()
-for(i in seq_along(atc_concept_files)){
-  atc_concepts[[i]] <- readr::read_csv(atc_concept_files[[i]],
-                                      show_col_types = FALSE) %>% 
-    mutate_all(as.character)
-  
-}
-atc_concepts <- dplyr::bind_rows(atc_concepts) %>% 
-  relocate(ATC_class)
-
-# read in atc summary ------
-atc_class_files <- results[stringr::str_detect(results, ".csv")]
-atc_class_files <- results[stringr::str_detect(results, "classes_summary")]
-atc_class <- list()
-for(i in seq_along(atc_class_files)){
-  
-  atc_class[[i]] <- readr::read_csv(atc_class_files[[i]])
-  
-}
-#bind
-atc_class <- bind_rows( atc_class)
-
-
 # pssa class settings ------
 im_settings_files <- results[stringr::str_detect(results, ".csv")]
-im_settings_files <- results[stringr::str_detect(results, "ssa_marker_settings_drug_class")]
+im_settings_files <- results[stringr::str_detect(results, "ssa_marker_settings")]
 im_settings <- list()
 
 for(i in seq_along(im_settings_files)){
@@ -193,39 +166,11 @@ im_settings <- dplyr::bind_rows(im_settings) %>%
   mutate(marker_name = toupper(marker_name))
 
 
-# pssa ingredient settings ------
-im_settings_ing_files <- results[stringr::str_detect(results, ".csv")]
-im_settings_ing_files <- results[stringr::str_detect(results, "ssa_marker_settings_drug_ingredient")]
-im_settings_ing <- list()
-
-for(i in seq_along(im_settings_ing_files)){
-  im_settings_ing[[i]] <- readr::read_csv(im_settings_ing_files[[i]],
-                                      show_col_types = FALSE)
-  
-}
-
-im_settings_ing <- dplyr::bind_rows(im_settings_ing) %>% 
-  select(c(
-    cohort_name    ,
-    index_name       ,
-    marker_name,
-    days_prior_observation,
-    cohort_date_range,
-    moving_average_restriction,
-    washout_window,
-    index_marker_gap,
-    combination_window,
-    nsr,
-    cdm_name
-    
-  )) %>% 
-  mutate(`marker_name` = str_replace(`marker_name`, "ingredient_(\\d+)", "Ingredient \\1"))
-
-# ATC class pssa results ------
+# pssa results OVERALL ------
 # pssa results for all markers and controls
 atc_ssa_files <- results[stringr::str_detect(results, ".csv")]
 atc_ssa_files <- results[
-  stringr::str_detect(results, "ssa_estimates_class") &
+  stringr::str_detect(results, "ssa_estimates") &
     !stringr::str_detect(results, "365_window")
 ]
 
@@ -293,7 +238,7 @@ atc_ssa <- omopgenerics::bind(atc_ssa) %>%
 
 # read in estimates from sensitivity analysis (365 windows)
 atc_ssa_sens_files <- results[stringr::str_detect(results, ".csv")]
-atc_ssa_sens_files <- results[stringr::str_detect(results, "ssa_estimates_class_365_window")]
+atc_ssa_sens_files <- results[stringr::str_detect(results, "ssa_estimates_365_window")]
 
 atc_ssa_sens <- list()
 for(i in seq_along(atc_ssa_sens_files)){
@@ -394,104 +339,9 @@ wide_atc <- combined_atc %>%
 
 
 
-
-
-
-
-# read in ingredient name information ----
-ingredient_atc_name_files <- results[stringr::str_detect(results, ".csv")]
-ingredient_atc_name_files <- results[stringr::str_detect(results, "drug_ingredient_summary")]
-ingredient_atc_name <- list()
-
-for(i in seq_along(ingredient_atc_name_files)){
-  ingredient_atc_name[[i]] <- readr::read_csv(ingredient_atc_name_files[[i]],
-                                       show_col_types = FALSE)
-
-}
-
-ingredient_atc_name <- bind_rows(ingredient_atc_name) %>%
-  mutate(`Marker cohort name` = paste0("Ingredient ", tolower(sub("_.*", "", concept_id))) ) %>% 
-  rename(`Database name` = cdm_name)
-
-# INGREDIENT pssa results ------
-# pssa results for all markers and controls
-atc_ssa_ing_files <- results[stringr::str_detect(results, ".csv")]
-atc_ssa_ing_files <- results[
-  stringr::str_detect(results, "ssa_estimates_ingredient") &
-    !stringr::str_detect(results, "365_window")
-]
-
-atc_ssa_ing <- list()
-for(i in seq_along(atc_ssa_ing_files)){
-  
-  atc_ssa_ing[[i]] <- omopgenerics::importSummarisedResult(atc_ssa_ing_files[[i]])
-  
-}
-
-# bind the results for the ingredient result
-atc_ssa_ing <- omopgenerics::bind(atc_ssa_ing) %>% 
-  visOmopResults::visOmopTable(
-    estimateName = c("N (%)" = "<count> (<percentage>%)",
-                     "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
-    header = c("Variable name", "Estimate name"),
-    rename = c("Database name" = "cdm_name"),
-    #header = c("cdm_name", "Variable name", "Estimate name", "Variable level"),
-    groupColumn = "cdm_name",
-    type = "tibble",
-    hide = "variable_level"
-  ) %>% 
-  rename_with(
-    ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
-  rename_with(
-    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>% 
-  rename_with(
-    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>% 
-  rename_with(
-    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>% 
-  mutate(
-    `CSR (99% CI)` = if_else(
-      `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
-      NA_character_,
-      `CSR (99% CI)`
-    ),
-    `ASR (99% CI)` = if_else(
-      `ASR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
-      NA_character_,
-      `ASR (99% CI)`
-    )
-  ) %>%
-  extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
-          regex = "(\\d+\\.?\\d*) \\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]",
-          convert = TRUE, remove = FALSE) %>%
-  mutate(signal = case_when(
-    asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
-    asr_upper < 1 ~ "Negative", 
-    asr == 0 ~ NA_character_,
-    is.na(asr) ~ NA_character_,
-    `Index N (%)` == "<5" ~ NA_character_,
-    `Marker N (%)` == "<5" ~ NA_character_,
-    TRUE ~ "Null"                  # All other cases
-  )) %>%
-  mutate(
-  `Index cohort name` = str_replace(`Index cohort name`, "ache_inhibitors", "AChE Inhibitors")) %>% 
-  mutate(index_marker_name = paste0(`Index cohort name`, "_", `Marker cohort name`)) %>% 
-  mutate(`Marker cohort name` = str_replace(`Marker cohort name`, "ingredient_(\\d+)", "Ingredient \\1"))
-
-# bind ingredient name with ingredient result
-atc_ssa_ing <- atc_ssa_ing %>%
-  inner_join(ingredient_atc_name, by = c("Marker cohort name", "Database name")) %>%
-  left_join(select(im_settings_ing, marker_name, nsr),
-             by = c("Marker cohort name" = "marker_name"),
-             relationship = "many-to-many"
-  ) %>%
-  rename("NSR" = "nsr") %>%
-  mutate(NSR = round(NSR, 3)) %>% 
-  distinct()
-
-
 # attrition index - markers ----
 im_attrition_files <- results[stringr::str_detect(results, ".csv")]
-im_attrition_files <- results[stringr::str_detect(results, "im_attrition_drug_class")]
+im_attrition_files <- results[stringr::str_detect(results, "attrition")]
 im_attrition <- list()
 for(i in seq_along(im_attrition_files)){
   im_attrition[[i]] <- readr::read_csv(im_attrition_files[[i]],
@@ -506,7 +356,7 @@ im_attrition <- dplyr::bind_rows(im_attrition) %>%
 
 # temporal symmetry class -----
 im_temporal_files <- results[stringr::str_detect(results, ".csv")]
-im_temporal_files <- results[stringr::str_detect(results, "temporal_symmetry_summary_drug_class")]
+im_temporal_files <- results[stringr::str_detect(results, "temporal_symmetry_summary")]
 im_temporal <- list()
 for(i in seq_along(im_temporal_files)){
   im_temporal[[i]] <- readr::read_csv(im_temporal_files[[i]],
@@ -517,29 +367,6 @@ for(i in seq_along(im_temporal_files)){
 im_temporal <- dplyr::bind_rows(im_temporal)
 
 im_temporal_test <- im_temporal %>%
-  mutate(
-    group_level = str_replace(group_level, "ache_inhibitors", "AChE Inhibitors"),
-    group_level = str_replace(group_level, "amiodarone", "Amiodarone"),
-    group_level = str_replace(group_level, "(?<=&&& )memantine$", "Memantine"),
-    group_level = str_replace(group_level, "(?<=&&& )allopurinol$", "Allopurinol"),
-    group_level = str_replace(group_level, "(?<=&&& )levothyroxine$", "Levothyroxine"),
-    group_level = str_replace(group_level, "(?<=&&& )[a-z0-9]+$", function(x) toupper(x))
-  )
-
-
-# temporal symmetry class -----
-im_temporal_ing_files <- results[stringr::str_detect(results, ".csv")]
-im_temporal_ing_files <- results[stringr::str_detect(results, "temporal_symmetry_summary_drug_ingredient")]
-im_temporal_ing <- list()
-for(i in seq_along(im_temporal_ing_files)){
-  im_temporal_ing[[i]] <- readr::read_csv(im_temporal_ing_files[[i]],
-                                      show_col_types = FALSE)
-  
-}
-
-im_temporal_ing <- dplyr::bind_rows(im_temporal_ing)
-
-im_temporal_test_ing <- im_temporal_ing %>%
   mutate(
     group_level = str_replace(group_level, "ache_inhibitors", "AChE Inhibitors"),
     group_level = str_replace(group_level, "amiodarone", "Amiodarone"),
@@ -622,7 +449,7 @@ plotTemporalSymmetry1 <- function(result,
 
 # table one demographics------
 tableone_demo_files <- results[stringr::str_detect(results, ".csv")]
-tableone_demo_files <- results[stringr::str_detect(results, "demographics")]
+tableone_demo_files <- results[stringr::str_detect(results, "characteristics")]
 
 if(length(tableone_demo_files > 0)){
   
@@ -644,70 +471,10 @@ rm(tableone_demo)
 }
 
 
-# table one medications ------
-tableone_med_files <- results[stringr::str_detect(results, ".csv")]
-tableone_med_files <- results[stringr::str_detect(results, "medications")]
+# to add -----------
 
-if(length(tableone_med_files > 0)){
-  
-  tableone_med <- list()
-  
-  for(i in seq_along(tableone_med_files)){
-    #read in the files
-    tableone_med[[i]] <- omopgenerics::importSummarisedResult(tableone_med_files[[i]])
-    
-    
-  }
-  
-}
-
-med_characteristics <- omopgenerics::bind(tableone_med) %>%
-  mutate(cdm_name = str_replace_all(cdm_name, "_", " ")) %>% 
-  filter(!variable_name %in% c(
-    "Medications 1 to 365 days after index date",
-    "Cohort start date",
-    "Cohort end date",
-    "Age",
-    "Age group",
-    "Sex",
-    "Prior observation",
-    "Future observation",
-    "Days in cohort"
-  ))
-
-rm(tableone_med)
-
-# table one comorbidities ------
-tableone_comorb_files <- results[stringr::str_detect(results, ".csv")]
-tableone_comorb_files <- results[stringr::str_detect(results, "comorbidity")]
-
-if(length(tableone_comorb_files > 0)){
-  
-  tableone_comorb <- list()
-  
-  for(i in seq_along(tableone_comorb_files)){
-    #read in the files
-    tableone_comorb[[i]] <- omopgenerics::importSummarisedResult(tableone_comorb_files[[i]])
-    
-    
-  }
-  
-}
-
-comorb_characteristics <- omopgenerics::bind(tableone_comorb) %>%
-  mutate(cdm_name = str_replace_all(cdm_name, "_", " ")) %>% 
-  filter(!variable_name %in% c(
-    "Conditions 1 to 365 days after index date",
-    "Cohort start date",
-    "Cohort end date",
-    "Age",
-    "Age group",
-    "Sex",
-    "Prior observation",
-    "Future observation",
-    "Days in cohort"
-  ))
-
-rm(tableone_comorb)
+#sex stratification
+#age stratification
+#comorbs stratification
 
 

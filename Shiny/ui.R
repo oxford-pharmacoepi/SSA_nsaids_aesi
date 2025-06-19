@@ -28,13 +28,7 @@ ui <- dashboardPage(
         menuSubItem(
           text = "Snapshot",
           tabName = "snapshotcdm"
-        ),
-        
-        menuSubItem(
-          text = "ATC concepts",
-          tabName = "atc_concepts"
         )
-        
       ),
      
       menuItem(
@@ -44,26 +38,14 @@ ui <- dashboardPage(
         menuSubItem(
           text = "Demographics",
           tabName = "demographics"
-        ),
-        menuSubItem(
-          text = "Medications",
-          tabName = "medications"
-        ),
-        menuSubItem(
-          text = "Comorbidities",
-          tabName = "comorbidities"
         )
-        ),
-
+      ),
+      
       
       menuItem(
-        text = "Class Cascades",
+        text = "Overall Analysis",
         tabName = "cs",
         icon = shiny::icon("star-half-stroke") ,
-        menuSubItem(
-          text = "Plots",
-          tabName = "cs_plots"
-        ),
         
         menuSubItem(
           text = "Forest plot",
@@ -86,31 +68,34 @@ ui <- dashboardPage(
         
       ),
       
+      
+      
       menuItem(
-        text = "Ingredient Cascades",
-        tabName = "cs_results_ing",
+        text = "Sex Stratifed Analysis",
+        tabName = "cs_sex",
         icon = shiny::icon("star-half-stroke") ,
         
         menuSubItem(
-          text = "Plots",
-          tabName = "cs_plots_ing"
+          text = "Forest plot",
+          tabName = "forest_plots_sex"
         ),
         
         menuSubItem(
           text = "Estimates",
-          tabName = "cs_results_ing"
+          tabName = "cs_results_sex"
         ) ,
         
         menuSubItem(
           text = "Temporal Sequence Plots",
-          tabName = "ts_ing_plots"
-        ) ,
+          tabName = "ts_plots_sex"
+        ),
         menuSubItem(
           text = "Sensitivity Analysis",
-          tabName = "sens_ing"
+          tabName = "sens_sex"
         )
         
-      ),
+      ),  
+      
       
       menuItem(
         text = "Attrition",
@@ -257,64 +242,6 @@ ui <- dashboardPage(
       
       
       tabItem(
-        tabName = "atc_concepts",
-        tags$h5("These are the concept ids with a description that were used for each ATC class."),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "atc_concepts_database_name_selector",
-            label = "Database",
-            choices = unique(atc_concepts$cdm_name),
-            selected = unique(atc_concepts$cdm_name)[1],
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "atc_concepts_vocab_selector",
-            label = "Vocabulary",
-            choices = unique(atc_concepts$vocabulary_id),
-            selected = unique(atc_concepts$vocabulary_id),
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "atc_concept_cohort_name_selector",
-            label = "Index Marker Name",
-            choices = unique(atc_concepts$ATC_class),
-            selected = unique(atc_concepts$ATC_class)[1],
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3",  liveSearch = TRUE ),
-            multiple = TRUE,
-           
-          )
-        ),
-        
-        
-        htmlOutput('tbl_atc_concepts'),
-        
-        div(style="display:inline-block",
-            downloadButton(
-              outputId = "gt_atc_concepts_word",
-              label = "Download table as word"
-            ),
-            style="display:inline-block; float:right")
-        
-      )  ,
-      
-      
-      
-
-      
-      tabItem(
         tabName = "cs_results",
         tags$h5("Results from PSSA analysis showing crude and adjusted sequence ratio's as well as percentages of order of index and marker."),
         
@@ -361,59 +288,6 @@ ui <- dashboardPage(
         div(style="display:inline-block",
             downloadButton(
               outputId = "gt_atc_ssa_word",
-              label = "Download table as word"
-            ),
-            style="display:inline-block; float:right")
-        
-      )  ,
-      
-      tabItem(
-        tabName = "cs_results_ing",
-        tags$h5("Results from PSSA analysis showing crude and adjusted sequence ratio's as well as percentages of order of index and marker for drug ingredients from positive signals for drug ATC classes."),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ing_ssa_database_name_selector",
-            label = "Database",
-            choices = unique(atc_ssa_ing$`Database name`),
-            selected = unique(atc_ssa_ing$`Database name`)[1],
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ing_ssa_signal_selector",
-            label = "Signal Type",
-            choices = unique(atc_ssa_ing$signal),
-            selected = "Positive",
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ing_ssa_cohort_name_selector",
-            label = "Index Marker Name",
-            choices = unique(atc_ssa_ing$index_marker_name),
-            selected = unique(atc_ssa_ing$index_marker_name),
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        
-        htmlOutput('tbl_ing_ssa'),
-        
-        div(style="display:inline-block",
-            downloadButton(
-              outputId = "gt_ing_ssa_word",
               label = "Download table as word"
             ),
             style="display:inline-block; float:right")
@@ -604,7 +478,7 @@ ui <- dashboardPage(
       ) ,
       
       
-      #temporal sequence plot atc class
+      #temporal sequence plot
       
       tabItem(
         tabName = "ts_plots",
@@ -699,80 +573,6 @@ ui <- dashboardPage(
       ) ,
       
       
-      
-      tabItem(
-        tabName = "ts_ing_plots",
-        tags$h5("Temporal sequence symmetry crude plots to assess asymmetry. If there is no signal we would expect plots to be symmetrical. If there is a potential signal we might expect more counts of the marker after the index (dashed line)"),
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ts_ing_plot_database_selector",
-            label = "Database",
-            choices = unique(im_temporal_test_ing$cdm_name),
-            selected = unique(im_temporal_test_ing$cdm_name),
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ts_ing_plot_marker_selector",
-            label = "Index Marker Pair",
-            choices = unique(im_temporal_test_ing$group_level),
-            selected = unique(im_temporal_test_ing$group_level)[1],
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        
-        div(style="display: inline-block;vertical-align:top; width: 150px;",
-            pickerInput(inputId = "ts_ing_plot_facet",
-                        label = "Facet by",
-                        choices = c("cdm_name", 
-                                    "group_level"),
-                        selected = c("group_level"),
-                        options = list(
-                          `actions-box` = TRUE,
-                          size = 10,
-                          `selected-text-format` = "count > 3"),
-                        multiple = TRUE,)
-        ),
-        
-        
-        div(
-          style = "width: 80%; height: 90%;",  # Set width to 100% for responsive design
-          plotOutput("ts_ing_plot",
-                     height = "800px"
-          ) %>%
-            withSpinner(),
-          h4("Download Figure"),
-          div("Height:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
-          div(
-            style = "display: inline-block;",
-            textInput("ts_ing_plot_download_height", "", 30, width = "50px")
-          ),
-          div("cm", style = "display: inline-block; margin-right: 25px;"),
-          div("Width:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
-          div(
-            style = "display: inline-block;",
-            textInput("ts_ing_plot_download_width", "", 35, width = "50px")
-          ),
-          div("cm", style = "display: inline-block; margin-right: 25px;"),
-          div("dpi:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
-          div(
-            style = "display: inline-block; margin-right:",
-            textInput("ts_ing_plot_download_dpi", "", 600, width = "50px")
-          ),
-          downloadButton("ts_ing_plot_download_plot", "Download plot")
-        )
-        
-        
-      ) ,
-      
 
       tabItem(
         tabName = "forest_plots",
@@ -789,20 +589,6 @@ ui <- dashboardPage(
       
       
       tabItem(
-        tabName = "cs_plots_ing",
-        
-        div(
-          style = "width: 80%; height: 90%; margin: auto;",
-          withSpinner(
-            plotOutput("forestPlot_ing", height = "800px")
-          )
-        )
-        
-        
-      ) ,
-      
-      
-      tabItem(
         tabName = "sens_atc",
         
         div(
@@ -814,93 +600,6 @@ ui <- dashboardPage(
         
         
       ) ,
-      
-      #pssa plots atc class
-      tabItem(
-        tabName = "cs_plots",
-        tags$h5("Results from PSSA analysis grouped by ATC class level 1. Larger darker dots indicate a positive signal between index and marker i.e. more patients are prescribed these marker drugs after the initiation of the index drugs. Hover over dots to see ATC class drug level 4."),
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "pssa_database_selector",
-            label = "Database",
-            choices = unique(atc_ssa$`Database name`),
-            selected = unique(atc_ssa$`Database name`)[1],
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "pssa_firstatc_level_selector",
-            label = "ATC first level",
-            choices = sort(unique(atc_ssa$first_level)),  # Sort the levels alphabetically
-            selected = sort(unique(atc_ssa$first_level)),  # Also sort the selected values
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        div(style="display: inline-block;vertical-align:top; width: 150px;",
-            pickerInput(inputId = "pssa_plot_facet",
-                        label = "Facet by",
-                        choices = c("cdm_name", 
-                                    "first_level"),
-                        selected = c("first_level"),
-                        options = list(
-                          `actions-box` = TRUE,
-                          size = 10,
-                          `selected-text-format` = "count > 3"),
-                        multiple = TRUE,)
-        ),
-        
-        
-        div(
-          style = "width: 80%; height: 90%;",  # Set width to 100% for responsive design
-          plotlyOutput("pssaPlot", 
-                       height = "800px")  %>%
-            withSpinner(),
-          
-          
-          
-          
-          h4("Download Figure"),
-          div("Height:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
-          div(
-            style = "display: inline-block;",
-            textInput("pssa_plot_download_height", "", 15, width = "50px")
-          ),
-          div("cm", style = "display: inline-block; margin-right: 25px;"),
-          div("Width:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
-          div(
-            style = "display: inline-block;",
-            textInput("pssa_plot_download_width", "", 35, width = "50px")
-          ),
-          div("cm", style = "display: inline-block; margin-right: 25px;"),
-          div("dpi:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
-          div(
-            style = "display: inline-block; margin-right:",
-            textInput("pssa_plot_download_dpi", "", 600, width = "50px")
-          ),
-          
-          div(style="display:inline-block",
-              downloadButton(
-                outputId = "pssa_download_plot",
-                label = "Download plot"
-              ),
-              style="display:inline-block")
-          
-          
-        )
-          
-        
-      ) ,
-      
-      
-      
       
 
       tabItem(
@@ -933,69 +632,7 @@ ui <- dashboardPage(
             ),
             style="display:inline-block; float:right")
 
-      ) ,
-
-    tabItem(
-      tabName = "comorbidities",
-      tags$h5("Comorbidities any time prior for eligible patients with prescription for Acetylcholinesterase inhibitors (AChEIs)"),
-
-      div(
-        style = "display: inline-block;vertical-align:top; width: 150px;",
-        pickerInput(
-          inputId = "comorb_database_name_selector",
-          label = "Database",
-          choices = unique(comorb_characteristics$cdm_name),
-          selected = unique(comorb_characteristics$cdm_name),
-          options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-          multiple = TRUE
-        )
-      ),
-
-
-      # tags$hr(),
-      gt_output("gt_comorb_characteristics") %>%
-        withSpinner() ,
-
-
-      div(style="display:inline-block",
-          downloadButton(
-            outputId = "gt_comorb_characteristics_word",
-            label = "Download table as word"
-          ),
-          style="display:inline-block; float:right")
-
-    ) ,
-
-    tabItem(
-      tabName = "medications",
-      tags$h5("Medications up to 1 year prior for eligible patients with prescription for Acetylcholinesterase inhibitors (AChEIs)"),
-
-      div(
-        style = "display: inline-block;vertical-align:top; width: 150px;",
-        pickerInput(
-          inputId = "med_database_name_selector",
-          label = "Database",
-          choices = unique(med_characteristics$cdm_name),
-          selected = unique(med_characteristics$cdm_name),
-          options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-          multiple = TRUE
-        )
-      ),
-
-
-      # tags$hr(),
-      gt_output("gt_med_characteristics") %>%
-        withSpinner() ,
-
-
-      div(style="display:inline-block",
-          downloadButton(
-            outputId = "gt_med_characteristics_word",
-            label = "Download table as word"
-          ),
-          style="display:inline-block; float:right")
-
-    ) 
+      )  
 
   
   
