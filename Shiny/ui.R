@@ -139,11 +139,11 @@ ui <- dashboardPage(
     tags$div(
       style = "position: relative; margin-top: 20px; text-align: center; margin-bottom: 0;",
       a(img(
-        src = "EHDEN_Logo_JPG.jpg",  # Replace with the correct file name and extension
+        src = "uab.svg",  # Replace with the correct file name and extension
         height = "60px",  # Adjust the height as needed
         width = "auto"     # Let the width adjust proportionally
       ),
-      href = "https://www.ehden.eu/",
+      href = "https://www.uab.edu/home/",
       target = "_blank"
       )
     ) ,
@@ -187,31 +187,29 @@ ui <- dashboardPage(
       # background  ------
       tabItem(
         tabName = "background",
-        h3("Using Prescription Sequence Symmetry Analysis to Detect Prescription Cascades of Dementia Medications"),
+        h3("Determining Cardiovascular Safety Signals of Non-Steroidal Anti-Inflammatory Drugs: A Sequence Symmetry Study"),
         tags$h4(tags$strong("Please note, the results presented here should be considered as
                                                 preliminary and subject to change.")),
         
         tags$h5(
           tags$span("Background:", style = "font-weight: bold;"),
-          "There is no cure for dementia and approved drugs have shown inconclusive effectiveness and numerous side effects. The side effects of dementia drug treatments can sometimes be misinterpreted as new medical conditions and additional drugs are prescribed which leads to unnecessary drug therapy leading to a prescription cascade. Persons living with dementia are more vulnerable to prescribing cascades due to increased multimorbidity. In-depth characterization of those on dementia drugs will give crucial insights into the management of disease to healthcare providers, regulatory authorities and patients. The aim of this project is to characterize the treatments of patients taking dementia drugs and determine potential prescription cascades"
+          "TBC"
         ),
 
         tags$h5(
           tags$span(" Methods:", style = "font-weight: bold;"),
-          "We carried out Prescription Sequence Symmetry Analysis (PSSA) using the CohortSymmetry R package. Index drugs were Acetylcholinesterase inhibitors (AChE inhibitors) (donepezil, rivastigmine, and galantamine).
-          Marker drugs were all ATC (4th level) drug classes. We tested two positive controls (Amiodarone > levothyroxine and AChE inhibitorsr > Memantine) and one negative control (Amiodarone > Allopurinol). 
-          Both crude and adjusted sequence ratio's were calculated as well as temporal sequence of all index marker pairs. We also ran all drug ingredients in addition to see which individual drug ingredients were driving potential signals. We carried out this study using primary care records from the United Kingdom (CPRD GOLD) and THIN. The study period from 1st Jan 2002 to 1st Jan 2022 for CPRD GOLD with different start dates for the THIN databases. Those patients 18 years and older with at least one year of prior history who initiated both the index and marker within 180 days (365 days as sensitivity analysis) were included in the study"
+          "TBC"
           ),
         
         tags$h5(
           tags$span(" Results:", style = "font-weight: bold;"),
-          "These results will need to be checked by those with clinical and pharmacological expertise and assumptions of self controlled case series design will need to be checked"
+          "TBC"
           
         ),
         
         tags$h5(
           tags$span("Funding:" , style = "font-weight: bold;"),
-          "This research was funded by the European Health Data and Evidence Network (EHDEN) (grant number 806968), and the Oxford NIHR Biomedical Research Centre."
+          "This research was funded by XXX, and the Oxford NIHR Biomedical Research Centre."
         ),
         
         tags$h5("The results of this study are published in the following journal:"
@@ -220,7 +218,7 @@ ui <- dashboardPage(
           tags$li(strong("TBC"),"(",tags$a(href="https://www.ndorms.ox.ac.uk/research/research-groups/Musculoskeletal-Pharmacoepidemiology","Paper Link"),")" )),
         
         tags$h5("The analysis code used to generate these results can be found",
-                tags$a(href="https://github.com/oxford-pharmacoepi/", "here")
+                tags$a(href="https://github.com/oxford-pharmacoepi/SSA_nsaids_aesi", "here")
                 
         ),
         
