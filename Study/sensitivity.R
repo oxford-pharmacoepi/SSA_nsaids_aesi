@@ -65,7 +65,7 @@ tryCatch({
   cli::cli_alert_info("- Generate SequenceRatios for nsaids-aesis (365d)")
   results_cs_365 <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi_365"]])
   cli::cli_alert_success("- Generated SequenceRatios for nsaids-aesis (365d)")
-  
+
 }, error = function(e) {
   writeLines(as.character(e),
              here(output_folder, paste0("/", db_name, "_cs_365_error.txt")))
@@ -144,12 +144,11 @@ p_365 <- visOmopResults::scatterPlot(
   )
 
 # Save plot
-p
+p_365
 
 srPlotName <- paste0("nsaids_aesi_365", ".png")
 png(paste0(here::here(output_folder, srPlotName)), width = 8, height = 6, units = "in", res = 1500, type="cairo")
-print(p, newpage = FALSE)
+print(p_365, newpage = FALSE)
 dev.off()
 
-)
 
