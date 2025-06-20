@@ -37,7 +37,7 @@ exportSummarisedResult(results_sex,
                        path = here::here("Results", paste0(db_name)), 
                        fileName = paste0(db_name,"_result_sex.csv"))
 
-
+#this creates a plot for AESIs with each NSAID split by sex 
 sr_tidy_sex <- results_sex |>
   omopgenerics::tidy() %>% 
 dplyr::mutate(
@@ -88,4 +88,62 @@ p
 srPlotName <- paste0("nsaids_aesi_sex", ".png")
 png(paste0(here::here(output_folder, srPlotName)), width = 8, height = 6, units = "in", res = 1500, type="cairo")
 print(p, newpage = FALSE)
+dev.off()
+
+
+#this plot compares male vs female risk for each AESI by NSAI
+sr_tidy_sex <- results_sex %>%
+  omopgenerics::tidy() %>%
+  dplyr::mutate(
+    # Extract sex BEFORE cleaning names
+    sex = dplyr::case_when(
+      stringr::str_detect(index_cohort_name, "_female$") ~ "Female",
+      stringr::str_detect(index_cohort_name, "_male$") ~ "Male",
+      TRUE ~ "Unspecified"
+    ),
+    # Clean cohort names AFTER extracting sex
+    index_cohort_name = stringr::str_replace(index_cohort_name, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
+    index_cohort_name = stringr::str_remove(index_cohort_name, "_(female|male)$"),
+    marker_cohort_name = stringr::str_replace(marker_cohort_name, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
+    pair = paste0(index_cohort_name, "->", marker_cohort_name)
+  ) %>%
+  dplyr::filter(
+    variable_level == "sequence_ratio",
+    variable_name == "adjusted",
+    point_estimate != Inf,
+    abs(upper_CI - lower_CI) <= 10
+  ) %>%
+  dplyr::mutate(
+    highlight = ifelse(lower_CI > 1, "Highlighted", "Not Highlighted")
+  )
+
+p_sex_comparison <- ggplot(sr_tidy_sex, aes(
+  x = index_cohort_name,
+  y = point_estimate,
+  ymin = lower_CI,
+  ymax = upper_CI,
+  shape = sex,
+  color = sex
+)) +
+  geom_pointrange(position = position_dodge(width = 0.5), size = 0.4) +
+  facet_wrap(~ marker_cohort_name, scales = "free_y") +
+  coord_flip() +
+  theme_bw() +
+  geom_hline(yintercept = 1, linetype = 2) +
+  labs(
+    title = "Male vs Female Risk by NSAID and AESI",
+    x = "NSAID",
+    y = "Adjusted Sequence Ratio"
+  ) +
+  scale_shape_manual(values = c("Male" = 17, "Female" = 16)) +  # ▲ triangle for Male, ● circle for Female
+  scale_color_manual(values = c("Male" = "#1f77b4", "Female" = "#d62728")) +
+  theme(
+    legend.position = "top",
+    legend.title = element_blank(),
+    strip.text = element_text(face = "bold")
+  )
+
+srPlotName <- paste0("nsaids_aesi_sex_new", ".png")
+png(paste0(here::here(output_folder, srPlotName)), width = 8, height = 6, units = "in", res = 1500, type="cairo")
+print(p_sex_comparison, newpage = FALSE)
 dev.off()
