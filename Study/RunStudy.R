@@ -15,6 +15,7 @@ run_symmetry <- TRUE
 run_characterisation <- TRUE
 run_sex_stratification <- TRUE
 run_age_stratification <- TRUE
+run_sensitivity_365 <- TRUE
 
 # get cdm snapshot
 OmopSketch::exportSummarisedResult(
@@ -80,6 +81,19 @@ if(isTRUE(run_age_stratification)){
                here(output_folder, paste0("/", db_name,
                                           
                                           "_error_age_stratification.txt")))
+  })
+}
+
+# sensivity analysis of 365 day combination window using unstratified population
+if(isTRUE(run_sensitivity_365)){
+  #log("- Running Sensitivity 365")
+  tryCatch({
+    source(here("2_Analysis", "sensitivity.R"))
+  }, error = function(e) {
+    writeLines(as.character(e),
+               here(output_folder, paste0("/", db_name,
+                                          
+                                          "_error_sensitivity365.txt")))
   })
 }
 
