@@ -62,7 +62,7 @@ cli::cli_alert_success("- Generated SequenceCohortSet for nsaids-aesis")
 
 
 cli::cli_alert_info("- Generate SequenceRatios for nsaids-aesis")
-# get the sequence rations   
+# get the sequence ratios   
 results_cs <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi"]])
 
 cli::cli_alert_success("- Generated SequenceRatios for nsaids-aesis")
@@ -81,7 +81,32 @@ exportSummarisedResult(results_cs,
                        path = here::here("Results", paste0(db_name)), 
                        fileName = paste0(db_name,"_result.csv"))
 
+#null sequence ratio 
+marker_settings <- 
+  settings(cdm[["nsaids_aesi"]])
+
+write_csv(marker_settings, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_marker_settings.csv"
+)))
+
+
+#attrition for outcomes 
+attrition_seq_ratio <- 
+  attrition(cdm[["nsaids_aesi"]])
+            
+write_csv(attrition_seq_ratio, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_attrition.csv"
+            )))
+
+
+#temporal sequence plot
+summary_temp_trends_months <- summariseTemporalSymmetry(cohort = cdm[["nsaids_aesi"]]
+                                                        , timescale = "month")
+
+write_csv(summary_temp_trends_months, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_temporal_symmetry_summary.csv"
+)))
+
+
 cli::cli_alert_info("- Make a pretty plot for nsaids-aesis")
+
 # get a tidy version so you can make a pretty plot
 sr_tidy <- results_cs |>
   omopgenerics::tidy() |>

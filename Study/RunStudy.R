@@ -89,7 +89,7 @@ if(isTRUE(run_age_stratification)){
 # zip all results
 zip::zip(
   zipfile = file.path(here(output_folder,
-                           paste0("Results_", db_name, ".zip"))),
+                           paste0("Results_new", db_name, ".zip"))),
   files = list.files(here(output_folder)),
   root = output_folder)
 

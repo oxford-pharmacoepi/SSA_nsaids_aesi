@@ -37,6 +37,30 @@ exportSummarisedResult(results_sex,
                        path = here::here("Results", paste0(db_name)), 
                        fileName = paste0(db_name,"_result_sex.csv"))
 
+#null sequence ratio 
+marker_settings_sex <- 
+  settings(cdm[["nsaids_aesi_sex"]])
+
+write_csv(marker_settings, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_marker_settings_sex.csv"
+)))
+
+
+#attrition for outcomes 
+attrition_seq_ratio_sex <- 
+  attrition(cdm[["nsaids_aesi_sex"]])
+
+write_csv(attrition_seq_ratio, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_attrition_sex.csv"
+)))
+
+
+#temporal sequence plot
+summary_temp_trends_months_sex <- summariseTemporalSymmetry(cohort = cdm[["nsaids_aesi_sex"]]
+                                                        , timescale = "month")
+
+write_csv(summary_temp_trends_months, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_temporal_symmetry_summary_sex.csv"
+)))
+
+
 #this creates a plot for AESIs with each NSAID split by sex 
 sr_tidy_sex <- results_sex |>
   omopgenerics::tidy() %>% 
