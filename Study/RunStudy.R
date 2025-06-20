@@ -13,6 +13,8 @@ ending_date <- as.Date("2023-01-01")
 # run analysis
 run_symmetry <- TRUE
 run_characterisation <- TRUE
+run_sex_stratification <- TRUE
+run_age_stratification <- TRUE
 
 # get cdm snapshot
 OmopSketch::exportSummarisedResult(
@@ -50,6 +52,34 @@ if(isTRUE(run_characterisation)){
                here(output_folder, paste0("/", db_name,
                                           
                                           "_error_characterisation.txt")))
+  })
+}
+
+
+# sex stratification analysis
+if(isTRUE(run_sex_stratification)){
+  #log("- Running Sex Stratification")
+  tryCatch({
+    source(here("2_Analysis", "SexStratification.R"))
+  }, error = function(e) {
+    writeLines(as.character(e),
+               here(output_folder, paste0("/", db_name,
+                                          
+                                          "_error_sex_stratification.txt")))
+  })
+}
+
+
+# age stratification analysis
+if(isTRUE(run_age_stratification)){
+  #log("- Running Age Stratification")
+  tryCatch({
+    source(here("2_Analysis", "AgeStratification.R"))
+  }, error = function(e) {
+    writeLines(as.character(e),
+               here(output_folder, paste0("/", db_name,
+                                          
+                                          "_error_age_stratification.txt")))
   })
 }
 
