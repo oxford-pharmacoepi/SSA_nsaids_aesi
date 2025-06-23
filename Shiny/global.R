@@ -31,27 +31,30 @@ library(CohortSymmetry)
 library(plotly)
 library(forestploter)
 library(grid)
+library(CohortCharacteristics)
 
+
+# this changes the colour scheme of the shiny
 mytheme <- create_theme(
   adminlte_color(
-    light_blue = "#A35FA6"
+    light_blue = "#007A33"  # Replace 'light_blue' with UAB green
   ),
   adminlte_sidebar(
-    dark_bg = "#A35FA6",  # Use your color for sidebar background
-    dark_hover_bg = "#3B9AB2",  # Keep this as is or adjust
-    dark_color = "white",  # Keep this as is
-    dark_submenu_bg = "#58B1C8"  # Keep this as is or adjust
+    dark_bg = "#007A33",             # UAB Green
+    dark_hover_bg = "#FDBB30",       # UAB Gold
+    dark_color = "white",
+    dark_submenu_bg = "#004C1D"      # Optional darker green
   ),
   adminlte_global(
-    content_bg = "#eaebea"  # Keep this as is or adjust
+    content_bg = "#f4f4f4"           # Light neutral background
   ),
   adminlte_vars(
-    border_color = "black",  # Keep this as is
-    active_link_hover_bg = "#A35FA6",  # Use your color for hover background
-    active_link_hover_color = "white",  # Change to white for contrast
-    active_link_hover_border_color = "#A35FA6",  # Use your color for border
-    link_hover_border_color = "#A35FA6",  # Use your color for border
-    table_border_color = "black"  # Keep this as is
+    border_color = "black",
+    active_link_hover_bg = "#007A33",
+    active_link_hover_color = "white",
+    active_link_hover_border_color = "#FDBB30",
+    link_hover_border_color = "#FDBB30",
+    table_border_color = "black"
   )
 )
 
@@ -116,29 +119,27 @@ snapshot_files <- results[stringr::str_detect(results, ".csv")]
 snapshot_files <- results[stringr::str_detect(results, "cdm_snapshot")]
 snapshotcdm <- list()
 for(i in seq_along(snapshot_files)){
-  snapshotcdm[[i]] <- readr::read_csv(snapshot_files[[i]],
-                                      show_col_types = FALSE) %>% 
-    mutate_all(as.character)
+  
+  snapshotcdm[[i]] <- omopgenerics::importSummarisedResult(snapshot_files) 
+
   
 }
 
-snapshotcdm <- bind_rows(snapshotcdm) %>% 
-  select("cdm_name", "person_count", "observation_period_count" ,
-         "vocabulary_version", "cdm_version", "cdm_description",) %>% 
-  mutate(person_count = nice.num.count(person_count), 
-         observation_period_count = nice.num.count(observation_period_count)) %>% 
-  mutate(cdm_name = str_replace_all(cdm_name, "_", " ")) %>% 
-  rename("Database name" = "cdm_name",
-         "Persons in the database" = "person_count",
-         "Number of observation periods" = "observation_period_count",
-         "OMOP CDM vocabulary version" = "vocabulary_version",
-         "Database CDM Version" = "cdm_version",
-         "Database Description" = "cdm_description" )  
+snapshotcdm <- omopgenerics::bind(snapshotcdm) %>%
+  omopgenerics::addSettings() |>
+    omopgenerics::splitAll() %>% 
+  select(c(cdm_name,
+           estimate_name,
+           estimate_value
+           )) %>% 
+  rename("Database" = "cdm_name",
+         "Name" = "estimate_name",
+         "Value" = "estimate_value" )  
 
 
-# pssa class settings ------
+# pssa settings ------
 im_settings_files <- results[stringr::str_detect(results, ".csv")]
-im_settings_files <- results[stringr::str_detect(results, "ssa_marker_settings")]
+im_settings_files <- results[stringr::str_detect(results, "marker_settings(?!.*sex)")]
 im_settings <- list()
 
 for(i in seq_along(im_settings_files)){
@@ -149,7 +150,6 @@ for(i in seq_along(im_settings_files)){
 
 im_settings <- dplyr::bind_rows(im_settings) %>% 
   select(c(
-    cohort_name    ,
     index_name       ,
     marker_name,
     days_prior_observation,
@@ -158,31 +158,29 @@ im_settings <- dplyr::bind_rows(im_settings) %>%
     washout_window,
     index_marker_gap,
     combination_window,
-    nsr,
-    marker_type,
-    cdm_name
-    
-  )) %>% 
-  mutate(marker_name = toupper(marker_name))
+    cohort_definition_id,
+    nsr
+  )) 
 
 
 # pssa results OVERALL ------
-# pssa results for all markers and controls
-atc_ssa_files <- results[stringr::str_detect(results, ".csv")]
-atc_ssa_files <- results[
-  stringr::str_detect(results, "ssa_estimates") &
-    !stringr::str_detect(results, "365_window")
+# pssa results for all markers
+ssa_estimates_files <- results[stringr::str_detect(results, ".csv")]
+ssa_estimates_files <- results[
+  stringr::str_detect(results, "result") &
+    !stringr::str_detect(results, "sex")
 ]
 
-atc_ssa <- list()
-for(i in seq_along(atc_ssa_files)){
+ssa_estimates <- list()
+
+for(i in seq_along(ssa_estimates_files)){
   
-  atc_ssa[[i]] <- omopgenerics::importSummarisedResult(atc_ssa_files[[i]])
+  ssa_estimates[[i]] <- omopgenerics::importSummarisedResult(ssa_estimates_files[[i]])
   
 }
 
 # bind the results for the class result
-atc_ssa <- omopgenerics::bind(atc_ssa) %>% 
+ssa_estimates <- omopgenerics::bind(ssa_estimates) %>% 
   visOmopResults::visOmopTable(
     estimateName = c("N (%)" = "<count> (<percentage>%)",
                      "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
@@ -223,125 +221,15 @@ atc_ssa <- omopgenerics::bind(atc_ssa) %>%
     `Index N (%)` == "<5" ~ NA_character_,
     `Marker N (%)` == "<5" ~ NA_character_,
     TRUE ~ "Null"                  # All other cases
-  )) %>%
-  mutate(
-    `Index cohort name` = str_replace(`Index cohort name`, "ache_inhibitors", "AChE Inhibitors"),
-    `Marker cohort name` = toupper(`Marker cohort name`)) %>% 
-  mutate(index_marker_name = paste0(`Index cohort name`, "_", `Marker cohort name`)) %>% 
-  left_join(select(atc_class, fourth_level, first_level, ATC_Class), 
-            by = c("Marker cohort name" = "fourth_level")) %>% 
-  left_join(select(im_settings, marker_name, nsr), 
-            by = c("Marker cohort name" = "marker_name")) %>% 
-  rename("NSR" = "nsr") %>%
-  mutate(NSR = round(NSR, 3))
+  )) 
 
-
-# read in estimates from sensitivity analysis (365 windows)
-atc_ssa_sens_files <- results[stringr::str_detect(results, ".csv")]
-atc_ssa_sens_files <- results[stringr::str_detect(results, "ssa_estimates_365_window")]
-
-atc_ssa_sens <- list()
-for(i in seq_along(atc_ssa_sens_files)){
-  
-  atc_ssa_sens[[i]] <- omopgenerics::importSummarisedResult(atc_ssa_sens_files[[i]])
-  
-}
-
-atc_ssa_sens <- omopgenerics::bind(atc_ssa_sens) %>% 
-  visOmopResults::visOmopTable(
-    estimateName = c("N (%)" = "<count> (<percentage>%)",
-                     "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
-    header = c("Variable name", "Estimate name"),
-    rename = c("Database name" = "cdm_name"),
-    groupColumn = "cdm_name",
-    type = "tibble",
-    hide = "variable_level"
-  ) %>% 
-  rename_with(
-    ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
-  rename_with(
-    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>% 
-  rename_with(
-    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>% 
-  rename_with(
-    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>% 
-  mutate(
-    `CSR (99% CI)` = if_else(
-      `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
-      NA_character_,
-      `CSR (99% CI)`
-    ),
-    `ASR (99% CI)` = if_else(
-      `ASR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
-      NA_character_,
-      `ASR (99% CI)`
-    )
-  ) %>%
-  extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
-          regex = "(\\d+\\.?\\d*) \\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]",
-          convert = TRUE, remove = FALSE) %>%
-  mutate(signal = case_when(
-    asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
-    asr_upper < 1 ~ "Negative", 
-    asr == 0 ~ NA_character_,
-    is.na(asr) ~ NA_character_,
-    `Index N (%)` == "<5" ~ NA_character_,
-    `Marker N (%)` == "<5" ~ NA_character_,
-    TRUE ~ "Null"                  # All other cases
-  )) %>%
-  mutate(
-    `Index cohort name` = str_replace(`Index cohort name`, "ache_inhibitors", "AChE Inhibitors"),
-    `Marker cohort name` = toupper(`Marker cohort name`)) %>% 
-  mutate(index_marker_name = paste0(`Index cohort name`, "_", `Marker cohort name`)) %>% 
-  left_join(select(atc_class, fourth_level, first_level, ATC_Class), 
-            by = c("Marker cohort name" = "fourth_level"))
-
-atc_ssa_sens1 <- atc_ssa_sens %>% 
-  select(c(
-    "Database name" ,
-    "Marker cohort name",
-    "ASR (99% CI)"    ,
-    "asr" ,
-    "asr_lower"    ,
-    "asr_upper"  ,
-    "signal"
-  )) %>% 
-  mutate(window = 365)
-
-atc_ssa1 <- atc_ssa %>% 
-  select(c(
-    "Database name" ,
-    "Marker cohort name",
-    "ASR (99% CI)"    ,
-    "asr" ,
-    "asr_lower"    ,
-    "asr_upper"  ,
-    "signal"
-  )) %>% 
-  mutate(window = 180)
-
-
-combined_atc <- bind_rows(atc_ssa_sens1, atc_ssa1)
-
-# Step 2: Pivot wider using the 'window' value as suffix
-# Step 2: Pivot wider using the 'window' value as suffix
-wide_atc <- combined_atc %>%
-  pivot_wider(
-    id_cols = c(`Marker cohort name`, `Database name`),
-    names_from = window,
-    values_from = c(asr, asr_lower, asr_upper, `ASR (99% CI)`, signal),
-    names_glue = "{.value}_{window}"
-  ) %>% 
-  filter(!(is.na(signal_180) & is.na(signal_365))) %>% 
-  filter(signal_180 == "Positive" | signal_365 == "Positive") %>% 
-  filter(`Marker cohort name` != "MEMANTINE") %>% 
-  filter(`Marker cohort name` != "LEVOTHYROXINE")
 
 
 
 # attrition index - markers ----
 im_attrition_files <- results[stringr::str_detect(results, ".csv")]
-im_attrition_files <- results[stringr::str_detect(results, "attrition")]
+im_attrition_files <- results[stringr::str_detect(results, "attrition(?!.*sex)")]
+
 im_attrition <- list()
 for(i in seq_along(im_attrition_files)){
   im_attrition[[i]] <- readr::read_csv(im_attrition_files[[i]],
@@ -349,14 +237,21 @@ for(i in seq_along(im_attrition_files)){
   
 }
 
-im_attrition <- dplyr::bind_rows(im_attrition) %>% 
-  select(-c(cohort_definition_id)) %>% 
-  relocate(cohort_name)
+
+im_attrition <- dplyr::bind_rows(im_attrition) %>%
+  left_join(
+    im_settings %>%
+      select(cohort_definition_id, marker_name, index_name),
+    by = "cohort_definition_id"
+  ) %>%
+  select(marker_name, index_name, everything(), -cohort_definition_id, -reason_id)
+
+
 
 
 # temporal symmetry class -----
 im_temporal_files <- results[stringr::str_detect(results, ".csv")]
-im_temporal_files <- results[stringr::str_detect(results, "temporal_symmetry_summary")]
+im_temporal_files <- results[stringr::str_detect(results, "temporal_symmetry_summary(?!.*sex)")]
 im_temporal <- list()
 for(i in seq_along(im_temporal_files)){
   im_temporal[[i]] <- readr::read_csv(im_temporal_files[[i]],
@@ -368,9 +263,7 @@ im_temporal <- dplyr::bind_rows(im_temporal)
 
 im_temporal_test <- im_temporal %>%
   mutate(
-    group_level = str_replace(group_level, "ache_inhibitors", "AChE Inhibitors"),
     group_level = str_replace(group_level, "amiodarone", "Amiodarone"),
-    group_level = str_replace(group_level, "(?<=&&& )memantine$", "Memantine"),
     group_level = str_replace(group_level, "(?<=&&& )allopurinol$", "Allopurinol"),
     group_level = str_replace(group_level, "(?<=&&& )levothyroxine$", "Levothyroxine"),
     group_level = str_replace(group_level, "(?<=&&& )[a-z0-9]+$", function(x) toupper(x))
@@ -470,11 +363,11 @@ rm(tableone_demo)
 
 }
 
-
 # to add -----------
 
 #sex stratification
 #age stratification
+#sensitivity analysis
 #comorbs stratification
 
 
