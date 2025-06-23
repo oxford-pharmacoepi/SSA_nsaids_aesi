@@ -6,7 +6,6 @@ ui <- dashboardPage(
   dashboardHeader(
     title = tags$div(
       style = "display: flex; align-items: center;",  # Align items horizontally and vertically centered
-      tags$img(src = "CSHex.png", height = "50px", style = "margin-right: 10px;"),  # Logo image with adjusted height
       tags$span("Menu", style = "font-size: 24px;")  # Menu text with font size adjustment
     ),
     titleWidth = 250  # Adjust title width as needed
@@ -41,6 +40,27 @@ ui <- dashboardPage(
         )
       ),
       
+      menuItem(
+        text = "Controls",
+        tabName = "pnc",
+        icon = shiny::icon("star-half-stroke") ,
+        
+        menuSubItem(
+          text = "Forest plot",
+          tabName = "forest_plots_pnc"
+        ),
+        
+        menuSubItem(
+          text = "Estimates",
+          tabName = "cs_results_pnc"
+        ) ,
+        
+        menuSubItem(
+          text = "Temporal Sequence Plots",
+          tabName = "ts_plots_pnc"
+        )
+        
+      ),
       
       menuItem(
         text = "Overall Analysis",
@@ -60,10 +80,6 @@ ui <- dashboardPage(
         menuSubItem(
           text = "Temporal Sequence Plots",
           tabName = "ts_plots"
-        ),
-        menuSubItem(
-          text = "Sensitivity Analysis",
-          tabName = "sens_atc"
         )
         
       ),
@@ -88,10 +104,29 @@ ui <- dashboardPage(
         menuSubItem(
           text = "Temporal Sequence Plots",
           tabName = "ts_plots_sex"
-        ),
+        )
+        
+      ),  
+      
+      
+      menuItem(
+        text = "Age Stratifed Analysis",
+        tabName = "cs_age",
+        icon = shiny::icon("star-half-stroke") ,
+        
         menuSubItem(
-          text = "Sensitivity Analysis",
-          tabName = "sens_sex"
+          text = "Forest plot",
+          tabName = "forest_plots_age"
+        ),
+        
+        menuSubItem(
+          text = "Estimates",
+          tabName = "cs_results_age"
+        ) ,
+        
+        menuSubItem(
+          text = "Temporal Sequence Plots",
+          tabName = "ts_plots_age"
         )
         
       ),  
@@ -120,25 +155,24 @@ ui <- dashboardPage(
       
     ),
     
-    # Logo HDS
     tags$div(
       style = "position: relative; margin-top: 20px; text-align: center; margin-bottom: 0;",
-      a(img(
-        src = "uab.svg",  # Replace with the correct file name and extension
-        height = "60px",  # Adjust the height as needed
-        width = "auto"     # Let the width adjust proportionally
-      ),
-      href = "https://www.uab.edu/home/",
-      target = "_blank"
+      a(
+        img(
+          src = "uab.svg",
+          style = "max-width: 250px; height: auto;"  # Constrain width, allow height to scale proportionally
+        ),
+        href = "https://www.uab.edu/home/",
+        target = "_blank"
       )
     ) ,
       
     
     tags$div(
-      style = "position: relative; margin-top: 20px; text-align: center; margin-bottom: 0;",
+      style = "position: relative; margin-top: 5px; text-align: center; margin-bottom: 0;",
       a(img(
         src = "Logo_HDS.png",  # Replace with the correct file name and extension
-        height = "150px",  # Adjust the height as needed
+        height = "100px",  # Adjust the height as needed
         width = "auto"     # Let the width adjust proportionally
       ),
       href = "https://www.ndorms.ox.ac.uk/research/research-groups/Musculoskeletal-Pharmacoepidemiology",
@@ -151,7 +185,7 @@ ui <- dashboardPage(
       style = "position: relative; margin-top: -20px; text-align: center; margin-bottom: 0;",
       a(img(
         src = "logoOxford.png",  # Replace with the correct file name and extension
-        height = "150px",  # Adjust the height as needed
+        height = "100px",  # Adjust the height as needed
         width = "auto"     # Let the width adjust proportionally
       ),
       href = "https://www.ndorms.ox.ac.uk/research/research-groups/Musculoskeletal-Pharmacoepidemiology",
@@ -213,8 +247,7 @@ ui <- dashboardPage(
                 tags$a(href="mailto:daniel.prietoalhambra@ndorms.ox.ac.uk", "Professor Daniel Prieto Alhambra"),
                 "This study was developed using the",
                 tags$a(href="https://oxford-pharmacoepi.github.io/CohortSymmetry/", "CohortSymmetry"),
-                "R package. Questions regarding this package please contact",
-                tags$a(href="mailto:xihang.chen@ndorms.ox.ac.uk", "Xihang Chen")
+                "R package. Questions regarding this package please contact"
 
         
       ),
@@ -248,10 +281,10 @@ ui <- dashboardPage(
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
-            inputId = "atc_ssa_database_name_selector",
+            inputId = "overall_ssa_database_name_selector",
             label = "Database",
-            choices = unique(atc_ssa$`Database name`),
-            selected = unique(atc_ssa$`Database name`)[1],
+            choices = unique(ssa_estimates$`Database name`),
+            selected = unique(ssa_estimates$`Database name`)[1],
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
@@ -260,9 +293,9 @@ ui <- dashboardPage(
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
-            inputId = "atc_ssa_signal_selector",
+            inputId = "overall_ssa_signal_selector",
             label = "Signal Type",
-            choices = unique(atc_ssa$signal),
+            choices = unique(ssa_estimates$signal),
             selected = "Positive",
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
@@ -273,21 +306,33 @@ ui <- dashboardPage(
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
-            inputId = "atc_ssa_cohort_name_selector",
-            label = "Index Marker Name",
-            choices = unique(atc_ssa$index_marker_name),
-            selected = unique(atc_ssa$index_marker_name),
+            inputId = "overall_ssa_index_name_selector",
+            label = "Index Name",
+            choices = unique(ssa_estimates$`Index cohort name`),
+            selected = unique(ssa_estimates$`Index cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "overall_ssa_marker_name_selector",
+            label = "Marker Name",
+            choices = unique(ssa_estimates$`Marker cohort name`),
+            selected = unique(ssa_estimates$`Marker cohort name`),
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
         ),
         
 
-        htmlOutput('tbl_atc_ssa'),
+        htmlOutput('tbl_overall_ssa'),
         
         div(style="display:inline-block",
             downloadButton(
-              outputId = "gt_atc_ssa_word",
+              outputId = "gt_overall_ssa_word",
               label = "Download table as word"
             ),
             style="display:inline-block; float:right")
@@ -302,10 +347,10 @@ ui <- dashboardPage(
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
-            inputId = "settings_database_name_selector",
-            label = "Database",
-            choices = unique(im_settings$cdm_name),
-            selected = unique(im_settings$cdm_name)[1],
+            inputId = "settings_marker_selector",
+            label = "Marker Name",
+            choices = unique(im_settings$marker_name),
+            selected = unique(im_settings$marker_name)[1],
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
@@ -316,38 +361,14 @@ ui <- dashboardPage(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
             inputId = "settings_cohort_selector",
-            label = "Index Marker Name",
-            choices = unique(im_settings$cohort_name),
-            selected = c(
-              "index_amiodarone_marker_levothyroxine",
-              "index_amiodarone_marker_allopurinol",
-              "index_ache_inhibitors_marker_memantine"
-            )
-              ,
+            label = "Index Name",
+            choices = unique(im_settings$index_name),
+            selected = unique(im_settings$index_name),
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
         ),
-        
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "settings_marker_type_selector",
-            label = "Marker Type",
-            choices = unique(im_settings$marker_type),
-            selected = c("Positive Control" ,
-                         "Negative Control"),
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        
-        
-        
-        
-        
+
         
         htmlOutput('tbl_im_settings'),
         
@@ -370,10 +391,10 @@ ui <- dashboardPage(
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
-            inputId = "im_attrition_database_name_selector",
-            label = "Database",
-            choices = unique(im_attrition$cdm_name),
-            selected = unique(im_attrition$cdm_name)[1],
+            inputId = "im_attrition_marker_selector",
+            label = "Marker Name",
+            choices = unique(im_attrition$marker_name),
+            selected = unique(im_attrition$marker_name)[1],
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
@@ -383,30 +404,14 @@ ui <- dashboardPage(
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
-            inputId = "im_attrition_cohort_name_selector",
-            label = "Index-Marker Name",
-            choices = unique(im_attrition$cohort_name),
-            selected = c("amiodarone_levothyroxine",
-                         "amiodarone_allopurinol" ,
-                         "ache_inhibitors_memantine"),
+            inputId = "im_attrition_cohort_selector",
+            label = "Index Name",
+            choices = unique(im_attrition$index_name),
+            selected = unique(im_attrition$index_name)[1],
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
         ),
-        
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "im_attrition_marker_type_selector",
-            label = "Marker Type",
-            choices = unique(im_attrition$marker_type),
-            selected = c("Positive Control", "Negative Control"),
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
         
         
         htmlOutput('tbl_im_attrition'),
@@ -442,24 +447,7 @@ ui <- dashboardPage(
             inputId = "im_temporal_cohort_selector",
             label = "Index Marker Name",
             choices = unique(im_temporal$group_level),
-            selected = c(
-              "amiodarone &&& allopurinol" ,
-              "ache_inhibitors &&& memantine" ,
-              "amiodarone &&& levothyroxine" 
-            ),
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "im_temporal_time_selector",
-            label = "Time",
-            choices = unique(im_temporal$timescale),
-            selected = unique(im_temporal$timescale)[1],
+            selected = grep("^ibuprofen", unique(im_temporal$group_level), value = TRUE),
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
@@ -502,29 +490,9 @@ ui <- dashboardPage(
             inputId = "ts_plot_marker_selector",
             label = "Index Marker Pair",
             choices = unique(im_temporal_test$group_level),
-            selected = c(
-              
-              "Amiodarone &&& Levothyroxine",
-              "Amiodarone &&& Allopurinol",
-              "AChE Inhibitors &&& Memantine"
-              
-            ),
-              
+            selected = grep("^ibuprofen", unique(im_temporal$group_level), value = TRUE),
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
-          )
-        ),
-        
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ts_plot_time_selector",
-            label = "Timescale",
-            choices = unique(im_temporal_test$timescale),
-            selected = "month",
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = FALSE
           )
         ),
         
@@ -572,21 +540,77 @@ ui <- dashboardPage(
         
       ) ,
       
-      
-
       tabItem(
         tabName = "forest_plots",
-        
+        tags$h5("Temporal sequence symmetry crude plots to assess asymmetry. If there is no signal we would expect plots to be symmetrical. If there is a potential signal we might expect more counts of the marker after the index (dashed line)"),
         div(
-          style = "width: 80%; height: 90%; margin: auto;",
-          withSpinner(
-            plotOutput("forestPlot_atc", height = "800px")
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "forest_plot_database_selector",
+            label = "Database Name",
+            choices = unique(ssa_estimates$`Database name`),
+            selected = unique(ssa_estimates$`Database name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
           )
+        ),
+
+
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "forest_plot_index_selector",
+            label = "Index Name",
+            choices = unique(ssa_estimates$`Index cohort name`),
+            selected = unique(ssa_estimates$`Index cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+
+
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "forest_plot_marker_selector",
+            label = "Marker Name",
+            choices = unique(ssa_estimates$`Marker cohort name`),
+            selected = unique(ssa_estimates$`Marker cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+
+
+        div(
+          style = "width: 80%; height: 90%;",  # Set width to 100% for responsive design
+          plotOutput("forestPlot_overall",
+                     height = "800px"
+          ) %>%
+            withSpinner(),
+          h4("Download Figure"),
+          div("Height:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("forest_plot_download_height", "", 30, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("Width:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("forest_plot_download_width", "", 35, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("dpi:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block; margin-right:",
+            textInput("forest_plot_download_dpi", "", 600, width = "50px")
+          ),
+          downloadButton("forest_plot_download_plot", "Download plot")
         )
-          
-        
+
       ) ,
-      
+
       
       tabItem(
         tabName = "sens_atc",
@@ -604,7 +628,7 @@ ui <- dashboardPage(
 
       tabItem(
         tabName = "demographics",
-        tags$h5("Demographics for eligible patients with prescription for Acetylcholinesterase inhibitors (AChEIs)"),
+        tags$h5("Demographics for eligible patients with prescription for NSAIDs"),
 
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
@@ -618,6 +642,17 @@ ui <- dashboardPage(
           )
         ),
 
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "demographics_strata_selector",
+            label = "Strata",
+            choices = unique(demo_characteristics$strata_name),
+            selected = "overall",
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
 
 
        # tags$hr(),
