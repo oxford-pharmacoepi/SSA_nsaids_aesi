@@ -20,6 +20,7 @@ library(CohortConstructor)
 library(ggplot2)
 library(CohortCharacteristics)
 library(readr)
+library(PatientProfiles)
 
 # database metadata and connection details
 # The name/ acronym for the database
