@@ -140,6 +140,8 @@ snapshotcdm <- omopgenerics::bind(snapshotcdm) %>%
 # pssa settings ------
 im_settings_files <- results[stringr::str_detect(results, ".csv")]
 im_settings_files <- results[stringr::str_detect(results, "marker_settings(?!.*sex)")]
+im_settings_files <- results[stringr::str_detect(results, "marker_settings(?!.*age)")]
+
 im_settings <- list()
 
 for(i in seq_along(im_settings_files)){
@@ -168,7 +170,8 @@ im_settings <- dplyr::bind_rows(im_settings) %>%
 ssa_estimates_files <- results[stringr::str_detect(results, ".csv")]
 ssa_estimates_files <- results[
   stringr::str_detect(results, "result") &
-    !stringr::str_detect(results, "sex")
+    !stringr::str_detect(results, "sex") &
+    !stringr::str_detect(results, "age")
 ]
 
 ssa_estimates <- list()
@@ -225,10 +228,133 @@ ssa_estimates <- omopgenerics::bind(ssa_estimates) %>%
 
 
 
+# pssa results SEX ------
+# pssa results for all markers
+ssa_estimates_sex_files <- results[stringr::str_detect(results, ".csv")]
+ssa_estimates_sex_files <- results[
+  stringr::str_detect(results, "result") &
+    stringr::str_detect(results, "sex")
+]
+
+ssa_estimates_sex <- list()
+
+for(i in seq_along(ssa_estimates_sex_files)){
+  
+  ssa_estimates_sex[[i]] <- omopgenerics::importSummarisedResult(ssa_estimates_sex_files[[i]])
+  
+}
+
+# bind the results for the class result
+ssa_estimates_sex <- omopgenerics::bind(ssa_estimates_sex) %>% 
+  visOmopResults::visOmopTable(
+    estimateName = c("N (%)" = "<count> (<percentage>%)",
+                     "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
+    header = c("Variable name", "Estimate name"),
+    rename = c("Database name" = "cdm_name"),
+    groupColumn = "cdm_name",
+    type = "tibble",
+    hide = "variable_level"
+  ) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
+  rename_with(
+    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>% 
+  mutate(
+    `CSR (99% CI)` = if_else(
+      `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `CSR (99% CI)`
+    ),
+    `ASR (99% CI)` = if_else(
+      `ASR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `ASR (99% CI)`
+    )
+  ) %>%
+  extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
+          regex = "(\\d+\\.?\\d*) \\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]",
+          convert = TRUE, remove = FALSE) %>%
+  mutate(signal = case_when(
+    asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
+    asr_upper < 1 ~ "Negative", 
+    asr == 0 ~ NA_character_,
+    is.na(asr) ~ NA_character_,
+    `Index N (%)` == "<5" ~ NA_character_,
+    `Marker N (%)` == "<5" ~ NA_character_,
+    TRUE ~ "Null"                  # All other cases
+  )) 
+
+
+
+# # pssa results AGE ------
+# # pssa results for all markers
+ssa_estimates_age_files <- results[stringr::str_detect(results, ".csv")]
+ssa_estimates_age_files <- results[
+  stringr::str_detect(results, "result") &
+    stringr::str_detect(results, "age")
+]
+
+ssa_estimates_age <- list()
+
+for(i in seq_along(ssa_estimates_age_files)){
+
+  ssa_estimates_age[[i]] <- omopgenerics::importSummarisedResult(ssa_estimates_age_files[[i]])
+
+}
+
+# bind the results for the class result
+ssa_estimates_age <- omopgenerics::bind(ssa_estimates_age) %>%
+  visOmopResults::visOmopTable(
+    estimateName = c("N (%)" = "<count> (<percentage>%)",
+                     "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
+    header = c("Variable name", "Estimate name"),
+    rename = c("Database name" = "cdm_name"),
+    groupColumn = "cdm_name",
+    type = "tibble",
+    hide = "variable_level"
+  ) %>%
+  rename_with(
+    ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
+  rename_with(
+    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>%
+  rename_with(
+    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>%
+  rename_with(
+    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>%
+  mutate(
+    `CSR (99% CI)` = if_else(
+      `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `CSR (99% CI)`
+    ),
+    `ASR (99% CI)` = if_else(
+      `ASR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `ASR (99% CI)`
+    )
+  ) %>%
+  extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
+          regex = "(\\d+\\.?\\d*) \\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]",
+          convert = TRUE, remove = FALSE) %>%
+  mutate(signal = case_when(
+    asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
+    asr_upper < 1 ~ "Negative",
+    asr == 0 ~ NA_character_,
+    is.na(asr) ~ NA_character_,
+    `Index N (%)` == "<5" ~ NA_character_,
+    `Marker N (%)` == "<5" ~ NA_character_,
+    TRUE ~ "Null"                  # All other cases
+  ))
+
 
 # attrition index - markers ----
 im_attrition_files <- results[stringr::str_detect(results, ".csv")]
 im_attrition_files <- results[stringr::str_detect(results, "attrition(?!.*sex)")]
+im_attrition_files <- results[stringr::str_detect(results, "attrition(?!.*age)")]
 
 im_attrition <- list()
 for(i in seq_along(im_attrition_files)){
@@ -252,6 +378,8 @@ im_attrition <- dplyr::bind_rows(im_attrition) %>%
 # temporal symmetry class -----
 im_temporal_files <- results[stringr::str_detect(results, ".csv")]
 im_temporal_files <- results[stringr::str_detect(results, "temporal_symmetry_summary(?!.*sex)")]
+im_temporal_files <- results[stringr::str_detect(results, "temporal_symmetry_summary(?!.*age)")]
+
 im_temporal <- list()
 for(i in seq_along(im_temporal_files)){
   im_temporal[[i]] <- readr::read_csv(im_temporal_files[[i]],

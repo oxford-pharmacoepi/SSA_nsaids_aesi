@@ -247,7 +247,7 @@ ui <- dashboardPage(
                 tags$a(href="mailto:daniel.prietoalhambra@ndorms.ox.ac.uk", "Professor Daniel Prieto Alhambra"),
                 "This study was developed using the",
                 tags$a(href="https://oxford-pharmacoepi.github.io/CohortSymmetry/", "CohortSymmetry"),
-                "R package. Questions regarding this package please contact"
+                "R package."
 
         
       ),
@@ -338,6 +338,141 @@ ui <- dashboardPage(
             style="display:inline-block; float:right")
         
       )  ,
+      
+      
+      
+      tabItem(
+        tabName = "cs_results_sex",
+        tags$h5("Results from PSSA analysis showing crude and adjusted sequence ratio's as well as percentages of order of index and marker."),
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "sex_ssa_database_name_selector",
+            label = "Database",
+            choices = unique(ssa_estimates_sex$`Database name`),
+            selected = unique(ssa_estimates_sex$`Database name`)[1],
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "sex_ssa_signal_selector",
+            label = "Signal Type",
+            choices = unique(ssa_estimates_sex$signal),
+            selected = "Positive",
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "sex_ssa_index_name_selector",
+            label = "Index Name",
+            choices = unique(ssa_estimates_sex$`Index cohort name`),
+            selected = unique(ssa_estimates_sex$`Index cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "sex_ssa_marker_name_selector",
+            label = "Marker Name",
+            choices = unique(ssa_estimates_sex$`Marker cohort name`),
+            selected = unique(ssa_estimates_sex$`Marker cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        htmlOutput('tbl_sex_ssa'),
+        
+        div(style="display:inline-block",
+            downloadButton(
+              outputId = "gt_sex_ssa_word",
+              label = "Download table as word"
+            ),
+            style="display:inline-block; float:right")
+        
+      )  ,
+      
+      
+      tabItem(
+        tabName = "cs_results_age",
+        tags$h5("Results from PSSA analysis showing crude and adjusted sequence ratio's as well as percentages of order of index and marker."),
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "age_ssa_database_name_selector",
+            label = "Database",
+            choices = unique(ssa_estimates_age$`Database name`),
+            selected = unique(ssa_estimates_age$`Database name`)[1],
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "age_ssa_signal_selector",
+            label = "Signal Type",
+            choices = unique(ssa_estimates_age$signal),
+            selected = "Positive",
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "age_ssa_index_name_selector",
+            label = "Index Name",
+            choices = unique(ssa_estimates_age$`Index cohort name`),
+            selected = unique(ssa_estimates_age$`Index cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "age_ssa_marker_name_selector",
+            label = "Marker Name",
+            choices = unique(ssa_estimates_age$`Marker cohort name`),
+            selected = unique(ssa_estimates_age$`Marker cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        htmlOutput('tbl_age_ssa'),
+        
+        div(style="display:inline-block",
+            downloadButton(
+              outputId = "gt_age_ssa_word",
+              label = "Download table as word"
+            ),
+            style="display:inline-block; float:right")
+        
+      )  ,     
+      
+      
       
       tabItem(
         tabName = "study_settings",
@@ -542,7 +677,7 @@ ui <- dashboardPage(
       
       tabItem(
         tabName = "forest_plots",
-        tags$h5("Temporal sequence symmetry crude plots to assess asymmetry. If there is no signal we would expect plots to be symmetrical. If there is a potential signal we might expect more counts of the marker after the index (dashed line)"),
+        tags$h5("Forest plots showing index marker pairs"),
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
@@ -611,6 +746,150 @@ ui <- dashboardPage(
 
       ) ,
 
+      
+      
+      tabItem(
+        tabName = "forest_plots_sex",
+        tags$h5("Forest plots showing index marker pairs for sex stratification"),
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "forest_plot_database_sex_selector",
+            label = "Database Name",
+            choices = unique(ssa_estimates_sex$`Database name`),
+            selected = unique(ssa_estimates_sex$`Database name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "forest_plot_index_sex_selector",
+            label = "Index Name",
+            choices = unique(ssa_estimates_sex$`Index cohort name`),
+            selected = unique(ssa_estimates_sex$`Index cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "forest_plot_marker_sex_selector",
+            label = "Marker Name",
+            choices = unique(ssa_estimates_sex$`Marker cohort name`),
+            selected = unique(ssa_estimates_sex$`Marker cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        div(
+          style = "width: 80%; height: 90%;",  # Set width to 100% for responsive design
+          plotOutput("forestPlot_sex",
+                     height = "800px"
+          ) %>%
+            withSpinner(),
+          h4("Download Figure"),
+          div("Height:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("forest_plot_sex_download_height", "", 30, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("Width:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("forest_plot_sex_download_width", "", 35, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("dpi:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block; margin-right:",
+            textInput("forest_plot_sex_download_dpi", "", 600, width = "50px")
+          ),
+          downloadButton("forest_plot_sex_download_plot", "Download plot")
+        )
+        
+      ) ,
+      
+      
+      tabItem(
+        tabName = "forest_plots_age",
+        tags$h5("Forest plots showing index marker pairs for sex stratification"),
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "forest_plot_database_age_selector",
+            label = "Database Name",
+            choices = unique(ssa_estimates_age$`Database name`),
+            selected = unique(ssa_estimates_age$`Database name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "forest_plot_index_age_selector",
+            label = "Index Name",
+            choices = unique(ssa_estimates_age$`Index cohort name`),
+            selected = unique(ssa_estimates_age$`Index cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "forest_plot_marker_age_selector",
+            label = "Marker Name",
+            choices = unique(ssa_estimates_age$`Marker cohort name`),
+            selected = unique(ssa_estimates_age$`Marker cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        div(
+          style = "width: 80%; height: 90%;",  # Set width to 100% for responsive design
+          plotOutput("forestPlot_age",
+                     height = "800px"
+          ) %>%
+            withSpinner(),
+          h4("Download Figure"),
+          div("Height:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("forest_plot_age_download_height", "", 30, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("Width:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("forest_plot_age_download_width", "", 35, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("dpi:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block; margin-right:",
+            textInput("forest_plot_age_download_dpi", "", 600, width = "50px")
+          ),
+          downloadButton("forest_plot_age_download_plot", "Download plot")
+        )
+        
+      ) ,
       
       tabItem(
         tabName = "sens_atc",
