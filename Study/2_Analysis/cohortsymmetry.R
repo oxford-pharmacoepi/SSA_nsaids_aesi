@@ -1,45 +1,4 @@
-# run cohort symmetry on all index-marker pairs and controls
-
-########################
-# positive controls (we know has a signal)
-########################
-cli::cli_alert_info("- Generate SequenceCohortSet for positive controls")
-
-cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
-                                                 name = "amiodarone_levothyroxine",
-                                                 cohortDateRange = c(starting_date, ending_date),
-                                                 indexTable = "amiodarone",
-                                                 markerTable = "levothyroxine",
-                                                 daysPriorObservation = 365,
-                                                 washoutWindow = 365,
-                                                 combinationWindow = c(0, 180)) # this is where the combination window that we look to see the order
-
-amiodarone_levothyroxin <- CohortSymmetry::summariseSequenceRatios(cohort = cdm$amiodarone_levothyroxine)
-amiodarone_levothyroxin_results <- CohortSymmetry::tableSequenceRatios(result = amiodarone_levothyroxin  ,
-                                                                       type = "tibble")
-
-cli::cli_alert_success("- Generated SequenceCohortSet for positive controls")
-
-##############################
-# negative controls (we know there is no signal)
-##############################
-cli::cli_alert_info("- Generate SequenceCohortSet for negative controls")
-
-#Amiodarone	Allopurinol
-cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
-                                                 name = "amiodarone_allopurinol",
-                                                 cohortDateRange = c(starting_date, ending_date),
-                                                 indexTable = "amiodarone",
-                                                 markerTable = "allopurinol",
-                                                 daysPriorObservation = 365,
-                                                 washoutWindow = 365,
-                                                 combinationWindow = c(0, 180))
-
-amiodarone_allopurinol <- CohortSymmetry::summariseSequenceRatios(cohort = cdm$amiodarone_allopurinol)
-amiodarone_allopurinol_results <- CohortSymmetry::tableSequenceRatios(result = amiodarone_allopurinol ,
-                                                                      type = "tibble")
-
-cli::cli_alert_success("- Generated SequenceCohortSet for negative controls")
+# run cohort symmetry on all index-marker pairs
 
 ##############################
 # main study nsaids (index) - aesi (markers)
@@ -103,6 +62,53 @@ summary_temp_trends_months <- summariseTemporalSymmetry(cohort = cdm[["nsaids_ae
 
 write_csv(summary_temp_trends_months, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_temporal_symmetry_summary.csv"
 )))
+
+# get the record trends for index and markers
+record_trends_overall_index <- cdm[["nsaids"]] %>%
+  filter(cohort_start_date >= starting_date,
+         cohort_start_date <= ending_date) %>%
+  mutate(year = year(cohort_start_date)) %>%
+  group_by(cohort_definition_id, year) %>%
+  summarise(n_records = n(), .groups = "drop") %>%
+  collect() %>%
+  left_join(
+    settings(cdm$nsaids) %>%
+      select(cohort_definition_id, cohort_name),
+    by = "cohort_definition_id"
+  )
+
+record_trends_overall_marker <- cdm[["aesi"]] %>%
+  filter(cohort_start_date >= starting_date,
+         cohort_start_date <= ending_date) %>%
+  mutate(year = year(cohort_start_date)) %>%
+  group_by(cohort_definition_id, year) %>%
+  summarise(n_records = n(), .groups = "drop") %>%
+  collect() %>%
+  left_join(
+    settings(cdm$aesi) %>%
+      select(cohort_definition_id, cohort_name),
+    by = "cohort_definition_id"
+  )
+
+drug_exposure_summary <- cdm$drug_exposure %>%
+  filter(drug_exposure_start_date >= !!starting_date,
+         drug_exposure_start_date <= !!ending_date) %>%
+  mutate(year = year(drug_exposure_start_date)) %>%
+  group_by(year) %>%
+  summarise(n_records = n(), .groups = "drop") %>%
+  mutate(name = "overall") %>% 
+  collect()
+
+record_trends_overall <- bind_rows(
+  record_trends_overall_index,
+  record_trends_overall_marker,
+  drug_exposure_summary
+  
+)
+
+write_csv(record_trends_overall, 
+          here::here("Results", paste0(db_name, "/", cdmName(cdm), "_record_trend_overall.csv"
+          )))
 
 
 cli::cli_alert_info("- Make a pretty plot for nsaids-aesis")
