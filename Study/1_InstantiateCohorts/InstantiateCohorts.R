@@ -30,6 +30,39 @@ cdm <- DrugUtilisation::generateIngredientCohortSet(
 
 cli::cli_alert_success("- Got benchmarker definitions drug - drug negative controls")
 
+
+# ace inhibitors ----
+ace_inhib <- getATCCodes(
+  cdm,
+  level = c("ATC 3rd"),
+  name = "ACE INHIBITORS, PLAIN",
+  doseForm = NULL,
+  doseUnit = NULL,
+  routeCategory = NULL,
+  type = "codelist"
+)
+
+cdm[["ace_inh"]] <- conceptCohort(cdm,
+                                  conceptSet = ace_inhib,
+                                  name = "ace_inh",
+                                  exit = "event_end_date",
+                                  useSourceFields = FALSE,
+                                  subsetCohort = NULL,
+                                  subsetCohortId = NULL)
+
+# cough diagnosis ----
+cough_codes <- getDescendants(cdm, 
+                              conceptId = c(254761))
+
+cdm[["cough"]] <- conceptCohort(cdm,
+                                conceptSet = list(cough_codes = cough_codes$concept_id),
+                                name = "cough",
+                                exit = "event_end_date",
+                                useSourceFields = FALSE,
+                                subsetCohort = NULL,
+                                subsetCohortId = NULL)
+
+
 cli::cli_alert_success("- Getting nsaids")
 
 
