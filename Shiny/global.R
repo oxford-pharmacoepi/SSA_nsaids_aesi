@@ -139,8 +139,11 @@ snapshotcdm <- omopgenerics::bind(snapshotcdm) %>%
 
 # pssa settings ------
 im_settings_files <- results[stringr::str_detect(results, ".csv")]
-im_settings_files <- results[stringr::str_detect(results, "marker_settings(?!.*sex)")]
-im_settings_files <- results[stringr::str_detect(results, "marker_settings(?!.*age)")]
+im_settings_files <- results[
+  stringr::str_detect(results, "marker_settings") &
+    !stringr::str_detect(results, "sex") &
+    !stringr::str_detect(results, "age")
+]
 
 im_settings <- list()
 
@@ -353,8 +356,11 @@ ssa_estimates_age <- omopgenerics::bind(ssa_estimates_age) %>%
 
 # attrition index - markers ----
 im_attrition_files <- results[stringr::str_detect(results, ".csv")]
-im_attrition_files <- results[stringr::str_detect(results, "attrition(?!.*sex)")]
-im_attrition_files <- results[stringr::str_detect(results, "attrition(?!.*age)")]
+im_attrition_files <- results[
+  stringr::str_detect(results, "attrition") &
+    !stringr::str_detect(results, "sex") &
+    !stringr::str_detect(results, "age")
+]
 
 im_attrition <- list()
 for(i in seq_along(im_attrition_files)){
@@ -377,8 +383,11 @@ im_attrition <- dplyr::bind_rows(im_attrition) %>%
 
 # temporal symmetry class -----
 im_temporal_files <- results[stringr::str_detect(results, ".csv")]
-im_temporal_files <- results[stringr::str_detect(results, "temporal_symmetry_summary(?!.*sex)")]
-im_temporal_files <- results[stringr::str_detect(results, "temporal_symmetry_summary(?!.*age)")]
+im_temporal_files <- results[
+  stringr::str_detect(results, "temporal_symmetry_summary") &
+    !stringr::str_detect(results, "sex") &
+    !stringr::str_detect(results, "age")
+]
 
 im_temporal <- list()
 for(i in seq_along(im_temporal_files)){
