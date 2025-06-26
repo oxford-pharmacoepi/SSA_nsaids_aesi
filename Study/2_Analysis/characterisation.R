@@ -33,7 +33,11 @@ if(isTRUE(run_characterisation)){
   # add sex and age to cohorts ----
   cli::cli_alert_info("Add demographics to cohort")
   
-  cdm$nsaids <- cdm$nsaids %>% 
+  # get nsaid cohort and add in inclusion/exclusion ---
+  cdm$nsaids_characteristics <- cdm$nsaids %>% 
+    PatientProfiles::addDemographics()
+  
+  cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>% 
     PatientProfiles::addDemographics(
       ageGroup = list(
         "age_group" =
@@ -49,30 +53,32 @@ if(isTRUE(run_characterisation)){
   
 
   #for those with prior history remove those with less than 365 days of prior history -------
-  cdm$nsaids <- cdm$nsaids %>% 
+  cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>% 
     filter(prior_observation >= 365) 
   
   # make outcome a perm table and update the attrition
-  cdm$nsaids <- cdm$nsaids %>% 
-    compute(name = "nsaids", temporary = FALSE, overwrite = TRUE) %>% 
+  cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>% 
+    compute(name = "nsaids_characteristics", temporary = FALSE, overwrite = TRUE) %>% 
     CDMConnector::recordCohortAttrition(reason="Excluded patients with less than 365 prior history" )
   
   #only keeping those with sex recorded
-  cdm$nsaids <- cdm$nsaids %>% 
+  cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>% 
     filter(sex %in% c("Male", "Female"))
   
   # make outcome a perm table and update the attrition
-  cdm$nsaids <- cdm$nsaids %>% 
-    compute(name = "nsaids", temporary = FALSE, overwrite = TRUE) %>% 
+  cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>% 
+    compute(name = "nsaids_characteristics", temporary = FALSE, overwrite = TRUE) %>% 
     CDMConnector::recordCohortAttrition(reason="Excluded patients with no sex recorded" )
+  
+  # collaspse the records in cohort
+  cdm$nsaids_characteristics <- cdm$nsaids_characteristics |> 
+    CohortConstructor::collapseCohorts(gap = Inf, name = "nsaids_characteristics")
   
   # characterise comorbs (any time prior) and medications (1 year prior) ot nsaid use
   suppressWarnings(
     
-    summarycharacteristics <- cdm$nsaids %>%
+    summarycharacteristics <- cdm$nsaids_characteristics %>%
       CohortCharacteristics::summariseCharacteristics(
-        strata = list(c("sex"),
-                      c("age_group")),
         ageGroup = list( "18 to 49" = c(18, 49),
                          "50 to 59" = c(50, 59),
                          "60 to 69" = c(60, 69),
