@@ -24,8 +24,6 @@ OmopSketch::exportSummarisedResult(
   path = output_folder
 )
 
-# this is useful if you have already created the cohorts you can get them back from the database results schema
-
 source(here("1_InstantiateCohorts","InstantiateCohorts.R"))
 
 
@@ -39,6 +37,20 @@ if(isTRUE(run_symmetry)){
                here(output_folder, paste0("/", db_name,
                                           
                                           "_error_cohortsymmetry.txt")))
+  })
+}
+
+
+# database and study postive and negative controls ----------
+if(isTRUE(run_symmetry)){
+  
+  tryCatch({
+    source(here("2_Analysis", "controls.R"))
+  }, error = function(e) {
+    writeLines(as.character(e),
+               here(output_folder, paste0("/", db_name,
+                                          
+                                          "_error_controls.txt")))
   })
 }
 
