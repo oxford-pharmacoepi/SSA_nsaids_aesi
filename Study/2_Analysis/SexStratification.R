@@ -35,13 +35,13 @@ cli::cli_alert_info("- Export results for nsaids-aesis-sex")
 # export the results (summarised only)
 exportSummarisedResult(results_sex, 
                        path = here::here("Results", paste0(db_name)), 
-                       fileName = paste0(db_name,"_result_sex.csv"))
+                       fileName = paste0(db_name,"_result_sex_full.csv"))
 
 #null sequence ratio 
 marker_settings_sex <- 
   settings(cdm[["nsaids_aesi_sex"]])
 
-write_csv(marker_settings, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_marker_settings_sex.csv"
+write_csv(marker_settings_sex, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_marker_settings_sex_full.csv"
 )))
 
 
@@ -49,7 +49,7 @@ write_csv(marker_settings, here::here("Results", paste0(db_name, "/", cdmName(cd
 attrition_seq_ratio_sex <- 
   attrition(cdm[["nsaids_aesi_sex"]])
 
-write_csv(attrition_seq_ratio, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_attrition_sex.csv"
+write_csv(attrition_seq_ratio_sex, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_attrition_sex_full.csv"
 )))
 
 
@@ -57,7 +57,7 @@ write_csv(attrition_seq_ratio, here::here("Results", paste0(db_name, "/", cdmNam
 summary_temp_trends_months_sex <- summariseTemporalSymmetry(cohort = cdm[["nsaids_aesi_sex"]]
                                                         , timescale = "month")
 
-write_csv(summary_temp_trends_months, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_temporal_symmetry_summary_sex.csv"
+write_csv(summary_temp_trends_months_sex, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_temporal_symmetry_summary_sex_full.csv"
 )))
 
 
@@ -109,7 +109,7 @@ p <- visOmopResults::scatterPlot(
 
 p
 
-srPlotName <- paste0("nsaids_aesi_sex", ".png")
+srPlotName <- paste0("nsaids_aesi_sex_full", ".png")
 png(paste0(here::here(output_folder, srPlotName)), width = 8, height = 6, units = "in", res = 1500, type="cairo")
 print(p, newpage = FALSE)
 dev.off()
@@ -167,7 +167,7 @@ p_sex_comparison <- ggplot(sr_tidy_sex, aes(
     strip.text = element_text(face = "bold")
   )
 
-srPlotName <- paste0("nsaids_aesi_sex_new", ".png")
+srPlotName <- paste0("nsaids_aesi_sex_full", ".png")
 png(paste0(here::here(output_folder, srPlotName)), width = 8, height = 6, units = "in", res = 1500, type="cairo")
 print(p_sex_comparison, newpage = FALSE)
 dev.off()

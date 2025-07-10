@@ -35,13 +35,13 @@ cli::cli_alert_info("- Export results for nsaids-aesis-age")
 # export the results (summarised only)
 exportSummarisedResult(results_age, 
                        path = here::here("Results", paste0(db_name)), 
-                       fileName = paste0(db_name,"_result_age.csv"))
+                       fileName = paste0(db_name,"_result_age_full.csv"))
 
 #null sequence ratio 
 marker_settings_age <- 
   settings(cdm[["nsaids_aesi_age"]])
 
-write_csv(marker_settings, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_marker_settings_age.csv"
+write_csv(marker_settings_age, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_marker_settings_age_full.csv"
 )))
 
 
@@ -49,7 +49,7 @@ write_csv(marker_settings, here::here("Results", paste0(db_name, "/", cdmName(cd
 attrition_seq_ratio_age <- 
   attrition(cdm[["nsaids_aesi_age"]])
 
-write_csv(attrition_seq_ratio, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_attrition_age.csv"
+write_csv(attrition_seq_ratio_age, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_attrition_age_full.csv"
 )))
 
 
@@ -57,7 +57,7 @@ write_csv(attrition_seq_ratio, here::here("Results", paste0(db_name, "/", cdmNam
 summary_temp_trends_months_age <- summariseTemporalSymmetry(cohort = cdm[["nsaids_aesi_age"]]
                                                             , timescale = "month")
 
-write_csv(summary_temp_trends_months, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_temporal_symmetry_summary_age.csv"
+write_csv(summary_temp_trends_months_age, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_temporal_symmetry_summary_age_full.csv"
 )))
 
 
@@ -108,7 +108,7 @@ p <- visOmopResults::scatterPlot(
 
 p
 
-srPlotName <- paste0("nsaids_aesi_age", ".png")
+srPlotName <- paste0("nsaids_aesi_age_full", ".png")
 png(paste0(here::here(output_folder, srPlotName)), width = 8, height = 6, units = "in", res = 1500, type="cairo")
 print(p, newpage = FALSE)
 dev.off()
@@ -166,7 +166,7 @@ p_age_comparison <- ggplot(sr_tidy_age, aes(
     strip.text = element_text(face = "bold")
   )
 
-srPlotName <- paste0("nsaids_aesi_age_new", ".png")
+srPlotName <- paste0("nsaids_aesi_age_full", ".png")
 png(paste0(here::here(output_folder, srPlotName)), width = 8, height = 6, units = "in", res = 1500, type="cairo")
 print(p_age_comparison, newpage = FALSE)
 dev.off()

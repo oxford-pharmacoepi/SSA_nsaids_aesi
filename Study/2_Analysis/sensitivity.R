@@ -1,5 +1,8 @@
 # run cohort symmetry on all index-marker pairs and controls (365-day version)
 
+sensitivity_folder <- file.path(output_folder, "sensitivity_365")
+if (!dir.exists(sensitivity_folder)) dir.create(sensitivity_folder, recursive = TRUE)
+
 ########################
 # positive controls (we know has a signal)
 ########################
@@ -66,35 +69,33 @@ tryCatch({
   results_cs_365 <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi_365"]])
   cli::cli_alert_success("- Generated SequenceRatios for nsaids-aesis (365d)")
 
-}, error = function(e) {
-  writeLines(as.character(e),
-             here(output_folder, paste0("/", db_name, "_cs_365_error.txt")))
+}, error = function(e) { 
+  writeLines(as.character(e), 
+             here::here(sensitivity_folder, paste0(db_name, "_cs_365_error.txt"))) 
 })
 
 cli::cli_alert_success("- Got cohort symmetry results (365d)")
 
 cli::cli_alert_info("- Export results for nsaids-aesis (365d)")
 
-exportSummarisedResult(
-  results_cs_365,
-  path = here::here("Results", paste0(db_name)),
-  fileName = paste0(db_name, "_result_365.csv")
-)
+exportSummarisedResult( results_cs_365, 
+                        path = here::here(sensitivity_folder), 
+                        fileName = paste0(db_name, "_result_365.csv") )
 
 # Export marker settings
 marker_settings_365 <- settings(cdm[["nsaids_aesi_365"]])
 write_csv(marker_settings_365,
-          here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_marker_settings_365.csv")))
+          here::here(sensitivity_folder, paste0(cdmName(cdm), "_ssa_marker_settings_365.csv")))
 
 # Export attrition table
 attrition_seq_ratio_365 <- attrition(cdm[["nsaids_aesi_365"]])
 write_csv(attrition_seq_ratio_365,
-          here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_attrition_365.csv")))
+          here::here(sensitivity_folder, paste0(cdmName(cdm), "_ssa_attrition_365.csv")))
 
 # Temporal sequence summary
 summary_temp_trends_months_365 <- summariseTemporalSymmetry(cohort = cdm[["nsaids_aesi_365"]], timescale = "month")
 write_csv(summary_temp_trends_months_365,
-          here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_temporal_symmetry_summary_365.csv")))
+          here::here(sensitivity_folder, paste0(cdmName(cdm), "_ssa_temporal_symmetry_summary_365.csv")))
 
 # Generate tidy data for plotting
 cli::cli_alert_info("- Make a pretty plot for nsaids-aesis (365d)")
@@ -147,8 +148,8 @@ p_365 <- visOmopResults::scatterPlot(
 p_365
 
 srPlotName <- paste0("nsaids_aesi_365", ".png")
-png(paste0(here::here(output_folder, srPlotName)), width = 8, height = 6, units = "in", res = 1500, type="cairo")
-print(p_365, newpage = FALSE)
-dev.off()
+png(here::here(sensitivity_folder, srPlotName), width = 8, height = 6, units = "in", res = 1500, type = "cairo") 
+    print(p_365, newpage = FALSE) 
+    dev.off()
 
 

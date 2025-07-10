@@ -1,6 +1,19 @@
 # Set output folder location -----
 # the path to a folder where the results from this analysis will be saved
-output_folder <- here("Results", db_name)
+# use this format: output_folder <- here("Results", db_name, "_new folder name")
+output_folder <- here("Results", db_name, "_7th_jul_full")
+
+# Create subfolders for each analysis
+sex_strat_folder <- file.path(output_folder, "sex_stratification")
+age_strat_folder <- file.path(output_folder, "age_stratification")
+sensitivity_folder <- file.path(output_folder, "sensitivity_365")
+characterisation_folder <- file.path(output_folder, "characterisation")
+symmetry_folder <- file.path(output_folder, "symmetry")
+
+folders <- list(sex_strat_folder, age_strat_folder, sensitivity_folder, characterisation_folder, symmetry_folder, controls_folder)
+lapply(folders, function(f) {
+  if (!dir.exists(f)) dir.create(f, recursive = TRUE)
+})
 
 # output files ---- 
 if (!file.exists(output_folder)){
@@ -115,7 +128,7 @@ if(isTRUE(run_sensitivity_365)){
 # zip all results
 zip::zip(
   zipfile = file.path(here(output_folder,
-                           paste0("Results_new", db_name, ".zip"))),
+                           paste0("Results", db_name, ".zip"))),
   files = list.files(here(output_folder)),
   root = output_folder)
 
