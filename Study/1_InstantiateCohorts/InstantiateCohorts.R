@@ -263,3 +263,53 @@ cdm$aesi <- CohortConstructor::conceptCohort(
 cli::cli_alert_success("- Got outcome definitions")
 
     
+## all nsaids cohort
+# Collapse all nsaids into one group
+cdm$all_nsaids <-  cdm$nsaids %>% 
+  CohortConstructor::unionCohorts(
+    cohortName = "all_nsaids",
+    name = "all_nsaids"
+  ) # cohortId = c(6, 12, 19, 25, 30)
+
+
+#Cox2 selective cohort
+cdm$cox_2 <-  cdm$nsaids %>% 
+  CohortConstructor::unionCohorts(
+    cohortId = c(6, 12, 19, 25, 30),
+    cohortName = "cox_2",
+    name = "cox_2"
+  )
+
+#Non selective cohort
+cdm$non_selective <-  cdm$nsaids %>% 
+  CohortConstructor::unionCohorts(
+    cohortId = setdiff(omopgenerics::settings(cdm$nsaids) %>% dplyr::pull("cohort_definition_id"), c(6,12,19,25,30)),
+    cohortName = "non_selective",
+    name = "non_selective"
+  )
+
+#Non selective with cox 2 preference
+cdm$cox_2_preference <-  cdm$nsaids %>% 
+  CohortConstructor::unionCohorts(
+    cohortId = c(1, 9, 11, 21, 22, 26),
+    cohortName = "cox_2_preference",
+    name = "cox_2_preference"
+  )
+
+#Non selective with cox 1 preference
+cdm$cox_1_preference <-  cdm$nsaids %>% 
+  CohortConstructor::unionCohorts(
+    cohortId = c(5, 15, 17, 18, 23, 24),
+    cohortName = "cox_1_preference",
+    name = "cox_1_preference"
+  )
+
+cdm <- omopgenerics::bind(
+  cdm$nsaids,
+  cdm$all_nsaids,
+  cdm$cox_2,
+  cdm$non_selective,
+  cdm$cox_2_preference,
+  cdm$cox_1_preference,
+  name = "nsaids"
+)
