@@ -72,7 +72,7 @@ if(isTRUE(run_characterisation)){
   
   # collaspse the records in cohort
   cdm$nsaids_characteristics <- cdm$nsaids_characteristics |> 
-    CohortConstructor::collapseCohorts(gap = Inf, name = "nsaids_characteristics")
+    CohortConstructor::requireIsFirstEntry()
   
   # characterise comorbs (any time prior) and medications (1 year prior) ot nsaid use
   suppressWarnings(
