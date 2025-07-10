@@ -1,0 +1,62 @@
+"","concept_id","concept_name","domain_id","vocabulary_id","concept_class_id","standard_concept","concept_code","valid_start_date","valid_end_date","invalid_reason"
+"1",254761,"Cough","Condition","SNOMED","Clinical Finding","S","49727002",2002-01-31,2099-12-31,NA
+"2",1340293,"Exacerbation of cough","Condition","OMOP Extension","Clinical Finding","S","OMOP5165948",2022-05-06,2099-12-31,NA
+"3",4000163,"Cough on exercise","Condition","SNOMED","Clinical Finding","S","19282004",2002-01-31,2099-12-31,NA
+"4",4009383,"Cough suppression","Condition","SNOMED","Clinical Finding","S","102580004",2002-01-31,2099-12-31,NA
+"5",4009942,"Postural cough","Condition","SNOMED","Clinical Finding","S","111962006",2002-01-31,2099-12-31,NA
+"6",4021673,"Unable to cough up sputum","Condition","SNOMED","Clinical Finding","S","225575005",2002-01-31,2099-12-31,NA
+"7",4023177,"Able to cough up sputum","Condition","SNOMED","Clinical Finding","S","225576006",2002-01-31,2099-12-31,NA
+"8",4038519,"Dry cough","Condition","SNOMED","Clinical Finding","S","11833005",2002-01-31,2099-12-31,NA
+"9",4048098,"Cough with fever","Condition","SNOMED","Clinical Finding","S","135883003",2002-01-31,2099-12-31,NA
+"10",4048218,"Cough reflex absent","Condition","SNOMED","Clinical Finding","S","123819004",2002-01-31,2099-12-31,NA
+"11",4048759,"Brassy cough","Condition","SNOMED","Clinical Finding","S","20670007",2002-01-31,2099-12-31,NA
+"12",4058584,"Evening cough","Condition","SNOMED","Clinical Finding","S","161933007",2002-01-31,2099-12-31,NA
+"13",4059017,"Productive cough-yellow sputum","Condition","SNOMED","Clinical Finding","S","161925006",2002-01-31,2099-12-31,NA
+"14",4059020,"Morning cough","Condition","SNOMED","Clinical Finding","S","161932002",2002-01-31,2099-12-31,NA
+"15",4060051,"Productive cough -green sputum","Condition","SNOMED","Clinical Finding","S","161924005",2002-01-31,2099-12-31,NA
+"16",4060224,"Productive cough -clear sputum","Condition","SNOMED","Clinical Finding","S","161923004",2002-01-31,2099-12-31,NA
+"17",4060313,"Nocturnal cough / wheeze","Condition","SNOMED","Clinical Finding","S","161947006",2002-01-31,2099-12-31,NA
+"18",4077128,"Barking cough","Condition","SNOMED","Clinical Finding","S","17986004",2002-01-31,2099-12-31,NA
+"19",4077210,"Coughing ineffective","Condition","SNOMED","Clinical Finding","S","276314008",2002-01-31,2099-12-31,NA
+"20",4082168,"Sputum retention","Condition","SNOMED","Clinical Finding","S","277357006",2002-01-31,2099-12-31,NA
+"21",4086814,"Clearing throat - hawking","Condition","SNOMED","Clinical Finding","S","248589007",2002-01-31,2099-12-31,NA
+"22",4086815,"Tracheal esophageal fistula cough","Condition","SNOMED","Clinical Finding","S","248594007",2002-01-31,2099-12-31,NA
+"23",4087178,"Unable to cough","Condition","SNOMED","Clinical Finding","S","248590003",2002-01-31,2099-12-31,NA
+"24",4090569,"Painful cough","Condition","SNOMED","Clinical Finding","S","247410004",2002-01-31,2099-12-31,NA
+"25",4094147,"Cough when swallowing","Condition","SNOMED","Clinical Finding","S","248593001",2002-01-31,2099-12-31,NA
+"26",4102774,"Productive cough","Condition","SNOMED","Clinical Finding","S","28743005",2002-01-31,2099-12-31,NA
+"27",4103332,"Effective cough","Condition","SNOMED","Clinical Finding","S","301236000",2002-01-31,2099-12-31,NA
+"28",4109381,"Persistent cough","Condition","SNOMED","Clinical Finding","S","284523002",2002-01-31,2099-12-31,NA
+"29",4116781,"Difficulty in coughing up sputum","Condition","SNOMED","Clinical Finding","S","301245004",2002-01-31,2099-12-31,NA
+"30",4116782,"Does not cough up sputum","Condition","SNOMED","Clinical Finding","S","301247007",2002-01-31,2099-12-31,NA
+"31",4116989,"Allergic cough","Condition","SNOMED","Clinical Finding","S","300959008",2002-01-31,2099-12-31,NA
+"32",4117283,"Does cough up sputum","Condition","SNOMED","Clinical Finding","S","301246003",2002-01-31,2099-12-31,NA
+"33",4122567,"Does cough","Condition","SNOMED","Clinical Finding","S","289114008",2002-01-31,2099-12-31,NA
+"34",4125451,"Does not cough","Condition","SNOMED","Clinical Finding","S","289115009",2002-01-31,2099-12-31,NA
+"35",4126096,"Croupy cough","Condition","SNOMED","Clinical Finding","S","289965001",2002-01-31,2099-12-31,NA
+"36",4128691,"Able to cough","Condition","SNOMED","Clinical Finding","S","289113002",2002-01-31,2099-12-31,NA
+"37",4128692,"Difficulty coughing","Condition","SNOMED","Clinical Finding","S","289116005",2002-01-31,2099-12-31,NA
+"38",4137418,"Able to cough voluntarily","Condition","SNOMED","Clinical Finding","S","306780002",2002-01-31,2099-12-31,NA
+"39",4144507,"Unable to cough voluntarily","Condition","SNOMED","Clinical Finding","S","306781003",2002-01-31,2099-12-31,NA
+"40",4144508,"Difficulty coughing voluntarily","Condition","SNOMED","Clinical Finding","S","306782005",2002-01-31,2099-12-31,NA
+"41",4167374,"Respiratory tract congestion and cough","Condition","SNOMED","Clinical Finding","S","417850002",2006-01-31,2099-12-31,NA
+"42",4182587,"Paroxysmal cough","Condition","SNOMED","Clinical Finding","S","43025008",2002-01-31,2099-12-31,NA
+"43",4188217,"Cough after eating","Condition","SNOMED","Clinical Finding","S","46789001",2002-01-31,2099-12-31,NA
+"44",4195384,"Chronic cough","Condition","SNOMED","Clinical Finding","S","68154008",2002-01-31,2099-12-31,NA
+"45",4196430,"Unexplained cough","Condition","SNOMED","Clinical Finding","S","315246003",2002-01-31,2099-12-31,NA
+"46",4199298,"Decreased coughing","Condition","SNOMED","Clinical Finding","S","52673003",2002-01-31,2099-12-31,NA
+"47",4243802,"Hacking cough","Condition","SNOMED","Clinical Finding","S","59994004",2002-01-31,2099-12-31,NA
+"48",4263877,"Smokers' cough","Condition","SNOMED","Clinical Finding","S","46802002",2002-01-31,2099-12-31,NA
+"49",4266667,"Bovine cough","Condition","SNOMED","Clinical Finding","S","62427007",2002-01-31,2099-12-31,NA
+"50",4266704,"Early morning cough","Condition","SNOMED","Clinical Finding","S","62618004",2002-01-31,2099-12-31,NA
+"51",4269128,"Finding related to ability to cough up sputum","Condition","SNOMED","Clinical Finding","S","366126005",2002-01-31,2099-12-31,NA
+"52",4269800,"Nocturnal cough","Condition","SNOMED","Clinical Finding","S","62548007",2002-01-31,2099-12-31,NA
+"53",4270340,"Increasing frequency of cough","Condition","SNOMED","Clinical Finding","S","62731002",2002-01-31,2099-12-31,NA
+"54",4271318,"Spasmodic cough","Condition","SNOMED","Clinical Finding","S","63000007",2002-01-31,2099-12-31,NA
+"55",4275649,"Finding related to ability to cough","Condition","SNOMED","Clinical Finding","S","366124008",2002-01-31,2099-12-31,NA
+"56",4278454,"Finding related to ability to cough voluntarily","Condition","SNOMED","Clinical Finding","S","366125009",2002-01-31,2099-12-31,NA
+"57",4323688,"Cough at rest","Condition","SNOMED","Clinical Finding","S","7142008",2002-01-31,2099-12-31,NA
+"58",35626061,"No cough strength","Condition","SNOMED","Clinical Finding","S","769211009",2018-07-31,2099-12-31,NA
+"59",40482863,"Postviral cough","Condition","SNOMED","Clinical Finding","S","445241004",2010-07-31,2099-12-31,NA
+"60",44789249,"Reflux cough","Condition","SNOMED","Clinical Finding","S","200151000000106",2006-04-01,2099-12-31,NA
+"61",44806100,"Episodic dry cough","Condition","SNOMED","Clinical Finding","S","810511000000109",2012-04-01,2099-12-31,NA
