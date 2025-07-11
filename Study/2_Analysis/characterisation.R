@@ -67,7 +67,7 @@ if (isTRUE(run_characterisation)) {
     CDMConnector::recordCohortAttrition(reason = "Excluded patients with no sex recorded")
   
   cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
-    CohortConstructor::collapseCohorts(gap = Inf, name = "nsaids_characteristics")
+    CohortConstructor::requireIsFirstEntry()
   
   suppressWarnings({
     summarycharacteristics <- cdm$nsaids_characteristics %>%

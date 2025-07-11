@@ -1,16 +1,17 @@
 # Set output folder location -----
 # the path to a folder where the results from this analysis will be saved
 # use this format: output_folder <- here("Results", db_name, "_new folder name")
-output_folder <- here("Results", db_name, "_7th_jul_full")
+output_folder <- here("Results", db_name, "_11th_jul_full")
 
 # Create subfolders for each analysis
 sex_strat_folder <- file.path(output_folder, "sex_stratification")
 age_strat_folder <- file.path(output_folder, "age_stratification")
+htn_strat_folder <- file.path(output_folder, "hypertension_stratification")
 sensitivity_folder <- file.path(output_folder, "sensitivity_365")
 characterisation_folder <- file.path(output_folder, "characterisation")
 symmetry_folder <- file.path(output_folder, "symmetry")
 
-folders <- list(sex_strat_folder, age_strat_folder, sensitivity_folder, characterisation_folder, symmetry_folder, controls_folder)
+folders <- list(sex_strat_folder, age_strat_folder, htn_strat_folder, sensitivity_folder, characterisation_folder, symmetry_folder)
 lapply(folders, function(f) {
   if (!dir.exists(f)) dir.create(f, recursive = TRUE)
 })
@@ -28,6 +29,7 @@ run_symmetry <- TRUE
 run_characterisation <- TRUE
 run_sex_stratification <- TRUE
 run_age_stratification <- TRUE
+run_hypertension_stratification <- TRUE
 run_sensitivity_365 <- TRUE
 
 # get cdm snapshot
@@ -106,6 +108,19 @@ if(isTRUE(run_age_stratification)){
                here(output_folder, paste0("/", db_name,
                                           
                                           "_error_age_stratification.txt")))
+  })
+}
+
+# hypertension stratification analysis
+if(isTRUE(run_hypertension_stratification)){
+  #log("- Running Hypertension Stratification")
+  tryCatch({
+    source(here("2_Analysis", "HypertensionStratification.R"))
+  }, error = function(e) {
+    writeLines(as.character(e),
+               here(output_folder, paste0("/", db_name,
+                                          
+                                          "_error_hypertension_stratification.txt")))
   })
 }
 
