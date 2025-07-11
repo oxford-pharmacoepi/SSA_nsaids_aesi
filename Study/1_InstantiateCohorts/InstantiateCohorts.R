@@ -62,9 +62,124 @@ cdm[["cough"]] <- conceptCohort(cdm,
                                 subsetCohort = NULL,
                                 subsetCohortId = NULL)
 
+##phenotyped controls
+
+#nausea diagnosis
+concept_ids <- read_csv("1_InstantiateCohorts/Controls/Nausea.csv") |>
+  pull(concept_id) |>
+  as.numeric() |>
+  na.omit() |>
+  unique()
+
+nausea_codes <- list(
+  nausea = concept_ids
+)
+
+cdm[["nausea"]] <- conceptCohort(
+  cdm,
+  conceptSet = nausea_codes,
+  exit = "event_end_date",
+  useSourceFields = FALSE,
+  name = "nausea"
+)
+
+#vomiting diagnosis
+concept_ids <- read_csv("1_InstantiateCohorts/Controls/Vomit.csv") |>
+  pull(concept_id) |>
+  as.numeric() |>
+  na.omit() |>
+  unique()
+
+vomiting_codes <- list(
+  vomiting = concept_ids
+)
+
+cdm[["vomit"]] <- conceptCohort(
+  cdm,
+  conceptSet = vomiting_codes,
+  exit = "event_end_date",
+  useSourceFields = FALSE,
+  name = "vomit"
+)
+
+#anemia diagnosis
+concept_ids <- read_csv("1_InstantiateCohorts/Controls/Anemia.csv") |>
+  pull(concept_id) |>
+  as.numeric() |>
+  na.omit() |>
+  unique()
+
+anemia_codes <- list(
+  anemia = concept_ids
+)
+
+cdm[["anemia"]] <- conceptCohort(
+  cdm,
+  conceptSet = anemia_codes,
+  exit = "event_end_date",
+  useSourceFields = FALSE,
+  name = "anemia"
+)
+
+#cataracts diagnosis
+concept_ids <- read_csv("1_InstantiateCohorts/Controls/Cataracts.csv") |>
+  pull(concept_id) |>
+  as.numeric() |>
+  na.omit() |>
+  unique()
+
+cataracts_codes <- list(
+  cataracts = concept_ids
+)
+
+cdm[["cataracts"]] <- conceptCohort(
+  cdm,
+  conceptSet = cataracts_codes,
+  exit = "event_end_date",
+  useSourceFields = FALSE,
+  name = "cataracts"
+)
+
+#asthma diagnosis
+concept_ids <- read_csv("1_InstantiateCohorts/Controls/Asthma.csv") |>
+  pull(concept_id) |>
+  as.numeric() |>
+  na.omit() |>
+  unique()
+
+asthma_codes <- list(
+  asthma = concept_ids
+)
+
+cdm[["asthma"]] <- conceptCohort(
+  cdm,
+  conceptSet = asthma_codes,
+  exit = "event_end_date",
+  useSourceFields = FALSE,
+  name = "asthma"
+)
+
+#edema diagnosis
+concept_ids <- read_csv("1_InstantiateCohorts/Controls/Edema.csv") |>
+  pull(concept_id) |>
+  as.numeric() |>
+  na.omit() |>
+  unique()
+
+edema_codes <- list(
+  edema = concept_ids
+)
+
+cdm[["edema"]] <- conceptCohort(
+  cdm,
+  conceptSet = edema_codes,
+  exit = "event_end_date",
+  useSourceFields = FALSE,
+  name = "edema"
+)
+
 
 cli::cli_alert_success("- Getting nsaids")
-
 
 # use codelists generator to get the ingredient levels for all nsaids -----
 # extract ATC for NSAIDS at 4th level to get the ingredients
@@ -226,6 +341,35 @@ cdm$nsaids %>%
   CohortConstructor::requireAge(indexDate = "cohort_start_date",
              ageRange = list(c(18, 150)))
 
+hyper_codelists <- CodelistGenerator::codesFromConceptSet(
+  path = here::here("1_InstantiateCohorts", "Conditions", "hypertension.json"),
+  cdm = cdm
+)
+
+cdm$hypertension <- CohortConstructor::conceptCohort(
+  cdm = cdm,
+  conceptSet = hyper_codelists,
+  name = "hypertension"
+)
+
+cdm$nsaids_no_hypertension <- cdm$nsaids |>
+  CohortConstructor::requireCohortIntersect(
+    intersections = 0,
+    targetCohortTable = "hypertension",
+    indexDate = "cohort_start_date",
+    window = c(-Inf,0),
+    name = "nsaids_no_hypertension"
+  )
+
+cdm$nsaids_prior_hypertension <- cdm$nsaids |>
+  CohortConstructor::requireCohortIntersect(
+    intersections = c(1,Inf),
+    targetCohortTable = "hypertension",
+    indexDate = "cohort_start_date",
+    window = c(-Inf,0),
+    name = "nsaids_prior_hypertension"
+  )
+
 
 
 # generate outcome cohorts AESI's ---------
@@ -262,54 +406,54 @@ cdm$aesi <- CohortConstructor::conceptCohort(
     
 cli::cli_alert_success("- Got outcome definitions")
 
-    
-## all nsaids cohort
-# Collapse all nsaids into one group
-cdm$all_nsaids <-  cdm$nsaids %>% 
-  CohortConstructor::unionCohorts(
-    cohortName = "all_nsaids",
-    name = "all_nsaids"
-  ) # cohortId = c(6, 12, 19, 25, 30)
-
-
-#Cox2 selective cohort
-cdm$cox_2 <-  cdm$nsaids %>% 
-  CohortConstructor::unionCohorts(
-    cohortId = c(6, 12, 19, 25, 30),
-    cohortName = "cox_2",
-    name = "cox_2"
-  )
-
-#Non selective cohort
-cdm$non_selective <-  cdm$nsaids %>% 
-  CohortConstructor::unionCohorts(
-    cohortId = setdiff(omopgenerics::settings(cdm$nsaids) %>% dplyr::pull("cohort_definition_id"), c(6,12,19,25,30)),
-    cohortName = "non_selective",
-    name = "non_selective"
-  )
-
-#Non selective with cox 2 preference
-cdm$cox_2_preference <-  cdm$nsaids %>% 
-  CohortConstructor::unionCohorts(
-    cohortId = c(1, 9, 11, 21, 22, 26),
-    cohortName = "cox_2_preference",
-    name = "cox_2_preference"
-  )
-
-#Non selective with cox 1 preference
-cdm$cox_1_preference <-  cdm$nsaids %>% 
-  CohortConstructor::unionCohorts(
-    cohortId = c(5, 15, 17, 18, 23, 24),
-    cohortName = "cox_1_preference",
-    name = "cox_1_preference"
-  )
-
-cdm <- omopgenerics::bind(
-  cdm$nsaids,
-  cdm$all_nsaids,
-  cdm$cox_2,
-  cdm$non_selective,
-  cdm$cox_2_preference,
-  cdm$cox_1_preference,
-  name = "nsaids"
-)
+#     
+# ### all nsaids cohort
+# ## Collapse all nsaids into one group
+# cdm$all_nsaids <-  cdm$nsaids %>% 
+#   CohortConstructor::unionCohorts(
+#     cohortName = "all_nsaids",
+#     name = "all_nsaids"
+#   ) # cohortId = c(6, 12, 19, 25, 30)
+# 
+# 
+# #Cox2 selective cohort
+# cdm$cox_2 <-  cdm$nsaids %>% 
+#   CohortConstructor::unionCohorts(
+#     cohortId = c(6, 12, 19, 25, 30),
+#     cohortName = "cox_2",
+#     name = "cox_2"
+#   )
+# 
+# #Non selective cohort
+# cdm$non_selective <-  cdm$nsaids %>% 
+#   CohortConstructor::unionCohorts(
+#     cohortId = setdiff(omopgenerics::settings(cdm$nsaids) %>% dplyr::pull("cohort_definition_id"), c(6,12,19,25,30)),
+#     cohortName = "non_selective",
+#     name = "non_selective"
+#   )
+# 
+# #Non selective with cox 2 preference
+# cdm$cox_2_preference <-  cdm$nsaids %>% 
+#   CohortConstructor::unionCohorts(
+#     cohortId = c(1, 9, 11, 21, 22, 26),
+#     cohortName = "cox_2_preference",
+#     name = "cox_2_preference"
+#   )
+# 
+# #Non selective with cox 1 preference
+# cdm$cox_1_preference <-  cdm$nsaids %>% 
+#   CohortConstructor::unionCohorts(
+#     cohortId = c(5, 15, 17, 18, 23, 24),
+#     cohortName = "cox_1_preference",
+#     name = "cox_1_preference"
+#   )
+# 
+# cdm <- omopgenerics::bind(
+#   cdm$nsaids,
+#   cdm$all_nsaids,
+#   cdm$cox_2,
+#   cdm$non_selective,
+#   cdm$cox_2_preference,
+#   cdm$cox_1_preference,
+#   name = "nsaids"
+# )
