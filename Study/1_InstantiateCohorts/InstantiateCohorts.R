@@ -1,59 +1,59 @@
 # positive controls -------
 #log("- Getting benchmarker definitions drug - drug positive controls")
 
-cdm <- DrugUtilisation::generateIngredientCohortSet(
-  cdm = cdm,
-  name = "amiodarone",
-  ingredient = "amiodarone",
-  gapEra = 30
-)
+#cdm <- DrugUtilisation::generateIngredientCohortSet(
+#  cdm = cdm,
+#  name = "amiodarone",
+#  ingredient = "amiodarone",
+#  gapEra = 30
+#)
 
 
-cdm <- DrugUtilisation::generateIngredientCohortSet(
-  cdm = cdm,
-  name = "levothyroxine",
-  ingredient = "levothyroxine",
-  gapEra = 30
-)
+#cdm <- DrugUtilisation::generateIngredientCohortSet(
+#  cdm = cdm,
+#  name = "levothyroxine",
+#  ingredient = "levothyroxine",
+#  gapEra = 30
+#)
 
-cli::cli_alert_success("- Got benchmarker definitions drug - drug positive controls")
+#cli::cli_alert_success("- Got benchmarker definitions drug - drug positive controls")
 
 # negative controls -------
 #log("- Getting benchmarker definitions drug - drug negative controls")
 
-cdm <- DrugUtilisation::generateIngredientCohortSet(
-  cdm = cdm,
-  name = "allopurinol",
-  ingredient = "allopurinol",
-  gapEra = 30
-)
+#cdm <- DrugUtilisation::generateIngredientCohortSet(
+#  cdm = cdm,
+#  name = "allopurinol",
+#  ingredient = "allopurinol",
+#  gapEra = 30
+#)
 
-cli::cli_alert_success("- Got benchmarker definitions drug - drug negative controls")
+#cli::cli_alert_success("- Got benchmarker definitions drug - drug negative controls")
 
 
 # ace inhibitors ----
-ace_inhib <- omopgenerics::importCodelist(path = "1_InstantiateCohorts/Codelists/C09A_ace_inhibitors_plain.csv", type = "csv")
-cdm[["ace_inh"]] <- conceptCohort(cdm,
-                                  conceptSet = ace_inhib,
-                                  name = "ace_inh",
-                                  exit = "event_end_date",
-                                  useSourceFields = FALSE,
-                                  subsetCohort = NULL,
-                                  subsetCohortId = NULL)
+#ace_inhib <- omopgenerics::importCodelist(path = "1_InstantiateCohorts/Codelists/C09A_ace_inhibitors_plain.csv", type = "csv")
+#cdm[["ace_inh"]] <- conceptCohort(cdm,
+#                                  conceptSet = ace_inhib,
+ #                                 name = "ace_inh",
+  #                                exit = "event_end_date",
+   #                               useSourceFields = FALSE,
+    #                              subsetCohort = NULL,
+     #                             subsetCohortId = NULL)
 
-cough_codes <- read.csv("1_InstantiateCohorts/Codelists/coughCodes.csv")
-
-
-cdm[["cough"]] <- conceptCohort(cdm,
-                                conceptSet = list(cough_codes = cough_codes$concept_id),
-                                name = "cough",
-                                exit = "event_end_date",
-                                useSourceFields = FALSE,
-                                subsetCohort = NULL,
-                                subsetCohortId = NULL)
+#cough_codes <- read.csv("1_InstantiateCohorts/Codelists/coughCodes.csv")
 
 
-cli::cli_alert_success("- Getting nsaids")
+#cdm[["cough"]] <- conceptCohort(cdm,
+#                                conceptSet = list(cough_codes = cough_codes$concept_id),
+#                                name = "cough",
+#                                exit = "event_end_date",
+#                                useSourceFields = FALSE,
+#                                subsetCohort = NULL,
+#                                subsetCohortId = NULL)
+
+
+#cli::cli_alert_success("- Getting nsaids")
 
 # inclusions are nsaids with minimum count of 1000
 
@@ -75,7 +75,7 @@ cdm <- generateDrugUtilisationCohortSet(
     )
 
 # restrict to study period and age range
-cdm$nsaids %>% 
+ cdm$nsaids %>% 
   CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date))) %>% 
   CohortConstructor::requireAge(indexDate = "cohort_start_date",
              ageRange = list(c(18, 150)))

@@ -149,3 +149,24 @@ omopgenerics::exportCodelist(x = ace_inhib, path = "1_InstantiateCohorts/Codelis
 omopgenerics::exportConceptSetExpression(x = cough_codelist, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
 write.csv(cough_codes, "1_InstantiateCohorts/Codelists/coughCodes.csv")
+
+# Sensitivity Analysis
+
+cdm$nsaid_union <- CohortConstructor::unionCohorts(
+  cohort = cdm$nsaids,
+  name = "nsaid_union",
+  cohortName = "all_nsaids",
+  keepOriginalCohorts = FALSE
+)
+
+all_nsaids_codelist <- cohortCodelist(cdm$nsaid_union, cohortId = 1)
+
+combined_vector <- unlist(all_nsaids_codelist)
+
+# 2. Convert the combined vector into a list containing only that vector
+names(combined_vector) <- NULL
+
+# 3. Convert the combined vector into a list containing only that vector
+all_nsaids <- list("all_nsaids" = combined_vector)
+
+omopgenerics::exportCodelist(x = all_nsaids, path = "1_InstantiateCohorts/Codelists", type = "csv")

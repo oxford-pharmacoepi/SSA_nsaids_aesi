@@ -11,11 +11,12 @@ starting_date <- as.Date("2013-01-01")
 ending_date <- as.Date("2023-01-01")
 
 # run analysis
-run_symmetry <- TRUE
-run_characterisation <- TRUE
-run_sex_stratification <- TRUE
-run_age_stratification <- TRUE
-run_sensitivity_365 <- TRUE
+run_symmetry <- FALSE
+run_characterisation <- FALSE
+run_sex_stratification <- FALSE
+run_age_stratification <- FALSE
+run_sensitivity_365 <- FALSE
+run_sensitivity_age_sex <- TRUE
 
 # get cdm snapshot
 OmopSketch::exportSummarisedResult(
@@ -106,6 +107,18 @@ if(isTRUE(run_sensitivity_365)){
                here(output_folder, paste0("/", db_name,
                                           
                                           "_error_sensitivity365.txt")))
+  })
+}
+
+if(isTRUE(run_sensitivity_age_sex)){
+  #log("- Running Sensitivity 365")
+  tryCatch({
+    source(here("2_Analysis", "sensitivityAnalysis.R"))
+  }, error = function(e) {
+    writeLines(as.character(e),
+               here(output_folder, paste0("/", db_name,
+                                          
+                                          "_error_sensitivity_analysis.txt")))
   })
 }
 

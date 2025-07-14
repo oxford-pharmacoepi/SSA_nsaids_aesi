@@ -1,16 +1,21 @@
-# Sensitivity Analysis
 
-cdm$nsaids_pooled <- cdm$nsaids |>
-  CohortConstructor::unionCohorts(name = "nsaids_pooled", cohortName = "all_nsaids") 
+all_nsaids <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "all_nsaids.csv"), type = "csv")
 
-cdm$all_nsaids_age_sex <- cdm$nsaids_pooled|>
+cdm <- generateDrugUtilisationCohortSet(
+  cdm = cdm,
+  name = "nsaids_all",
+  conceptSet = all_nsaids ,
+  gapEra = 30
+)
+
+cdm$all_nsaids_age_sex <- cdm$nsaids_all|>
   addSex() |>
   addAge(ageGroup = list("18_to_65" = c(18,64), "65_and_over" = c(65, Inf))) |>
   stratifyCohorts(strata = list("sex", "age_group", c("sex", "age_group")), name = "all_nsaids_age_sex")
 
 
 cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
-                                                 name = "all_nsaids_sa",
+                                                 name = "nsaids_sa",
                                                  cohortDateRange = c(starting_date, ending_date),
                                                  daysPriorObservation = 365,
                                                  combinationWindow = c(0, 180),
@@ -18,7 +23,7 @@ cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  indexTable = "all_nsaids_age_sex",
                                                  markerTable = "aesi")
 
-results_sa <- CohortSymmetry::summariseSequenceRatios(cdm[["all_nsaids_sa"]])
+results_sa <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_sa"]])
 
 sr_tidy_sa <- results_sa |>
   omopgenerics::tidy() %>% 
@@ -63,6 +68,9 @@ p <- visOmopResults::scatterPlot(
                  legend.position="none" ,
                  legend.title = ggplot2::element_blank(),
                  plot.title = ggplot2::element_text(hjust = 0.5)) 
-
-
 p
+
+srPlotName <- paste0("nsaids_aesi_sa", ".png")
+png(paste0(here::here(output_folder, srPlotName)), width = 8, height = 6, units = "in", res = 1500, type="cairo")
+print(p, newpage = FALSE)
+dev.off()
