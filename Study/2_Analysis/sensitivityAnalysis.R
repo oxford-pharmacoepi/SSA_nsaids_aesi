@@ -1,21 +1,11 @@
-
-all_nsaids <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "all_nsaids.csv"), type = "csv")
-
-cdm <- generateDrugUtilisationCohortSet(
-  cdm = cdm,
-  name = "nsaids_all",
-  conceptSet = all_nsaids ,
-  gapEra = 30
-)
-
-cdm$all_nsaids_age_sex <- cdm$nsaids_all|>
+cdm$all_nsaids_age_sex <- cdm$nsaids_sa|>
   addSex() |>
   addAge(ageGroup = list("18_to_65" = c(18,64), "65_and_over" = c(65, Inf))) |>
   stratifyCohorts(strata = list("sex", "age_group", c("sex", "age_group")), name = "all_nsaids_age_sex")
 
 
 cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
-                                                 name = "nsaids_sa",
+                                                 name = "nsaids_ssa_sens",
                                                  cohortDateRange = c(starting_date, ending_date),
                                                  daysPriorObservation = 365,
                                                  combinationWindow = c(0, 180),
@@ -23,7 +13,7 @@ cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  indexTable = "all_nsaids_age_sex",
                                                  markerTable = "aesi")
 
-results_sa <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_sa"]])
+results_sa <- CohortSymmetry::summariseSequenceRatios(cdm$nsaids_ssa_sens)
 
 sr_tidy_sa <- results_sa |>
   omopgenerics::tidy() %>% 
