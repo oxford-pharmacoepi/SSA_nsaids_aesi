@@ -1,9 +1,19 @@
 age_strat_folder <- file.path(output_folder, "age_stratification")
 if (!dir.exists(age_strat_folder)) dir.create(age_strat_folder, recursive = TRUE)
 
+#add age and stratifying cohort
+cli::cli_alert_info("Adding age variable and stratifying cohorts ({Sys.time()})")
+info(logger, "ADDING AGE VARIABLE AND STRATIFYING COHORTS")
+
 cdm$nsaids_age <- cdm$nsaids |>
   addAge(ageGroup = list("18_to_65" = c(18,64), "65_and_over" = c(65, Inf))) %>%
   stratifyCohorts(strata = "age_group", name = "nsaids_age")
+
+info(logger, "ADDED AGE VARIABLE AND STRATIFYING COHORTS")
+
+#run cohort symmetry for age-stratified data
+cli::cli_alert_info("Running cohort symmetry for age-stratified cohorts ({Sys.time()})")
+info(logger, "RUNNING COHORT SYMMETRY FOR AGE-STRATIFIED COHORTS")
 
 tryCatch({
   cdm <- CohortSymmetry::generateSequenceCohortSet(
@@ -30,22 +40,33 @@ tryCatch({
 })
 
 cli::cli_alert_success("- Got cohort symmetry results")
+info(logger, "RAN COHORT SYMMETRY FOR AGE-STRATIFIED COHORTS")
 
 cli::cli_alert_info("- Export results for nsaids-aesis-age")
 exportSummarisedResult(results_age,
                        path = here::here(age_strat_folder),
                        fileName = paste0(db_name, "_result_age.csv"))
+
+info(logger, "EXPORTED AGE STRATIFIED COHORT SYMMETRY RESULTS")
+
 #marker settings
 marker_settings_age <- settings(cdm[["nsaids_aesi_age"]])
 write_csv(marker_settings_age, here::here(age_strat_folder, paste0(cdmName(cdm), "_ssa_marker_settings_age.csv")))
+info(logger, "WROTE MARKER SETTINGS CSV")
 
 #attrition
 attrition_seq_ratio_age <- attrition(cdm[["nsaids_aesi_age"]])
 write_csv(attrition_seq_ratio_age, here::here(age_strat_folder, paste0(cdmName(cdm), "_ssa_attrition_age.csv")))
+info(logger, "WROTE ATTRITION CSV")
 
 #temporal plots
 summary_temp_trends_months_age <- summariseTemporalSymmetry(cdm[["nsaids_aesi_age"]], timescale = "month")
 write_csv(summary_temp_trends_months_age, here::here(age_strat_folder, paste0(cdmName(cdm), "_ssa_temporal_symmetry_summary_age.csv")))
+info(logger, "WROTE TEMPORAL SEQUENCE SUMMARY CSV")
+
+#prep data for temporal plots
+cli::cli_alert_success("- Prepping data for temporal plots")
+info(logger, "PREPPING DATA FOR TEMPORAL PLOTS")
 
 prepped_temp_data <- summary_temp_trends_months_age |>
   dplyr::filter(variable_name == "temporal_symmetry", estimate_name == "count") |>
@@ -129,6 +150,9 @@ plotTemporalSymmetry1 <- function(result,
 
 
 # Get index-marker combinations
+cli::cli_alert_success("- Getting index-marker combinations")
+info(logger, "GETTING INDEX MARKER COMBINATIONS")
+
 index_age_combos <- summary_temp_trends_months_age |>
   dplyr::filter(variable_name == "temporal_symmetry", estimate_name == "count") |>
   dplyr::distinct(group_level) |>
@@ -137,7 +161,12 @@ index_age_combos <- summary_temp_trends_months_age |>
     marker_name = stringr::str_split_fixed(group_level, "&&&", 2)[, 2]
   )
 
+info(logger, "GOT INDEX MARKER COMBINATIONS")
+
 #Loop through for each combination
+cli::cli_alert_success("- Looping through for each index-marker combinations")
+info(logger, "LOOPING FOR EACH INDEX MARKER COMBINATIONS")
+
 for (i in seq_len(nrow(index_age_combos))) {
   index_strat <- stringr::str_trim(index_age_combos$index_strat[i])
   marker <- stringr::str_trim(index_age_combos$marker_name[i])
@@ -158,6 +187,8 @@ for (i in seq_len(nrow(index_age_combos))) {
 
   age_group <- stringr::str_extract(index_strat, "(?<=_)(\\d+_to_\\d+)$")
   
+  
+#make temporal plots 
   p_age_plot <- plotTemporalSymmetry1(
     result = filtered_result,
     plotTitle = paste0("Temporal Trends - Age: ", age_group, " - ", index_strat)
@@ -174,7 +205,13 @@ for (i in seq_len(nrow(index_age_combos))) {
   dev.off()
 }
 
+cli::cli_alert_success("- Made temporal symmetry plots")
+info(logger, "MADE TEMPORAL SYMMETRY PLOTS")
+
 # Create scatter plot for ASRs
+cli::cli_alert_success("- Creating ASR scatter plots")
+info(logger, "CREATING ASR SCATTER PLOTS")
+
 sr_tidy_age <- results_age |>
   omopgenerics::tidy() |>
   dplyr::mutate(
@@ -221,7 +258,12 @@ png(here::here(age_strat_folder, srPlotName), width = 8, height = 6, units = "in
 print(p_age, newpage = FALSE)
 dev.off()
 
+info(logger, "CREATED ASR SCATTER PLOTS")
+
 # Comparison plot of 18–65 vs 65+
+cli::cli_alert_success("- Creating age group comparison ASR scatter plots")
+info(logger, "CREATING AGE GROUP COMPARISON ASR SCATTER PLOTS")
+
 sr_tidy_age <- results_age |>
   omopgenerics::tidy() |>
   dplyr::mutate(
@@ -277,3 +319,6 @@ srPlotName <- paste0("nsaids_aesi_risk_by_age", ".png")
 png(here::here(age_strat_folder, srPlotName), width = 8, height = 6, units = "in", res = 1500, type = "cairo")
 print(p_age_comparison, newpage = FALSE)
 dev.off()
+
+info(logger, "CREATED AGE GROUP COMPARISON ASR SCATTER PLOTS")
+info(logger, "COMPLETED AGE STRATIFICATION ANALYSIS")

@@ -1,7 +1,9 @@
 # Create output folder for symmetry analysis
-
 symmetry_folder <- file.path(output_folder, "symmetry")
 if (!dir.exists(symmetry_folder)) dir.create(symmetry_folder, recursive = TRUE)
+
+cli::cli_alert_info("- Running main analysis cohort symmetry")
+info(logger, "RUNNING MAIN ANALYSIS COHORT SYMMETRY")
 
 plotTemporalSymmetry1 <- function(result,
                                   plotTitle = NULL,
@@ -71,6 +73,7 @@ plotTemporalSymmetry1 <- function(result,
 }
 
 cli::cli_alert_info("- Generate SequenceCohortSet for nsaids-aesis")
+info(logger, "GENERATE SEQUENCE COHORT SET FOR NSAIDS AESI")
 
 tryCatch({
   cdm <- CohortSymmetry::generateSequenceCohortSet(
@@ -85,11 +88,15 @@ tryCatch({
   )
   
   cli::cli_alert_success("- Generated SequenceCohortSet for nsaids-aesis")
+  info(logger, "GENERATED SEQUENCE COHORT SET FOR NSAIDS AESI")
   
   cli::cli_alert_info("- Generate SequenceRatios for nsaids-aesis")
+  info(logger, "GENERATE SEQUENCE RATIOS FOR NSAIDS AESI")
+  
   results_cs <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi"]])
   
   cli::cli_alert_success("- Generated SequenceRatios for nsaids-aesis")
+  info(logger, "GENERATED SEQUENCE RATIOS FOR NSAIDS AESI")
   
 }, error = function(e) {
   cli::cli_alert_danger("- Cohort generation failed")
@@ -98,8 +105,10 @@ tryCatch({
 })
 
 cli::cli_alert_success("- Got cohort symmetry results")
+info(logger, "GOT COHORT SYMMETRY RESULTS")
 
 cli::cli_alert_info("- Export results for nsaids-aesis")
+info(logger, "EXPORTING RESULTS")
 
 exportSummarisedResult(
   results_cs,
@@ -107,19 +116,27 @@ exportSummarisedResult(
   fileName = paste0(db_name, "_result.csv")
 )
 
+info(logger, "EXPORTED RESULTS")
+
 #marker settings
 marker_settings <- settings(cdm[["nsaids_aesi"]])
 write_csv(marker_settings, here::here(symmetry_folder, paste0(cdmName(cdm), "_ssa_marker_settings.csv")))
+info(logger, "WROTE MARKER SETTINGS CSV")
 
 #attrition
 attrition_seq_ratio <- attrition(cdm[["nsaids_aesi"]])
 write_csv(attrition_seq_ratio, here::here(symmetry_folder, paste0(cdmName(cdm), "_ssa_attrition.csv")))
+info(logger, "WROTE ATTRITION CSV")
 
 #temporal plots 
 summary_temp_trends_months <- summariseTemporalSymmetry(cdm[["nsaids_aesi"]], timescale = "month")
 write_csv(summary_temp_trends_months, file.path(symmetry_folder, paste0(cdmName(cdm), "_ssa_temporal_symmetry_summary.csv")))
+info(logger, "WROTE TEMPORAL PLOTS CSV")
 
-# Preprocess for plotting
+# Prep for plotting
+cli::cli_alert_success("- Prepping data for temporal symmetry plots")
+info(logger, "PREPPING DATA FOR TEMPORAL SYMMETRY PLOTS")
+
 prepped_temp_data <- summary_temp_trends_months |>
   omopgenerics::splitGroup() |>
   dplyr::filter(variable_name == "temporal_symmetry", estimate_name == "count") |>
@@ -131,11 +148,15 @@ prepped_temp_data <- summary_temp_trends_months |>
   ) |>
   dplyr::select(index, marker, time, count)
 
+cli::cli_alert_success("- Prepped data for temporal symmetry plots")
+info(logger, "PREPPED DATA FOR TEMPORAL SYMMETRY PLOTS")
+
 # Get combinations of NSAID and AESI
+cli::cli_alert_success("- Generating individual temporal symmetry plots")
+info(logger, "GENERATING INDIVIDUAL TEMPORAL SYMMETRY PLOTS")
+
 index_marker_combos <- prepped_temp_data |>
   dplyr::distinct(index, marker)
-
-cli::cli_alert_info("- Generate individual temporal symmetry plots")
 
 # Loop through each index–marker pair to make individual plots
 for (i in seq_len(nrow(index_marker_combos))) {
@@ -165,6 +186,12 @@ for (i in seq_len(nrow(index_marker_combos))) {
   print(p_individual_plot)
   dev.off()
 }
+
+cli::cli_alert_success("- Generated individual temporal symmetry plots")
+info(logger, "GENERATED INDIVIDUAL TEMPORAL SYMMETRY PLOTS")
+
+cli::cli_alert_success("- Generating record trends")
+info(logger, "GENERATING RECORD TRENDS")
 
 record_trends_overall_index <- cdm[["nsaids"]] %>%
   filter(cohort_start_date >= starting_date, cohort_start_date <= ending_date) %>%
@@ -207,7 +234,11 @@ record_trends_overall <- bind_rows(
 
 write_csv(summary_temp_trends_months, file.path(symmetry_folder, paste0(cdmName(cdm), "_ssa_temporal_symmetry_summary.csv")))
 
-cli::cli_alert_info("- Make a pretty plot for nsaids-aesis")
+cli::cli_alert_success("- Generated record trends")
+info(logger, "GENERATED RECORD TRENDS")
+
+cli::cli_alert_info("- Making a pretty plot for nsaids-aesis")
+info(logger, "MAKING ASR SCATTER PLOT")
 
 sr_tidy <- results_cs |>
   omopgenerics::tidy() |>
@@ -254,3 +285,9 @@ srPlotName <- paste0("nsaids_aesi.png")
 png(file.path(symmetry_folder, srPlotName), width = 10, height = 6, units = "in", res = 300, type = "cairo")
 print(p, newpage = FALSE)
 dev.off()
+
+cli::cli_alert_info("- Made a pretty plot for nsaids-aesis")
+info(logger, "MADE ASR SCATTER PLOT")
+
+cli::cli_alert_info("- Completed main analysis cohort symmetry")
+info(logger, "COMPLETED MAIN ANALYSIS COHORT SYMMETRY")

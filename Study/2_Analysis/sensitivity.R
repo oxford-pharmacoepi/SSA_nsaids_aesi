@@ -6,7 +6,8 @@ if (!dir.exists(sensitivity_folder)) dir.create(sensitivity_folder, recursive = 
 ########################
 # positive controls (we know has a signal)
 ########################
-cli::cli_alert_info("- Generate SequenceCohortSet (365d) for positive controls")
+cli::cli_alert_info("- Generating SequenceCohortSet (365d) for positive controls ({Sys.time()})")
+info(logger, "GENERATING SEQUENCE COHORT SET 365D FOR POSITIVE CONTROLS")
 
 cdm <- CohortSymmetry::generateSequenceCohortSet(
   cdm = cdm,
@@ -23,11 +24,13 @@ amiodarone_levothyroxine_365 <- CohortSymmetry::summariseSequenceRatios(cohort =
 amiodarone_levothyroxine_365_results <- CohortSymmetry::tableSequenceRatios(result = amiodarone_levothyroxine_365, type = "tibble")
 
 cli::cli_alert_success("- Generated 365d SequenceCohortSet for positive controls")
+info(logger, "GENERATED SEQUENCE COHORT SET 365D FOR POSITIVE CONTROLS")
 
 ##############################
 # negative controls (we know there is no signal)
 ##############################
-cli::cli_alert_info("- Generate SequenceCohortSet (365d) for negative controls")
+cli::cli_alert_info("- Generating SequenceCohortSet (365d) for negative controls ({Sys.time()})")
+info(logger, "GENERATING SEQUENCE COHORT SET 365D FOR NEGATIVE CONTROLS")
 
 cdm <- CohortSymmetry::generateSequenceCohortSet(
   cdm = cdm,
@@ -44,11 +47,13 @@ amiodarone_allopurinol_365 <- CohortSymmetry::summariseSequenceRatios(cohort = c
 amiodarone_allopurinol_365_results <- CohortSymmetry::tableSequenceRatios(result = amiodarone_allopurinol_365, type = "tibble")
 
 cli::cli_alert_success("- Generated 365d SequenceCohortSet for negative controls")
+info(logger, "GENERATED SEQUENCE COHORT SET 365D FOR NEGATIVE CONTROLS")
 
 ##############################
 # main study nsaids (index) - aesi (markers)
 ##############################
 cli::cli_alert_info("- Generate SequenceCohortSet (365d) for nsaids-aesis")
+info(logger, "GENERATING SEQUENCE COHORT SET 365D FOR NSAIDS AESIS")
 
 tryCatch({
   
@@ -64,10 +69,14 @@ tryCatch({
   )
   
   cli::cli_alert_success("- Generated SequenceCohortSet for nsaids-aesis (365d)")
+  info(logger, "GENERATED SEQUENCE COHORT SET 365D FOR NSAIDS AESIS")
   
   cli::cli_alert_info("- Generate SequenceRatios for nsaids-aesis (365d)")
+  
   results_cs_365 <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi_365"]])
+  
   cli::cli_alert_success("- Generated SequenceRatios for nsaids-aesis (365d)")
+  info(logger, "GENERATED SEQUENCE RATIOS 365D FOR NSAIDS AESIS")
 
 }, error = function(e) { 
   writeLines(as.character(e), 
@@ -75,6 +84,7 @@ tryCatch({
 })
 
 cli::cli_alert_success("- Got cohort symmetry results (365d)")
+info(logger, "GOT COHORT SYMMETRY RESULTS FOR NSAIDS AESI 365")
 
 cli::cli_alert_info("- Export results for nsaids-aesis (365d)")
 
@@ -82,23 +92,29 @@ exportSummarisedResult( results_cs_365,
                         path = here::here(sensitivity_folder), 
                         fileName = paste0(db_name, "_result_365.csv") )
 
+info(logger, "EXPORTED COHORT SYMMETRY RESULTS FOR NSAIDS AESI 365")
+
 # Export marker settings
 marker_settings_365 <- settings(cdm[["nsaids_aesi_365"]])
 write_csv(marker_settings_365,
           here::here(sensitivity_folder, paste0(cdmName(cdm), "_ssa_marker_settings_365.csv")))
+info(logger, "WROTE MARKER SETTINGS 365 CSV")
 
 # Export attrition table
 attrition_seq_ratio_365 <- attrition(cdm[["nsaids_aesi_365"]])
 write_csv(attrition_seq_ratio_365,
           here::here(sensitivity_folder, paste0(cdmName(cdm), "_ssa_attrition_365.csv")))
+info(logger, "WROTE ATTRITION 365 CSV")
 
 # Temporal sequence summary
 summary_temp_trends_months_365 <- summariseTemporalSymmetry(cohort = cdm[["nsaids_aesi_365"]], timescale = "month")
 write_csv(summary_temp_trends_months_365,
           here::here(sensitivity_folder, paste0(cdmName(cdm), "_ssa_temporal_symmetry_summary_365.csv")))
+info(logger, "WROTE TEMPORAL SEQUENCE SUMMARY 365 CSV")
 
 # Generate tidy data for plotting
-cli::cli_alert_info("- Make a pretty plot for nsaids-aesis (365d)")
+cli::cli_alert_info("- Making a pretty plot for nsaids-aesis (365d)")
+info(logger, "MAKING ASR SCATTER PLOT FOR 365 SENSITIVITY ANALYSIS")
 
 sr_tidy_365 <- results_cs_365 %>%
   omopgenerics::tidy() %>%
@@ -152,3 +168,8 @@ png(here::here(sensitivity_folder, srPlotName), width = 8, height = 6, units = "
     print(p_365, newpage = FALSE) 
     dev.off()
 
+cli::cli_alert_info("- Made a pretty plot for nsaids-aesis (365d)")
+info(logger, "Made ASR SCATTER PLOT FOR 365 SENSITIVITY ANALYSIS")
+
+cli::cli_alert_info("- Completed 365 sensitivity analysis")
+info(logger, "COMPLETED 365 SENSITIVITY ANALYSIS")

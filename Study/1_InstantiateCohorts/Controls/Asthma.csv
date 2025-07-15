@@ -1,0 +1,137 @@
+,concept_id,found_from,concept_name,domain_id,vocabulary_id,standard_concept,Include?
+1,46273454,From initial search,Moderate persistent asthma co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+5,46270573,From initial search,Intermittent asthma well controlled,Condition,SNOMED,S,y
+6,44784373,From initial search,Under care of asthma specialist nurse,Observation,SNOMED,S,y
+7,45769352,From initial search,Acute severe exacerbation of mild persistent asthma,Condition,SNOMED,S,y
+8,45773005,From initial search,Acute exacerbation of intrinsic asthma,Condition,SNOMED,S,y
+9,42536207,From initial search,Life threatening acute exacerbation of asthma,Condition,SNOMED,S,y
+11,42536649,From initial search,Uncomplicated non-allergic asthma,Condition,SNOMED,S,y
+14,35816092,From initial search,Asthma,Observation,UK Biobank,S,y
+18,46273635,From initial search,Steroid dependent asthma,Condition,SNOMED,S,y
+21,317009,From initial search,Asthma,Condition,SNOMED,S,y
+28,46269780,From initial search,Mild persistent allergic asthma uncontrolled,Condition,SNOMED,S,y
+29,46269786,From initial search,Moderate persistent allergic asthma controlled,Condition,SNOMED,S,y
+30,37108581,From initial search,Severe uncontrolled persistent asthma,Condition,SNOMED,S,y
+31,46269789,From initial search,Moderate persistent asthma uncontrolled co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+35,312950,From initial search,IgE-mediated allergic asthma,Condition,SNOMED,S,y
+36,764331,From initial search,Referral for management of asthma,Observation,SNOMED,S,y
+39,4194289,From initial search,Asthma - currently active,Condition,SNOMED,S,y
+40,4308356,From initial search,Asthma finding,Condition,SNOMED,S,y
+42,4214589,From initial search,Asthma follow-up,Observation,SNOMED,S,y
+43,37109103,From initial search,Oral steroid-dependent asthma,Condition,SNOMED,S,y
+44,4015947,From initial search,Asthma causing night waking,Condition,SNOMED,S,y
+47,45772937,From initial search,Exacerbation of moderate persistent asthma,Condition,SNOMED,S,y
+48,44805089,From initial search,Asthma causes symptoms most nights,Condition,SNOMED,S,y
+49,35811561,From initial search,Recent medication for asthma,Observation,UK Biobank,S,y
+54,36684328,From initial search,Acute severe exacerbation of allergic asthma,Condition,SNOMED,S,y
+55,37206717,From initial search,Near fatal asthma,Condition,SNOMED,S,y
+61,46274060,From initial search,Mild persistent allergic asthma controlled,Condition,SNOMED,S,y
+62,46269770,From initial search,Severe persistent allergic asthma,Condition,SNOMED,S,y
+63,46269785,From initial search,Acute severe exacerbation of moderate persistent asthma co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+64,46269787,From initial search,Moderate persistent controlled asthma co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+65,43530745,From initial search,Asthma with irreversible airway obstruction,Condition,SNOMED,S,y
+66,4293732,From initial search,Asthma monitoring by nurse,Observation,SNOMED,S,y
+67,4235703,From initial search,Asthma management,Observation,SNOMED,S,y
+68,4250128,From initial search,Aspirin-induced asthma,Condition,SNOMED,S,y
+69,4213782,From initial search,Referral to asthma clinic,Observation,SNOMED,S,y
+73,443801,From initial search,Exercise-induced asthma,Condition,SNOMED,S,y
+78,1340255,From initial search,Exacerbation of asthma,Condition,OMOP Extension,S,y
+81,45768912,From initial search,Exacerbation of severe persistent asthma,Condition,SNOMED,S,y
+82,45768963,From initial search,Uncomplicated mild persistent asthma,Condition,SNOMED,S,y
+91,764949,From initial search,"Persistent asthma, well controlled",Condition,SNOMED,S,y
+93,46269771,From initial search,Acute severe exacerbation of severe persistent asthma co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+94,46269774,From initial search,Severe persistent allergic asthma uncontrolled,Condition,SNOMED,S,y
+95,46269783,From initial search,Moderate persistent asthma controlled,Condition,SNOMED,S,y
+96,46269782,From initial search,Mild persistent asthma uncontrolled co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+97,46269802,From initial search,Chronic obstructive asthma co-occurrent with acute exacerbation of asthma,Condition,SNOMED,S,y
+106,4190879,From initial search,Step up change in asthma management plan,Observation,SNOMED,S,y
+107,252658,From initial search,Intrinsic asthma without status asthmaticus,Condition,SNOMED,S,y
+113,42539549,From initial search,Uncomplicated allergic asthma,Condition,SNOMED,S,y
+114,42538744,From initial search,Exacerbation of allergic asthma,Condition,SNOMED,S,y
+115,36674432,From initial search,Antiasthmatic therapeutic role,Observation,SNOMED,S,y
+119,4119298,From initial search,Late onset asthma,Condition,SNOMED,S,y
+124,4090381,From initial search,Patient in asthma study,Observation,SNOMED,S,y
+128,46269773,From initial search,Severe persistent asthma controlled co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+129,46269781,From initial search,Mild persistent asthma uncontrolled,Condition,SNOMED,S,y
+130,37310241,From initial search,Intermittent allergic asthma,Condition,SNOMED,S,y
+132,4143828,From initial search,Mild persistent asthma,Condition,SNOMED,S,y
+134,40483397,From initial search,Seasonal asthma,Condition,SNOMED,S,y
+140,4279553,From initial search,Eosinophilic asthma,Condition,SNOMED,S,y
+145,46270029,From initial search,Mild persistent asthma co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+147,761844,From initial search,Inhaled steroid-dependent asthma,Condition,SNOMED,S,y
+152,45769351,From initial search,Acute severe exacerbation of moderate persistent asthma,Condition,SNOMED,S,y
+155,42536208,From initial search,Moderate acute exacerbation of asthma,Condition,SNOMED,S,y
+157,35811529,From initial search,Doctor diagnosed asthma,Observation,UK Biobank,S,y
+159,4119300,From initial search,Colophony asthma,Condition,SNOMED,S,y
+160,4145497,From initial search,Intrinsic asthma,Condition,SNOMED,S,y
+161,46270322,From initial search,Intermittent asthma uncontrolled,Condition,SNOMED,S,y
+163,4075237,From initial search,Brittle asthma,Condition,SNOMED,S,y
+167,46269767,From initial search,Acute severe exacerbation of asthma co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+168,46269778,From initial search,Mild persistent asthma controlled,Condition,SNOMED,S,y
+169,46269779,From initial search,Mild persistent asthma controlled co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+173,4312524,From initial search,Substance induced asthma,Condition,SNOMED,S,y
+175,3044695,From initial search,Asthma [Minimum Data Set],Observation,LOINC,S,y
+181,4155468,From initial search,Mild asthma,Condition,SNOMED,S,y
+182,4152913,From initial search,Severe asthma,Condition,SNOMED,S,y
+186,46270028,From initial search,Severe persistent asthma co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+188,4271333,From initial search,Allergic asthma without status asthmaticus,Condition,SNOMED,S,y
+191,45768910,From initial search,Uncomplicated asthma,Condition,SNOMED,S,y
+192,45768965,From initial search,Uncomplicated severe persistent asthma,Condition,SNOMED,S,y
+193,45769438,From initial search,Acute severe exacerbation of asthma,Condition,SNOMED,S,y
+194,45769441,From initial search,Acute exacerbation of allergic asthma,Condition,SNOMED,S,y
+195,45769443,From initial search,Acute severe exacerbation of intrinsic asthma,Condition,SNOMED,S,y
+196,37116845,From initial search,Acute severe refractory exacerbation of asthma,Condition,SNOMED,S,y
+202,4083422,From initial search,Seen in asthma clinic,Observation,SNOMED,S,y
+204,4110051,From initial search,Mixed asthma,Condition,SNOMED,S,y
+207,37108580,From initial search,Severe controlled persistent asthma,Condition,SNOMED,S,y
+208,46269776,From initial search,Mild persistent allergic asthma,Condition,SNOMED,S,y
+209,46269788,From initial search,Moderate persistent allergic asthma uncontrolled,Condition,SNOMED,S,y
+210,35609846,From initial search,Life threatening acute exacerbation of allergic asthma,Condition,SNOMED,S,y
+211,35609847,From initial search,Life threatening acute exacerbation of intrinsic asthma,Condition,SNOMED,S,y
+215,4293733,From initial search,Asthma monitoring by doctor,Observation,SNOMED,S,y
+217,4309833,From initial search,Non-IgE mediated allergic asthma,Condition,SNOMED,S,y
+218,4142738,From initial search,Moderate persistent asthma,Condition,SNOMED,S,y
+230,4155469,From initial search,Moderate asthma,Condition,SNOMED,S,y
+231,4161595,From initial search,Asthma daytime symptoms,Condition,SNOMED,S,y
+232,4192890,From initial search,Suspected asthma,Observation,SNOMED,S,y
+233,4191827,From initial search,Asthma night-time symptoms,Condition,SNOMED,S,y
+237,4017025,From initial search,Asthma disturbing sleep,Condition,SNOMED,S,y
+238,45768964,From initial search,Uncomplicated moderate persistent asthma,Condition,SNOMED,S,y
+239,45769350,From initial search,Acute severe exacerbation of severe persistent asthma,Condition,SNOMED,S,y
+240,46272979,From initial search,Recent asthma management,Observation,SNOMED,S,y
+244,4123254,From initial search,Factitious asthma,Condition,SNOMED,S,y
+245,4057863,From initial search,Asthmatoid wheeze,Condition,SNOMED,S,y
+246,4084667,From initial search,Emergency hospital admission for asthma,Observation,SNOMED,S,y
+250,44810117,From initial search,Chronic asthma with fixed airflow obstruction,Condition,SNOMED,S,y
+254,46273452,From initial search,Acute exacerbation of asthma co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+255,46274059,From initial search,Acute severe exacerbation of severe persistent allergic asthma,Condition,SNOMED,S,y
+256,46269772,From initial search,Severe persistent allergic asthma controlled,Condition,SNOMED,S,y
+257,46269777,From initial search,Acute severe exacerbation of mild persistent allergic asthma co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+258,46273462,From initial search,Acute severe exacerbation of moderate persistent allergic asthma,Condition,SNOMED,S,y
+259,46269790,From initial search,Moderate persistent asthma uncontrolled,Condition,SNOMED,S,y
+261,4145356,From initial search,Severe persistent asthma,Condition,SNOMED,S,y
+262,4141978,From initial search,Intermittent asthma,Condition,SNOMED,S,y
+263,4146581,From initial search,Mild intermittent asthma,Condition,SNOMED,S,y
+266,764677,From initial search,Persistent asthma,Condition,SNOMED,S,y
+276,4155470,From initial search,Occasional asthma,Condition,SNOMED,S,y
+278,4191479,From initial search,Allergic asthma,Condition,SNOMED,S,y
+281,46270030,From initial search,Intermittent asthma co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+285,45768911,From initial search,Exacerbation of mild persistent asthma,Condition,SNOMED,S,y
+286,45769442,From initial search,Acute severe exacerbation of immunoglobin E-mediated allergic asthma,Condition,SNOMED,S,y
+293,4244339,From initial search,Drug-induced asthma,Observation,SNOMED,S,y
+296,46269784,From initial search,Moderate persistent allergic asthma,Condition,SNOMED,S,y
+297,46269775,From initial search,Severe persistent asthma uncontrolled co-occurrent with allergic rhinitis,Condition,SNOMED,S,y
+298,46274124,From initial search,Acute severe exacerbation of mild persistent allergic asthma,Condition,SNOMED,S,y
+301,4293734,From initial search,Asthma confirmed,Condition,SNOMED,S,y
+303,313236,From initial search,Cough variant asthma,Condition,SNOMED,S,y
+304,4138760,From initial search,Exacerbation of intermittent asthma,Condition,SNOMED,S,y
+305,4206340,From initial search,Asthma without status asthmaticus,Condition,SNOMED,S,y
+311,257581,From initial search,Acute asthma,Condition,SNOMED,S,y
+318,314754,In synonyms,Wheezing,Condition,SNOMED,S,y
+334,1340504,From descendants,Exacerbation of wheezing,Condition,OMOP Extension,S,y
+337,4321739,From descendants,Expiratory wheezing,Condition,SNOMED,S,y
+338,46269801,From descendants,Aspirin exacerbated respiratory disease,Condition,SNOMED,S,y
+349,45773620,From descendants,Wheezing in absence of colds,Condition,SNOMED,S,y
+350,4135717,From descendants,Inspiratory wheezing,Condition,SNOMED,S,y
+351,4152507,From descendants,Wheezing symptom,Condition,SNOMED,S,y
+352,44813943,From descendants,Constant wheezing,Condition,SNOMED,S,y

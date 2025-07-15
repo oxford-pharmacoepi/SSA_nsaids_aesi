@@ -1,0 +1,77 @@
+,concept_id,found_from,concept_name,domain_id,vocabulary_id,standard_concept,Include?
+1,4083547,From initial search,Acute vomiting,Condition,SNOMED,S,y
+2,4096792,From initial search,Bile vomitus,Observation,SNOMED,S,y
+3,4145805,From initial search,Vomiting blood - fresh,Condition,SNOMED,S,y
+4,4169993,From initial search,Black vomit,Condition,SNOMED,S,y
+5,44783646,From initial search,Intractable nausea and vomiting,Condition,SNOMED,S,y
+7,45757414,From initial search,Vomiting fecal matter,Condition,SNOMED,S,y
+8,4043615,From initial search,Vomit examination normal,Condition,SNOMED,S,y
+9,4043420,From initial search,Vomit appearance - normal,Condition,SNOMED,S,y
+10,4043426,From initial search,Vomit: excessive acidity,Condition,SNOMED,S,y
+11,1340502,From initial search,Exacerbation of vomiting,Condition,OMOP Extension,S,y
+14,27321,From initial search,Persistent vomiting,Condition,SNOMED,S,y
+21,3175765,From initial search,Postprandial vomiting,Condition,Nebraska Lexicon,S,y
+23,4055573,From initial search,Vomit pH normal,Condition,SNOMED,S,y
+24,4056864,From initial search,Vomit occult blood negative,Condition,SNOMED,S,y
+25,4056865,From initial search,Vomit sent for toxicology,Observation,SNOMED,S,y
+26,4043616,From initial search,Vomit examination abnormal,Condition,SNOMED,S,y
+27,4043423,From initial search,Vomit: mucous present,Condition,SNOMED,S,y
+28,4055569,From initial search,Vomit: undigested food present,Condition,SNOMED,S,y
+30,4170402,From initial search,Drug-induced nausea and vomiting,Condition,SNOMED,S,y
+31,4180241,From initial search,Erosion of teeth due to persistent vomiting,Condition,SNOMED,S,y
+32,4057954,From initial search,Vomitus,Observation,SNOMED,S,y
+36,4113560,From initial search,Vomit contains old blood,Condition,SNOMED,S,y
+37,4104132,From initial search,Vomit contains feces,Condition,SNOMED,S,y
+40,4096715,From initial search,Vomiting symptom,Condition,SNOMED,S,y
+41,4091511,From initial search,Effortless vomiting,Condition,SNOMED,S,y
+42,4154610,From initial search,Vomit: pus present,Condition,SNOMED,S,y
+43,4043614,From initial search,Vomit sent for examination,Observation,SNOMED,S,y
+44,4043427,From initial search,Vomit occult blood positive,Condition,SNOMED,S,y
+45,4043619,From initial search,Vomit toxicology: nil found,Condition,SNOMED,S,y
+46,4043424,From initial search,Vomit odor normal,Condition,SNOMED,S,y
+48,4246979,From initial search,Coffee ground vomiting,Condition,SNOMED,S,y
+49,4170551,From initial search,Habit vomiting,Condition,SNOMED,S,y
+51,4077584,From initial search,Cyclical vomiting syndrome,Condition,SNOMED,S,y
+54,42868950,From initial search,I have been vomiting in the past 7 days [FACIT],Observation,LOINC,S,y
+57,4104129,From initial search,Vomit contains blood,Condition,SNOMED,S,y
+59,4023182,From initial search,Vomiting food,Condition,SNOMED,S,y
+61,4156946,From initial search,Bilious vomit,Condition,SNOMED,S,y
+70,4043429,From initial search,Vomit toxicology: positive,Condition,SNOMED,S,y
+74,4066336,From initial search,Gastric vomitus,Observation,SNOMED,S,y
+76,4296524,From initial search,Vomiting management,Observation,SNOMED,S,y
+77,4105599,From initial search,Inhalation of vomitus in lower respiratory tract,Condition,SNOMED,S,y
+78,4101344,From initial search,Finding of vomiting,Condition,SNOMED,S,y
+79,4222657,From initial search,Uncontrollable vomiting,Condition,SNOMED,S,y
+83,760991,From initial search,Morning vomiting,Condition,SNOMED,S,y
+84,45757468,From initial search,Vomiting without nausea,Condition,SNOMED,S,y
+86,4188573,From initial search,Tendency to nausea and vomiting,Condition,SNOMED,S,y
+87,441408,From initial search,Vomiting,Condition,SNOMED,S,y
+91,4312477,From initial search,Projectile vomiting,Condition,SNOMED,S,y
+93,3044773,From initial search,Vomiting [Minimum Data Set],Observation,LOINC,S,y
+96,4340522,From initial search,Intermittent vomiting,Condition,SNOMED,S,y
+98,4043421,From initial search,Vomit appearance - abnormal,Condition,SNOMED,S,y
+102,4299836,From initial search,Concealed vomiting,Condition,SNOMED,S,y
+105,4200526,From initial search,Vomited meal,Condition,SNOMED,S,y
+107,4274327,From initial search,Chronic vomiting,Condition,SNOMED,S,y
+108,4323686,From initial search,Bilious vomiting,Condition,SNOMED,S,y
+109,4247894,From initial search,Increased nausea and vomiting,Condition,SNOMED,S,y
+110,4043617,From initial search,Vomit odor feculent,Condition,SNOMED,S,y
+111,4057461,From initial search,Vomit: excessive alkalinity,Condition,SNOMED,S,y
+112,27674,From initial search,Nausea and vomiting,Condition,SNOMED,S,y
+114,4311574,From initial search,Post-tussive vomiting,Condition,SNOMED,S,y
+115,4209561,From initial search,Colonic vomitus,Observation,SNOMED,S,y
+121,3183009,From initial search,Recurrent vomiting,Condition,Nebraska Lexicon,S,y
+124,4092938,From initial search,Blood in vomit - symptom,Condition,SNOMED,S,y
+125,4104131,From initial search,Vomit contains food,Condition,SNOMED,S,y
+129,45767105,From initial search,At risk of vomiting,Condition,SNOMED,S,y
+132,4043425,From initial search,Vomit odor offensive,Condition,SNOMED,S,y
+133,4234524,From initial search,Nausea and vomiting control behavior,Observation,SNOMED,S,y
+134,4234652,From initial search,Nausea and vomiting status: disruptive effects,Observation,SNOMED,S,y
+135,4263054,From initial search,Intestinal vomitus,Observation,SNOMED,S,y
+139,42535473,From initial search,Intractable cyclical vomiting syndrome,Condition,SNOMED,S,y
+140,4113559,From initial search,Vomit contains fresh blood,Condition,SNOMED,S,y
+143,26727,In synonyms,Hematemesis,Condition,SNOMED,S,y
+148,1002195,In synonyms,Emesis occurred,Observation,LOINC,S,y
+152,40480291,From descendants,Hyperemesis,Condition,SNOMED,S,y
+153,4321138,From descendants,Violent retching,Condition,SNOMED,S,y
+183,4204041,From descendants,Hematemesis - cause unknown,Condition,SNOMED,S,y

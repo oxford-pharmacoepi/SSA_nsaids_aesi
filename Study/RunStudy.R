@@ -1,7 +1,11 @@
 # Set output folder location -----
 # the path to a folder where the results from this analysis will be saved
 # use this format: output_folder <- here("Results", db_name, "_new folder name")
-output_folder <- here("Results", db_name, "_11th_jul_full")
+output_folder <- here("Results", db_name, Sys.Date())
+
+# output files ---- 
+if (!file.exists(output_folder)){
+  dir.create(output_folder, recursive = TRUE)}
 
 # Create subfolders for each analysis
 sex_strat_folder <- file.path(output_folder, "sex_stratification")
@@ -16,9 +20,13 @@ lapply(folders, function(f) {
   if (!dir.exists(f)) dir.create(f, recursive = TRUE)
 })
 
-# output files ---- 
-if (!file.exists(output_folder)){
-  dir.create(output_folder, recursive = TRUE)}
+
+#log file
+logger_name <- gsub(":| |-", "_", paste0("log_01_001_", Sys.time(), ".txt"))
+logger <- create.logger()
+logfile(logger) <- here::here("Results", logger_name)
+level(logger) <- "INFO"
+info(logger, "LOG CREATED")
 
 # add start and end dates for index and marker drugs -----
 starting_date <- as.Date("2013-01-01")
@@ -33,17 +41,25 @@ run_hypertension_stratification <- TRUE
 run_sensitivity_365 <- TRUE
 
 # get cdm snapshot
+info(logger, "RETRIEVING SNAPSHOT")
+
 OmopSketch::exportSummarisedResult(
   OmopSketch::summariseOmopSnapshot(cdm),
   fileName = here(output_folder, paste0("/", db_name, "_cdm_snapshot_.csv")),
   path = output_folder
 )
 
+info(logger, "SNAPSHOT COMPLETED")
+
+
 source(here("1_InstantiateCohorts","InstantiateCohorts.R"))
 
 
 # run main analysis ------------
 if(isTRUE(run_symmetry)){
+  cli::cli_text("- Running cohort symmetry for main analysis ({Sys.time()})")
+  
+  info(logger, "RUNNING COHORT SYMMETRY MAIN ANALYSIS")
   
   tryCatch({
     source(here("2_Analysis", "cohortsymmetry.R"))
@@ -53,11 +69,17 @@ if(isTRUE(run_symmetry)){
                                           
                                           "_error_cohortsymmetry.txt")))
   })
+  
+  info(logger, "RAN COHORT SYMMETRY MAIN ANALYSIS")
+  
 }
 
 
 # database and study postive and negative controls ----------
 if(isTRUE(run_symmetry)){
+  cli::cli_text("- Running cohort symmetry for controls ({Sys.time()})")
+  
+  info(logger, "RUNNING COHORT SYMMETRY FOR CONTROLS")
   
   tryCatch({
     source(here("2_Analysis", "controls.R"))
@@ -67,12 +89,17 @@ if(isTRUE(run_symmetry)){
                                           
                                           "_error_controls.txt")))
   })
+  
+  info(logger, "RAN COHORT SYMMETRY FOR CONTROLS")
 }
 
 
 # characterisation analysis -----
 if(isTRUE(run_characterisation)){
-  #log("- Running Characterisation")
+  cli::cli_text("- Running characterisation ({Sys.time()})")
+  
+  info(logger, "RUNNING CHARACTERISATION")
+  
   tryCatch({
     source(here("2_Analysis", "characterisation.R"))
   }, error = function(e) {
@@ -81,12 +108,17 @@ if(isTRUE(run_characterisation)){
                                           
                                           "_error_characterisation.txt")))
   })
+  
+  info(logger, "RAN CHARACTERISATION")
 }
 
 
 # sex stratification analysis
 if(isTRUE(run_sex_stratification)){
-  #log("- Running Sex Stratification")
+  cli::cli_text("- Running sex stratification ({Sys.time()})")
+  
+  info(logger, "RUNNING SEX STRATIFICATION")
+  
   tryCatch({
     source(here("2_Analysis", "SexStratification.R"))
   }, error = function(e) {
@@ -95,12 +127,17 @@ if(isTRUE(run_sex_stratification)){
                                           
                                           "_error_sex_stratification.txt")))
   })
+  
+  info(logger, "RAN SEX STRATIFICATION")
 }
 
 
 # age stratification analysis
 if(isTRUE(run_age_stratification)){
-  #log("- Running Age Stratification")
+  cli::cli_text("- Running age stratification ({Sys.time()})")
+  
+  info(logger, "RUNNING AGE STRATIFICATION")
+  
   tryCatch({
     source(here("2_Analysis", "AgeStratification.R"))
   }, error = function(e) {
@@ -109,11 +146,16 @@ if(isTRUE(run_age_stratification)){
                                           
                                           "_error_age_stratification.txt")))
   })
+  
+  info(logger, "RAN AGE STRATIFICATION")
 }
 
 # hypertension stratification analysis
 if(isTRUE(run_hypertension_stratification)){
-  #log("- Running Hypertension Stratification")
+  cli::cli_text("- Running hypertension stratification ({Sys.time()})")
+  
+  info(logger, "RUNNING HYPERTENSION STRATIFICATION")
+  
   tryCatch({
     source(here("2_Analysis", "HypertensionStratification.R"))
   }, error = function(e) {
@@ -122,11 +164,16 @@ if(isTRUE(run_hypertension_stratification)){
                                           
                                           "_error_hypertension_stratification.txt")))
   })
+  
+  info(logger, "RAN HYPERTENSION STRATIFICATION")
 }
 
 # sensivity analysis of 365 day combination window using unstratified population
 if(isTRUE(run_sensitivity_365)){
-  #log("- Running Sensitivity 365")
+  cli::cli_text("- Running sensitivity 365 ({Sys.time()})")
+  
+  info(logger, "RUNNING SENSITIVITY 365")
+  
   tryCatch({
     source(here("2_Analysis", "sensitivity.R"))
   }, error = function(e) {
@@ -135,11 +182,15 @@ if(isTRUE(run_sensitivity_365)){
                                           
                                           "_error_sensitivity365.txt")))
   })
+  
+  info(logger, "RAN SENSITIVITY 365")
 }
 
 
 # zip results ----
-#log("- Zipping Results")
+cli::cli_text("- Zipping Results ({Sys.time()})")
+info(logger, "ZIPPING RESULTS")
+
 # zip all results
 zip::zip(
   zipfile = file.path(here(output_folder,
@@ -150,3 +201,5 @@ zip::zip(
 cli::cli_alert_success("- Study Done!")
 cli::cli_alert_success("- If all has worked, there should now be a zip folder with your results in the Results folder to share")
 cli::cli_alert_success("- Thank you for running the study! :)")
+
+info(logger, "ZIPPED RESULTS")
