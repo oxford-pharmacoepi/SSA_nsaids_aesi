@@ -1,5 +1,6 @@
 # positive controls -------
-#log("- Getting benchmarker definitions drug - drug positive controls")
+cli::cli_alert_info("- Getting benchmarker definitions drug - drug positive controls")
+info(logger, "GETTING BENCHMARK DEFINITIONS DRUG-DRUG POSITIVE CONTROLS")
 
 cdm <- DrugUtilisation::generateIngredientCohortSet(
   cdm = cdm,
@@ -17,9 +18,11 @@ cdm <- DrugUtilisation::generateIngredientCohortSet(
 )
 
 cli::cli_alert_success("- Got benchmarker definitions drug - drug positive controls")
+info(logger, "GOT BENCHMARK DEFINITIONS DRUG-DRUG POSITIVE CONTROLS")
 
 # negative controls -------
-#log("- Getting benchmarker definitions drug - drug negative controls")
+cli::cli_alert_info("- Getting benchmarker definitions drug - drug negative controls")
+info(logger, "GETTING BENCHMARK DEFINITIONS DRUG-DRUG NEGATIVE CONTROLS")
 
 cdm <- DrugUtilisation::generateIngredientCohortSet(
   cdm = cdm,
@@ -29,9 +32,13 @@ cdm <- DrugUtilisation::generateIngredientCohortSet(
 )
 
 cli::cli_alert_success("- Got benchmarker definitions drug - drug negative controls")
+info(logger, "GOT BENCHMARK DEFINITIONS DRUG-DRUG NEGATIVE CONTROLS")
 
 
 # ace inhibitors ----
+cli::cli_alert_success("- Creating ace inhibitor and cough cohorts")
+info(logger, "CREATING ACE INHIBITOR AND COUGH COHORTS")
+
 ace_inhib <- getATCCodes(
   cdm,
   level = c("ATC 3rd"),
@@ -61,10 +68,43 @@ cdm[["cough"]] <- conceptCohort(cdm,
                                 useSourceFields = FALSE,
                                 subsetCohort = NULL,
                                 subsetCohortId = NULL)
+cli::cli_alert_success("- Created ace inhibitor and cough cohorts")
+info(logger, "CREATED ACE INHIBITOR AND COUGH COHORTS")
 
 ##phenotyped controls
+cli::cli_alert_success("- Creating phenotyped control cohorts")
+info(logger, "CREATING PHENOTYPED CONTROL COHORTS")
+
+#acute kidney injury
+cli::cli_alert_success("- Creating AKI control cohort")
+info(logger, "CREATING AKI CONTROL COHORT")
+
+concept_ids <- readr::read_csv("1_InstantiateCohorts/Controls/AKI.csv") |>
+  dplyr::filter(tolower(overall) == "y") |>
+  dplyr::pull(concept_id) |>
+  as.numeric() |>
+  na.omit() |>
+  unique()
+
+aki_codes <- list(
+  aki = concept_ids
+)
+
+cdm[["aki"]] <- conceptCohort(
+  cdm,
+  conceptSet = aki_codes,
+  exit = "event_end_date",
+  useSourceFields = FALSE,
+  name = "aki"
+)
+
+cli::cli_alert_success("- Created AKI control cohort")
+info(logger, "CREATED AKI CONTROL COHORT")
 
 #nausea diagnosis
+cli::cli_alert_success("- Creating nausea control cohort")
+info(logger, "CREATING NAUSEA CONTROL COHORT")
+
 concept_ids <- read_csv("1_InstantiateCohorts/Controls/Nausea.csv") |>
   pull(concept_id) |>
   as.numeric() |>
@@ -83,7 +123,13 @@ cdm[["nausea"]] <- conceptCohort(
   name = "nausea"
 )
 
+cli::cli_alert_success("- Created nausea control cohort")
+info(logger, "CREATED NAUSEA CONTROL COHORT")
+
 #vomiting diagnosis
+cli::cli_alert_success("- Creating vomiting control cohort")
+info(logger, "CREATING VOMITING CONTROL COHORT")
+
 concept_ids <- read_csv("1_InstantiateCohorts/Controls/Vomit.csv") |>
   pull(concept_id) |>
   as.numeric() |>
@@ -101,8 +147,13 @@ cdm[["vomit"]] <- conceptCohort(
   useSourceFields = FALSE,
   name = "vomit"
 )
+cli::cli_alert_success("- Created vomiting control cohort")
+info(logger, "CREATED VOMITING CONTROL COHORT")
 
 #anemia diagnosis
+cli::cli_alert_success("- Creating anemia control cohort")
+info(logger, "CREATING ANEMIA CONTROL COHORT")
+
 concept_ids <- read_csv("1_InstantiateCohorts/Controls/Anemia.csv") |>
   pull(concept_id) |>
   as.numeric() |>
@@ -120,8 +171,13 @@ cdm[["anemia"]] <- conceptCohort(
   useSourceFields = FALSE,
   name = "anemia"
 )
+cli::cli_alert_success("- Created anemia control cohort")
+info(logger, "CREATED ANEMIA CONTROL COHORT")
 
 #cataracts diagnosis
+cli::cli_alert_success("- Creating cataracts control cohort")
+info(logger, "CREATING CATARACTS CONTROL COHORT")
+
 concept_ids <- read_csv("1_InstantiateCohorts/Controls/Cataracts.csv") |>
   pull(concept_id) |>
   as.numeric() |>
@@ -139,8 +195,13 @@ cdm[["cataracts"]] <- conceptCohort(
   useSourceFields = FALSE,
   name = "cataracts"
 )
+cli::cli_alert_success("- Created cataracts control cohort")
+info(logger, "CREATED CATARACTS CONTROL COHORT")
 
 #asthma diagnosis
+cli::cli_alert_success("- Creating asthma control cohort")
+info(logger, "CREATING ASTHMA CONTROL COHORT")
+
 concept_ids <- read_csv("1_InstantiateCohorts/Controls/Asthma.csv") |>
   pull(concept_id) |>
   as.numeric() |>
@@ -158,8 +219,13 @@ cdm[["asthma"]] <- conceptCohort(
   useSourceFields = FALSE,
   name = "asthma"
 )
+cli::cli_alert_success("- Created asthma control cohort")
+info(logger, "CREATED ASTHMA CONTROL COHORT")
 
 #edema diagnosis
+cli::cli_alert_success("- Creating edema control cohort")
+info(logger, "CREATING EDEMA CONTROL COHORT")
+
 concept_ids <- read_csv("1_InstantiateCohorts/Controls/Edema.csv") |>
   pull(concept_id) |>
   as.numeric() |>
@@ -178,8 +244,15 @@ cdm[["edema"]] <- conceptCohort(
   name = "edema"
 )
 
+cli::cli_alert_success("- Created edema control cohort")
+info(logger, "CREATED EDEMA CONTROL COHORT")
 
+cli::cli_alert_success("- Created phenotyped control cohorts")
+info(logger, "CREATED PHENOTYPED CONTROL COHORTS")
+
+#NSAIDs
 cli::cli_alert_success("- Getting nsaids")
+info(logger, "GETTING NSAIDS")
 
 # use codelists generator to get the ingredient levels for all nsaids -----
 # extract ATC for NSAIDS at 4th level to get the ingredients
@@ -341,35 +414,45 @@ cdm$nsaids %>%
   CohortConstructor::requireAge(indexDate = "cohort_start_date",
              ageRange = list(c(18, 150)))
 
-hyper_codelists <- CodelistGenerator::codesFromConceptSet(
-  path = here::here("1_InstantiateCohorts", "Conditions", "hypertension.json"),
-  cdm = cdm
-)
+cli::cli_alert_success("- Got nsaids")
+info(logger, "GOT NSAIDS")
 
-cdm$hypertension <- CohortConstructor::conceptCohort(
-  cdm = cdm,
-  conceptSet = hyper_codelists,
-  name = "hypertension"
-)
-
-cdm$nsaids_no_hypertension <- cdm$nsaids |>
-  CohortConstructor::requireCohortIntersect(
-    intersections = 0,
-    targetCohortTable = "hypertension",
-    indexDate = "cohort_start_date",
-    window = c(-Inf,0),
-    name = "nsaids_no_hypertension"
-  )
-
-cdm$nsaids_prior_hypertension <- cdm$nsaids |>
-  CohortConstructor::requireCohortIntersect(
-    intersections = c(1,Inf),
-    targetCohortTable = "hypertension",
-    indexDate = "cohort_start_date",
-    window = c(-Inf,0),
-    name = "nsaids_prior_hypertension"
-  )
-
+# #create hypertension and no hypertension cohorts
+# cli::cli_alert_success("- Creating hypertension and no hypertension cohorts")
+# info(logger, "CREATING HYPERTENSION COHORT")
+# 
+# hyper_codelists <- CodelistGenerator::codesFromConceptSet(
+#   path = here::here("1_InstantiateCohorts", "Conditions", "hypertension.json"),
+#   cdm = cdm
+# )
+# 
+# cdm$hypertension <- CohortConstructor::conceptCohort(
+#   cdm = cdm,
+#   conceptSet = hyper_codelists,
+#   name = "hypertension"
+# )
+# 
+# 
+# cdm$nsaids_no_hypertension <- cdm$nsaids |>
+#   CohortConstructor::requireCohortIntersect(
+#     intersections = 0,
+#     targetCohortTable = "hypertension",
+#     indexDate = "cohort_start_date",
+#     window = c(-Inf,0),
+#     name = "nsaids_no_hypertension"
+#   )
+# 
+# cdm$nsaids_prior_hypertension <- cdm$nsaids |>
+#   CohortConstructor::requireCohortIntersect(
+#     intersections = c(1,Inf),
+#     targetCohortTable = "hypertension",
+#     indexDate = "cohort_start_date",
+#     window = c(-Inf,0),
+#     name = "nsaids_prior_hypertension"
+#   )
+# 
+# cli::cli_alert_success("- Created hypertension and no hypertension cohorts")
+# info(logger, "CREATED HYPERTENSION COHORT")
 
 
 # generate outcome cohorts AESI's ---------
@@ -386,6 +469,7 @@ cdm$nsaids_prior_hypertension <- cdm$nsaids |>
 
 # instantiate outcome cohorts
 cli::cli_alert_info("- Getting outcome definitions")
+info(logger, "GETTING OUTCOME DEFINITIONS")
     
 # get concept sets from cohorts----
 # apart from the GI related ones the rest are from Darwin adverse events of special interest (aesi)
@@ -405,10 +489,13 @@ cdm$aesi <- CohortConstructor::conceptCohort(
                                 ageRange = list(c(18, 150)))
     
 cli::cli_alert_success("- Got outcome definitions")
+info(logger, "GOT OUTCOME DEFINITIONS")
 
-#     
-# ### all nsaids cohort
-# ## Collapse all nsaids into one group
+# #create cohorts with all nsaids and by COX mechanism
+# cli::cli_alert_success("- Creating cohorts with all nsaids and by COX mechanism")
+# info(logger, "CREATING COHORTS WITH ALL NSAIDS AND BY COX MECHANISM")
+
+# #all nsaids cohort
 # cdm$all_nsaids <-  cdm$nsaids %>% 
 #   CohortConstructor::unionCohorts(
 #     cohortName = "all_nsaids",
@@ -457,3 +544,6 @@ cli::cli_alert_success("- Got outcome definitions")
 #   cdm$cox_1_preference,
 #   name = "nsaids"
 # )
+
+cli::cli_alert_success("- Completed Instantiate Cohorts")
+info(logger, "COMPLETED INSTANTIATE COHORTS")

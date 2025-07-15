@@ -5,10 +5,12 @@ if (isTRUE(run_characterisation)) {
   if (!dir.exists(characterisation_folder)) dir.create(characterisation_folder, recursive = TRUE)
   
   # demographics ----
-  cli::cli_alert_info("Summarising Table One Demographics")
+  cli::cli_alert_info("Summarising Table One Demographics ({Sys.time()})")
+  info(logger, "SUMMARISING TABLE ONE DEMOGRAPHICS")
   
   # comorbidities --------
-  cli::cli_alert_info("Instantiating table one Comorbidities")
+  cli::cli_alert_info("Instantiating table one Comorbidities ({Sys.time()})")
+  info(logger, "INSTANTIATING TABLE ONE COMORBIDITIES")
   
   codelistConditions <- CodelistGenerator::codesFromConceptSet(here("1_InstantiateCohorts", "Conditions"), cdm)
   
@@ -19,10 +21,12 @@ if (isTRUE(run_characterisation)) {
     overwrite = TRUE
   )
   
-  cli::cli_alert_info("Summarising table one Comorbidities")
+  cli::cli_alert_info("Summarising table one Comorbidities ({Sys.time()})")
+  info(logger, "SUMMARISING TABLE ONE COMORBIDITIES")
   
   # medications -----
-  cli::cli_alert_info("Instantiating table one Medications")
+  cli::cli_alert_info("Instantiating table one Medications ({Sys.time()})")
+  info(logger, "INSTANTIATING TABLE ONE MEDICATIONS")
   
   codelistMedications <- CodelistGenerator::codesFromConceptSet(here("1_InstantiateCohorts", "Medications"), cdm)
   
@@ -32,12 +36,14 @@ if (isTRUE(run_characterisation)) {
     name = "medications"
   )
   
-  cli::cli_alert_info("Summarising table one Medications")
+  cli::cli_alert_info("Summarising table one Medications ({Sys.time()})")
+  info(logger, "SUMMARISING TABLE ONE MEDICATIONS")
   
   # add sex and age to cohorts ----
-  cli::cli_alert_info("Add demographics to cohort")
+  cli::cli_alert_info("Add demographics to cohort ({Sys.time()})")
+  info(logger, "ADDING DEMOGRAPHICS TO COHORT")
   
-  cdm$nsaids_characteristics <- cdm$nsaids %>%
+  cdm$nsaids_characteristics <- cdm$nsaids_aesi %>%
     PatientProfiles::addDemographics()
   
   cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
@@ -51,6 +57,7 @@ if (isTRUE(run_characterisation)) {
         "90+" = c(90, 150)
       )
     ))
+  info(logger, "ADDED DEMOGRAPHICS TO COHORT")
   
   cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
     filter(prior_observation >= 365)
@@ -59,6 +66,8 @@ if (isTRUE(run_characterisation)) {
     compute(name = "nsaids_characteristics", temporary = FALSE, overwrite = TRUE) %>%
     CDMConnector::recordCohortAttrition(reason = "Excluded patients with less than 365 prior history")
   
+  info(logger, "EXCLUDED PATIENTS WITH LESS THAN 365 PRIOR HISTORY")
+  
   cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
     filter(sex %in% c("Male", "Female"))
   
@@ -66,8 +75,12 @@ if (isTRUE(run_characterisation)) {
     compute(name = "nsaids_characteristics", temporary = FALSE, overwrite = TRUE) %>%
     CDMConnector::recordCohortAttrition(reason = "Excluded patients with no sex recorded")
   
+  info(logger, "EXCLUDED PATIENTS WITH NO SEX RECORDED")
+  
   cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
     CohortConstructor::requireIsFirstEntry()
+  
+  info(logger, "CHARACTERISING AT FIRST ENTRY")
   
   suppressWarnings({
     summarycharacteristics <- cdm$nsaids_characteristics %>%
@@ -93,7 +106,8 @@ if (isTRUE(run_characterisation)) {
       )
   })
   
-  cli::cli_alert_info("Exporting table one characteristics results")
+  cli::cli_alert_info("Exporting table one characteristics results ({Sys.time()})")
+  info(logger, "EXPORTING TABLE ONE CHARACTERISTICS RESULTS")
   
   omopgenerics::exportSummarisedResult(
     summarycharacteristics,
@@ -101,6 +115,8 @@ if (isTRUE(run_characterisation)) {
     path = here::here(characterisation_folder),
     fileName = paste0(cdmName(cdm), "_summary_characteristics.csv")
   )
+  info(logger, "EXPORTED TABLE ONE CHARACTERISTICS RESULTS")
   
-  cli::cli_alert_success("Table one Characterisation Analysis Complete")
+  cli::cli_alert_success("Table one Characterisation Analysis Complete ({Sys.time()})")
+  info(logger, "COMPLETED TABLE ONE CHARACTERISATION ANALYSIS")
 }

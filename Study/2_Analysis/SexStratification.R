@@ -2,11 +2,19 @@ sex_strat_folder <- file.path(output_folder, "sex_stratification")
 if (!dir.exists(sex_strat_folder)) dir.create(sex_strat_folder, recursive = TRUE)
 
 # Add sex variable and stratify cohorts
+cli::cli_alert_info("Adding sex variable and stratifying cohorts ({Sys.time()})")
+info(logger, "ADDING SEX VARIABLE AND STRATIFYING COHORTS")
+
 cdm$nsaids_sex <- cdm$nsaids |>
   addSex() %>%
   stratifyCohorts(strata = "sex", name = "nsaids_sex")
 
+info(logger, "ADDED SEX VARIABLE AND STRATIFYING COHORTS")
+
 # Run cohort symmetry analysis for sex-stratified data
+cli::cli_alert_info("Running cohort symmetry for sex stratified data ({Sys.time()})")
+info(logger, "RUNNING COHORT SYMMETRY FOR SEX STRATIFIED DATA")
+
 tryCatch({
   cdm <- CohortSymmetry::generateSequenceCohortSet(
     cdm = cdm,
@@ -20,6 +28,7 @@ tryCatch({
   )
   
   cli::cli_alert_success("- Generated SequenceCohortSet for nsaids-aesis-sex")
+  info(logger, "RAN COHORT SYMMETRY FOR SEX STRATIFIED DATA")
   
   results_sex <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi_sex"]])
   cli::cli_alert_success("- Generated SequenceRatios for nsaids-aesis-sex")
@@ -29,6 +38,7 @@ tryCatch({
 })
 
 cli::cli_alert_success("- Got cohort symmetry results")
+info(logger, "GOT COHORT SYMMETRY RESULTS")
 
 # Export summarised results
 exportSummarisedResult(
@@ -37,13 +47,17 @@ exportSummarisedResult(
   fileName = paste0(db_name, "_result_sex.csv")
 )
 
+info(logger, "EXPORTED SUMMARISED RESULTS")
+
 #marker settings
 marker_settings_sex <- settings(cdm[["nsaids_aesi_sex"]])
 write_csv(marker_settings_sex, file.path(sex_strat_folder, paste0(cdmName(cdm), "_ssa_marker_settings_sex.csv")))
+info(logger, "WROTE CSV FOR MARKER SETTINGS")
 
 #attrition
 attrition_seq_ratio_sex <- attrition(cdm[["nsaids_aesi_sex"]])
 write_csv(attrition_seq_ratio_sex, file.path(sex_strat_folder, paste0(cdmName(cdm), "_ssa_attrition_sex.csv")))
+info(logger, "WROTE CSV FOR ATTRITION SEQ RATIO SEX")
 
 #temporal symmetry plots 
 summary_temp_trends_months_sex <- summariseTemporalSymmetry(
@@ -51,8 +65,12 @@ summary_temp_trends_months_sex <- summariseTemporalSymmetry(
   timescale = "month"
 )
 write_csv(summary_temp_trends_months_sex, file.path(sex_strat_folder, paste0(cdmName(cdm), "_ssa_temporal_symmetry_summary_sex.csv")))
+info(logger, "WROTE CSV FOR TEMPORAL SEQUENCE SUMMARY")
 
 # Prep data for temporal plot
+cli::cli_alert_info("Prepping data for temporal plots ({Sys.time()})")
+info(logger, "PREPPING DATA FOR TEMPORAL PLOTS")
+
 prepped_temp_data <- summary_temp_trends_months_sex |>
   dplyr::filter(variable_name == "temporal_symmetry", estimate_name == "count") |>
   dplyr::mutate(
@@ -142,7 +160,10 @@ plotTemporalSymmetry1 <- function(result,
 }
 
 
-# Get index-marker combinations from group_level (2 components: stratified index + marker)
+# Get index-marker combinations from group_level 
+cli::cli_alert_success("- Getting index-marker combinations")
+info(logger, "GETTING INDEX-MARKER COMBINATIONS")
+
 index_sex_combos <- summary_temp_trends_months_sex |>
   dplyr::filter(variable_name == "temporal_symmetry", estimate_name == "count") |>
   dplyr::distinct(group_level) |>
@@ -151,7 +172,12 @@ index_sex_combos <- summary_temp_trends_months_sex |>
     marker_name = stringr::str_trim(stringr::str_split_fixed(group_level, "&&&", 2)[, 2])
   )
 
+info(logger, "GOT INDEX-MARKER COMBINATIONS")
+
 # Loop through each combination
+cli::cli_alert_success("- Looping through each index-marker combinations")
+info(logger, "LOOPING THROUGH EACH INDEX-MARKER COMBINATIONS")
+
 for (i in seq_len(nrow(index_sex_combos))) {
   index  <- index_sex_combos$index_name[i]
   marker <- index_sex_combos$marker_name[i]
@@ -172,7 +198,9 @@ for (i in seq_len(nrow(index_sex_combos))) {
   
   sex <- stringr::str_extract(index, "(?<=_)(male|female)$")
   
+  
   # Make plot
+  
   p_split_plot <- plotTemporalSymmetry1(
     result = filtered_result,
     plotTitle = paste0("Temporal Trends - ", sex, " - ", index)
@@ -188,9 +216,17 @@ for (i in seq_len(nrow(index_sex_combos))) {
   png(file.path(sex_strat_folder, plot_filename), width = 20, height = 10, units = "in", res = 300, type = "cairo")
   print(p_split_plot)
   dev.off()
+
 }
 
+cli::cli_alert_success("- Made temporal symmetry plots")
+info(logger, "MADE TEMPORAL SYMMETRY PLOTS")
+
+
 # Create scatter plot for ASRs
+cli::cli_alert_success("- Creating scatter plots for ASRs")
+info(logger, "CREATING SCATTER PLOTS FOR ASRs")
+
 sr_tidy_sex <- results_sex |>
   omopgenerics::tidy() |>
   dplyr::mutate(
@@ -238,8 +274,13 @@ png(file.path(sex_strat_folder, srPlotName), width = 8, height = 6, units = "in"
 print(p_sex, newpage = FALSE)
 dev.off()
 
+info(logger, "CREATED SCATTER PLOTS FOR ASRs")
+
 
 # This plot compares male vs female risk for each AESI by NSAID
+cli::cli_alert_success("- Creating male vs female comparison scatter plots")
+info(logger, "CREATING MALE VS FEMALE COMPARISON SCATTER PLOTS")
+
 sr_tidy_sex <- results_sex %>%
   omopgenerics::tidy() %>%
   dplyr::mutate(
@@ -293,3 +334,6 @@ srPlotName <- paste0("nsaids_aesi_risk_by_sex", ".png")
 png(here::here(sex_strat_folder, srPlotName), width = 8, height = 6, units = "in", res = 1500, type = "cairo")
 print(p_sex_comparison, newpage = FALSE)
 dev.off()
+
+info(logger, "CREATED MALE VS FEMALE COMPARISON SCATTER PLOTS")
+info(logger, "COMPLETED SEX STRATIFICATION ANALYSIS")
