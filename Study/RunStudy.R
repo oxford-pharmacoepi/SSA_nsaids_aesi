@@ -28,6 +28,27 @@ logfile(logger) <- here::here("Results", db_name, Sys.Date(), logger_name)
 level(logger) <- "INFO"
 info(logger, "LOG CREATED")
 
+# Create subfolders for each analysis
+sex_strat_folder <- file.path(output_folder, "sex_stratification")
+age_strat_folder <- file.path(output_folder, "age_stratification")
+htn_strat_folder <- file.path(output_folder, "hypertension_stratification")
+sensitivity_folder <- file.path(output_folder, "sensitivity_365")
+characterisation_folder <- file.path(output_folder, "characterisation")
+symmetry_folder <- file.path(output_folder, "symmetry")
+
+folders <- list(sex_strat_folder, age_strat_folder, htn_strat_folder, sensitivity_folder, characterisation_folder, symmetry_folder)
+lapply(folders, function(f) {
+  if (!dir.exists(f)) dir.create(f, recursive = TRUE)
+})
+
+
+#log file
+logger_name <- gsub(":| |-", "_", paste0("log_01_001_", Sys.time(), ".txt"))
+logger <- create.logger()
+logfile(logger) <- here::here("Results", logger_name)
+level(logger) <- "INFO"
+info(logger, "LOG CREATED")
+
 # add start and end dates for index and marker drugs -----
 starting_date <- as.Date("2013-01-01")
 ending_date <- as.Date("2023-01-01")
@@ -45,28 +66,21 @@ info(logger, "SNAPSHOT COMPLETED")
 info(logger, "INSTANTIATING COHORTS")
 source(here("1_InstantiateCohorts", "InstantiateCohorts.R"))
 
-
 # run main analysis ------------
-if (isTRUE(run_symmetry)) {
+if(isTRUE(run_symmetry)){
   cli::cli_text("- Running cohort symmetry for main analysis ({Sys.time()})")
-
+  
   info(logger, "RUNNING COHORT SYMMETRY MAIN ANALYSIS")
-
-  tryCatch(
-    {
-      source(here("2_Analysis", "cohortsymmetry.R"))
-    },
-    error = function(e) {
-      writeLines(
-        as.character(e),
-        here(output_folder, paste0(
-          "/", db_name,
-          "_error_cohortsymmetry.txt"
-        ))
-      )
-    }
-  )
-
+  
+  tryCatch({
+    source(here("2_Analysis", "cohortsymmetry.R"))
+  }, error = function(e) {
+    writeLines(as.character(e),
+               here(output_folder, paste0("/", db_name,
+                                          
+                                          "_error_cohortsymmetry.txt")))
+  })
+  
   info(logger, "RAN COHORT SYMMETRY MAIN ANALYSIS")
 }
 
@@ -91,12 +105,12 @@ if (isTRUE(run_symmetry)) {
       )
     }
   )
-
   info(logger, "RAN COHORT SYMMETRY FOR CONTROLS")
 }
 
 
 # characterisation analysis -----
+
 if (isTRUE(run_characterisation)) {
   cli::cli_text("- Running characterisation ({Sys.time()})")
 
@@ -116,7 +130,6 @@ if (isTRUE(run_characterisation)) {
       )
     }
   )
-
   info(logger, "RAN CHARACTERISATION")
 }
 
@@ -141,7 +154,6 @@ if (isTRUE(run_sex_stratification)) {
       )
     }
   )
-
   info(logger, "RAN SEX STRATIFICATION")
 }
 
@@ -166,7 +178,6 @@ if (isTRUE(run_age_stratification)) {
       )
     }
   )
-
   info(logger, "RAN AGE STRATIFICATION")
 }
 
@@ -190,7 +201,6 @@ if (isTRUE(run_hypertension_stratification)) {
       )
     }
   )
-
   info(logger, "RAN HYPERTENSION STRATIFICATION")
 }
 

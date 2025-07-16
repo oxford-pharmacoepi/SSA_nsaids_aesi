@@ -71,10 +71,6 @@ if (isTRUE(run_characterisation)) {
   cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
     filter(sex %in% c("Male", "Female"))
   
-  cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
-    compute(name = "nsaids_characteristics", temporary = FALSE, overwrite = TRUE) %>%
-    CDMConnector::recordCohortAttrition(reason = "Excluded patients with no sex recorded")
-  
   info(logger, "EXCLUDED PATIENTS WITH NO SEX RECORDED")
 
   cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
