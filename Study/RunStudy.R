@@ -6,25 +6,25 @@ output_folder <- here("Results", db_name)
 if (!file.exists(output_folder)){
   dir.create(output_folder, recursive = TRUE)}
 
+logger_name <- gsub(":| |-", "_", paste0("log_01_001_", Sys.time(), ".txt"))
+logger <- create.logger()
+logfile(logger) <- here(output_folder, logger_name)
+level(logger) <- "INFO"
+info(logger, "LOG CREATED")
+
 # add start and end dates for index and marker drugs -----
 starting_date <- as.Date("2013-01-01")
 ending_date <- as.Date("2023-01-01")
 
-# run analysis
-run_symmetry <- FALSE
-run_characterisation <- FALSE
-run_sex_stratification <- FALSE
-run_age_stratification <- FALSE
-run_sensitivity_365 <- FALSE
-run_sensitivity_age_sex <- TRUE
-
 # get cdm snapshot
+info(logger, "RETRIEVING SNAPSHOT")
 OmopSketch::exportSummarisedResult(
   OmopSketch::summariseOmopSnapshot(cdm),
   fileName = here(output_folder, paste0("/", db_name, "_cdm_snapshot_.csv")),
   path = output_folder
 )
 
+info(logger, "GETTING COHORTS")
 source(here("1_InstantiateCohorts","InstantiateCohorts.R"))
 
 
@@ -111,7 +111,7 @@ if(isTRUE(run_sensitivity_365)){
 }
 
 if(isTRUE(run_sensitivity_age_sex)){
-  #log("- Running Sensitivity 365")
+  info(logger, "SENSITIVITY ANALYSIS")
   tryCatch({
     source(here("2_Analysis", "sensitivityAnalysis.R"))
   }, error = function(e) {

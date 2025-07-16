@@ -83,6 +83,13 @@ cdm$person %>%
   dplyr::tally() %>% 
   dplyr::compute()
 
+# run analysis
+run_symmetry <- TRUE
+run_characterisation <- TRUE
+run_sex_stratification <- TRUE
+run_age_stratification <- TRUE
+run_sensitivity_365 <- TRUE
+run_sensitivity_age_sex <- TRUE
 
 # Run the study ------
 source(here("RunStudy.R"))

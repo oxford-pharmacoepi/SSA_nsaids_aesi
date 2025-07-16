@@ -1,5 +1,5 @@
 # positive controls -------
-log("- Getting benchmarker definitions drug - drug positive controls")
+info(logger, "Getting benchmarker definitions drug - drug positive controls")
 
 cdm <- DrugUtilisation::generateIngredientCohortSet(
   cdm = cdm,
@@ -19,7 +19,7 @@ cdm <- DrugUtilisation::generateIngredientCohortSet(
 cli::cli_alert_success("- Got benchmarker definitions drug - drug positive controls")
 
 # negative controls -------
-log("- Getting benchmarker definitions drug - drug negative controls")
+info(logger, "Getting benchmarker definitions drug - drug negative controls")
 
 cdm <- DrugUtilisation::generateIngredientCohortSet(
   cdm = cdm,
@@ -53,7 +53,8 @@ cdm[["cough"]] <- conceptCohort(cdm,
                                 subsetCohortId = NULL)
 
 
-cli::cli_alert_success("- Getting nsaids")
+cli::cli_alert_info("- Getting nsaids")
+info(logger, "Getting nsaids")
 
 # inclusions are nsaids with minimum count of 1000
 
@@ -94,6 +95,7 @@ cdm$nsaids |>
 
 # instantiate outcome cohorts
 cli::cli_alert_info("- Getting outcome definitions")
+info(logger, "Getting outcome definitions")
     
 # get concept sets from cohorts----
 # apart from the GI related ones the rest are from Darwin adverse events of special interest (aesi)
