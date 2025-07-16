@@ -292,7 +292,7 @@ info(logger, "GETTING OUTCOME DEFINITIONS")
 # get concept sets from cohorts----
 # apart from the GI related ones the rest are from Darwin adverse events of special interest (aesi)
 aesi_codelists <- CodelistGenerator::codesFromCohort(
-  path = here::here("1_InstantiateCohorts", "cohorts"),
+  path = here::here("1_InstantiateCohorts", "Cohorts"),
   cdm = cdm
 )
 
