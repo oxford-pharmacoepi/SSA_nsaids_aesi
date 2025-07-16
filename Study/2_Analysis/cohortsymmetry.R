@@ -28,7 +28,7 @@ cli::cli_alert_success("- Generated SequenceRatios for nsaids-aesis")
   
  }, error = function(e) {
   writeLines(as.character(e),
-             here(output_folder, paste0("/", db_name, "_cs_error.txt"
+             here::here(output_folder, paste0("/", cdmName(cdm), "_cs_error.txt"
              )))
 })
 
@@ -37,14 +37,14 @@ cli::cli_alert_success("- Got cohort symmetry results")
 cli::cli_alert_info("- Export results for nsaids-aesis")
 # export the results (summarised only)
 exportSummarisedResult(results_cs, 
-                       path = here::here("Results", paste0(db_name)), 
+                       path = here::here(output_folder), 
                        fileName = paste0(db_name,"_result.csv"))
 
 #null sequence ratio 
 marker_settings <- 
   settings(cdm[["nsaids_aesi"]])
 
-write_csv(marker_settings, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_marker_settings.csv"
+write.csv(marker_settings, here::here(output_folder, paste0("/", cdmName(cdm), "_ssa_marker_settings.csv"
 )))
 
 
@@ -52,7 +52,7 @@ write_csv(marker_settings, here::here("Results", paste0(db_name, "/", cdmName(cd
 attrition_seq_ratio <- 
   attrition(cdm[["nsaids_aesi"]])
             
-write_csv(attrition_seq_ratio, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_attrition.csv"
+write.csv(attrition_seq_ratio, here::here(output_folder, paste0("/", cdmName(cdm), "_ssa_attrition.csv"
             )))
 
 
@@ -60,7 +60,7 @@ write_csv(attrition_seq_ratio, here::here("Results", paste0(db_name, "/", cdmNam
 summary_temp_trends_months <- summariseTemporalSymmetry(cohort = cdm[["nsaids_aesi"]]
                                                         , timescale = "month")
 
-write_csv(summary_temp_trends_months, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_temporal_symmetry_summary.csv"
+write.csv(summary_temp_trends_months, here::here(output_folder, paste0("/", cdmName(cdm), "_ssa_temporal_symmetry_summary.csv"
 )))
 
 # get the record trends for index and markers
@@ -106,8 +106,8 @@ record_trends_overall <- bind_rows(
   
 )
 
-write_csv(record_trends_overall, 
-          here::here("Results", paste0(db_name, "/", cdmName(cdm), "_record_trend_overall.csv"
+write.csv(record_trends_overall, 
+          here::here(output_folder, paste0("/", cdmName(cdm), "_record_trend_overall.csv"
           )))
 
 
