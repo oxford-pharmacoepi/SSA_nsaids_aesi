@@ -24,7 +24,7 @@ lapply(folders, function(f) {
 # log file
 logger_name <- gsub(":| |-", "_", paste0("log_01_001_", Sys.time(), ".txt"))
 logger <- create.logger()
-logfile(logger) <- here::here("Results", logger_name)
+logfile(logger) <- here::here("Results", db_name, Sys.Date(), logger_name)
 level(logger) <- "INFO"
 info(logger, "LOG CREATED")
 
@@ -219,17 +219,17 @@ if (isTRUE(run_sensitivity_365)) {
 }
 
 if (isTRUE(run_sensitivity_age_sex)) {
-  info(logger, "SENSITIVITY ANALYSIS")
+  info(logger, "SENSITIVITY AGE + SEX")
   tryCatch(
     {
-      source(here("2_Analysis", "sensitivityAnalysis.R"))
+      source(here("2_Analysis", "sensitivityAgeSex.R"))
     },
     error = function(e) {
       writeLines(
         as.character(e),
         here(output_folder, paste0(
           "/", db_name,
-          "_error_sensitivity_analysis.txt"
+          "_error_sensitivity_age_sex.txt"
         ))
       )
     }
