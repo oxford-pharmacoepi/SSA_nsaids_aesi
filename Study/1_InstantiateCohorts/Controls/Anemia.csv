@@ -1,0 +1,145 @@
+,concept_id,found_from,concept_name,domain_id,vocabulary_id,standard_concept,Include?
+3,4264446,From initial search,Refractory anemia with excess blasts I,Observation,SNOMED,S,y
+4,36568184,From initial search,Refractory anemia with excess blasts in transformation of bone marrow,Condition,ICDO3,S,y
+6,4028717,From initial search,Refractory anemia,Observation,SNOMED,S,y
+7,4028718,From initial search,Refractory anemia with excess blasts,Observation,SNOMED,S,y
+8,4044728,From initial search,Thiamine-responsive megaloblastic anemia,Condition,SNOMED,S,y
+9,4032006,From initial search,Dimorphic anemia,Condition,SNOMED,S,y
+13,40478891,From initial search,Erythropoietin resistance in anemia of chronic kidney disease,Condition,SNOMED,S,y
+15,432588,From initial search,Megaloblastic anemia due to vitamin B-12 deficiency,Condition,SNOMED,S,y
+17,4184603,From initial search,Megaloblastic anemia due to Zollinger-Ellison syndrome,Condition,SNOMED,S,y
+18,4114026,From initial search,Normocytic anemia,Condition,SNOMED,S,y
+19,4146936,From initial search,Drug-induced autoimmune hemolytic anemia,Condition,SNOMED,S,y
+21,2108514,From initial search,FACC (Fanconi anemia) (Deprecated),Observation,CPT4,S,y
+22,42868770,From initial search,ESRD anemia management panel,Observation,LOINC,S,y
+23,605330,From initial search,Restless leg syndrome due to iron deficiency anemia,Condition,SNOMED,S,y
+24,4009785,From initial search,Anemia due to membrane defect,Condition,SNOMED,S,y
+25,4009306,From initial search,Anemia due to copper deficiency,Condition,SNOMED,S,y
+32,37398911,From initial search,Anemia in chronic kidney disease stage 4,Condition,SNOMED,S,y
+33,45768812,From initial search,Anemia in chronic kidney disease,Condition,SNOMED,S,y
+37,36716029,From initial search,"Hyperuricemia, anemia, renal failure syndrome",Condition,SNOMED,S,y
+45,4100998,From initial search,Aplastic anemia due to toxic cause,Condition,SNOMED,S,y
+49,4099508,From initial search,"Refractory anemia without sideroblasts, so stated",Condition,SNOMED,S,y
+50,4218100,From initial search,Hemolytic anemia due to drugs,Condition,SNOMED,S,y
+51,432295,From initial search,Pernicious anemia,Condition,SNOMED,S,y
+52,440977,From initial search,Megaloblastic anemia due to folate deficiency,Condition,SNOMED,S,y
+57,4122924,From initial search,Anemia of renal disease,Condition,SNOMED,S,y
+58,4121106,From initial search,Microcytic anemia,Condition,SNOMED,S,y
+64,36553657,From initial search,"Refractory anemia with excess blasts in transformation of hematopoietic system, NOS",Condition,ICDO3,S,y
+65,4131915,From initial search,Primary (idiopathic) autoimmune hemolytic anemia,Condition,SNOMED,S,y
+66,4131919,From initial search,"Drug-induced immune hemolytic anemia, hapten type",Condition,SNOMED,S,y
+67,4187768,From initial search,Anemia due to blood loss,Condition,SNOMED,S,y
+68,4186108,From initial search,Aplastic anemia associated with metabolic alteration,Condition,SNOMED,S,y
+70,4312008,From initial search,Anemia due to substance,Condition,SNOMED,S,y
+72,4263315,From initial search,Normocytic normochromic anemia,Condition,SNOMED,S,y
+75,4122079,From initial search,"Deficiency anemias, excluding iron",Condition,SNOMED,S,y
+78,4006468,From initial search,Anemia due to physical agent,Condition,SNOMED,S,y
+84,4284415,From initial search,Megaloblastic anemia due to increased requirements,Condition,SNOMED,S,y
+86,37395652,From initial search,Anemia in chronic kidney disease stage 5,Condition,SNOMED,S,y
+91,4098740,From initial search,Vitamin B12 deficiency anemia due to malabsorption with proteinuria,Condition,SNOMED,S,y
+92,4098019,From initial search,Toxic hemolytic anemia,Condition,SNOMED,S,y
+95,4101582,From initial search,Aplastic anemia due to chronic disease,Condition,SNOMED,S,y
+96,4098760,From initial search,Transient hypoplastic anemia,Condition,SNOMED,S,y
+97,4101000,From initial search,Secondary sideroblastic anemia due to drugs and toxins,Condition,SNOMED,S,y
+103,1340246,From initial search,Exacerbation of anemia,Condition,OMOP Extension,S,y
+108,4092893,From initial search,Anemia due to vitamin E deficiency,Condition,SNOMED,S,y
+112,136949,From initial search,Refractory anemia with excess blasts (clinical),Condition,SNOMED,S,y
+121,4116343,From initial search,Normocytic anemia following acute bleed,Condition,SNOMED,S,y
+123,2108515,From initial search,FACD (Fanconi anemia) (Deprecated),Observation,CPT4,S,y
+127,607426,From initial search,Vitamin B12 deficiency anemia due to chronic atrophic gastritis,Condition,SNOMED,S,y
+128,4019001,From initial search,Regenerative anemia,Condition,SNOMED,S,y
+130,4244129,From initial search,Anemia due to decreased red cell production,Condition,SNOMED,S,y
+132,435503,From initial search,Hemolytic anemia,Condition,SNOMED,S,y
+133,4280354,From initial search,Nutritional anemia,Condition,SNOMED,S,y
+134,45768941,From initial search,Chronic hemolytic anemia,Condition,SNOMED,S,y
+141,37110336,From initial search,Acquired iron deficiency anemia due to decreased absorption,Condition,SNOMED,S,y
+146,437834,From initial search,Non-autoimmune hemolytic anemia,Condition,SNOMED,S,y
+148,2617150,From initial search,Erythropoetic stimulating agent (esa) administered to treat anemia not due to anti-cancer radiotherapy or anti-cancer chemotherapy,Observation,HCPCS,S,y
+150,4194519,From initial search,Anemia due to unknown mechanism,Condition,SNOMED,S,y
+151,4213893,From initial search,Achlorhydric anemia,Condition,SNOMED,S,y
+153,4312853,From initial search,Anemia due to vitamin B-6 deficiency,Condition,SNOMED,S,y
+154,42596487,From initial search,Macrocytic hypochromic anemia,Condition,SNOMED Veterinary,S,y
+155,42596488,From initial search,Macrocytic normochromic anemia,Condition,SNOMED Veterinary,S,y
+156,4120450,From initial search,Normocytic anemia due to chronic blood loss,Condition,SNOMED,S,y
+159,437247,From initial search,Anemia of chronic disease,Condition,SNOMED,S,y
+161,4096927,From initial search,Megaloblastic anemia due to vitamin B-12 malabsorption with proteinuria,Condition,SNOMED,S,y
+169,4323223,From initial search,Anemia due to medication,Condition,SNOMED,S,y
+171,4185887,From initial search,Anemia due to abnormality extrinsic to the red cell,Condition,SNOMED,S,y
+173,440979,From initial search,Acquired hemolytic anemia,Condition,SNOMED,S,y
+186,46272744,From initial search,Hypochromic microcytic anemia with iron overload,Condition,SNOMED,S,y
+190,4100987,From initial search,"Folate deficiency anemia, drug-induced",Condition,SNOMED,S,y
+191,4098008,From initial search,Folate deficiency anemia due to malabsorption,Condition,SNOMED,S,y
+192,4101458,From initial search,Combined B12 and folate deficiency anemia,Condition,SNOMED,S,y
+194,4105643,From initial search,Myasthenic syndrome due to pernicious anemia,Condition,SNOMED,S,y
+200,4231887,From initial search,Secondary acquired sideroblastic anemia,Condition,SNOMED,S,y
+202,4122923,From initial search,Dilutional anemia,Condition,SNOMED,S,y
+203,4146086,From initial search,Constitutional aplastic anemia with malformation,Condition,SNOMED,S,y
+204,4146088,From initial search,Aplastic anemia due to drugs,Condition,SNOMED,S,y
+207,4144811,From initial search,Anemia due to zinc deficiency,Condition,SNOMED,S,y
+211,4288089,From initial search,Refractory anemia with excess blasts II,Observation,SNOMED,S,y
+213,4029669,From initial search,Refractory anemia with sideroblasts,Observation,SNOMED,S,y
+217,4190771,From initial search,Refractory anemia with excess blasts-1,Condition,SNOMED,S,y
+218,443961,From initial search,Anemia of chronic renal failure,Condition,SNOMED,S,y
+224,4148471,From initial search,Fanconi's anemia,Condition,SNOMED,S,y
+229,4015896,From initial search,Anemia due to niacin deficiency,Condition,SNOMED,S,y
+232,37019193,From initial search,Anemia co-occurrent and due to chronic kidney disease stage 3,Condition,SNOMED,S,y
+236,37119138,From initial search,Iron deficiency anemia due to blood loss,Condition,SNOMED,S,y
+239,4098627,From initial search,Idiopathic hypochromic anemia,Condition,SNOMED,S,y
+241,4098753,From initial search,Primary warm-type hemolytic anemia,Condition,SNOMED,S,y
+242,4101001,From initial search,Chronic anemia,Condition,SNOMED,S,y
+249,4125630,From initial search,Chronic non-spherocytic hemolytic anemia,Condition,SNOMED,S,y
+251,4122927,From initial search,Combined deficiency anemia,Condition,SNOMED,S,y
+252,434622,From initial search,Deficiency anemias,Condition,SNOMED,S,y
+254,4100962,From initial search,Megaloblastic anemia due to impaired absorption of folate,Condition,SNOMED,S,y
+261,4035974,From initial search,Drug-induced enzyme deficiency anemia,Condition,SNOMED,S,y
+266,4196102,From initial search,Hapten type low affinity hemolytic anemia,Condition,SNOMED,S,y
+268,4198102,From initial search,Microangiopathic hemolytic anemia,Condition,SNOMED,S,y
+269,4184758,From initial search,Acquired aplastic anemia,Condition,SNOMED,S,y
+270,4160238,From initial search,Simple chronic anemia,Condition,SNOMED,S,y
+271,137829,From initial search,Aplastic anemia,Condition,SNOMED,S,y
+272,4150499,From initial search,Refractory megaloblastic anemia,Condition,SNOMED,S,y
+273,3045803,From initial search,Anemia [Minimum Data Set],Observation,LOINC,S,y
+277,606940,From initial search,Drug-induced non autoimmune hemolytic anemia,Condition,SNOMED,S,y
+282,4300295,From initial search,Drug-induced sideroblastic anemia,Condition,SNOMED,S,y
+284,4098145,From initial search,Idiopathic aplastic anemia,Condition,SNOMED,S,y
+291,4311676,From initial search,Anemia due to vitamin A deficiency,Condition,SNOMED,S,y
+292,4313581,From initial search,Hapten type high affinity hemolytic anemia,Condition,SNOMED,S,y
+300,434894,From initial search,Acute posthemorrhagic anemia,Condition,SNOMED,S,y
+301,4143629,From initial search,Anemia due to mechanical damage,Condition,SNOMED,S,y
+305,36402757,From initial search,Refractory anemia with excess blasts in transformation of blood,Condition,ICDO3,S,y
+307,4029670,From initial search,Refractory anemia with excess blasts in transformation,Observation,SNOMED,S,y
+309,4195171,From initial search,Normocytic hypochromic anemia,Condition,SNOMED,S,y
+311,4262948,From initial search,Microcytic hypochromic anemia,Condition,SNOMED,S,y
+312,4260689,From initial search,Anemia due to multiple mechanisms,Condition,SNOMED,S,y
+313,4168772,From initial search,Megaloblastic anemia due to chronic hemolytic anemia,Condition,SNOMED,S,y
+314,4172446,From initial search,Microcytic normochromic anemia,Condition,SNOMED,S,y
+315,4201444,From initial search,Anemia due to riboflavin deficiency,Condition,SNOMED,S,y
+317,4156842,From initial search,Intracorpuscular hemolytic anemia,Condition,SNOMED,S,y
+319,4003185,From initial search,Refractory anemia (clinical),Condition,SNOMED,S,y
+322,4008273,From initial search,Coombs negative hemolytic anemia,Condition,SNOMED,S,y
+325,45768813,From initial search,Anemia in end stage renal disease,Condition,SNOMED,S,y
+332,36716126,From initial search,Iron-refractory iron deficiency anemia,Condition,SNOMED,S,y
+336,4098018,From initial search,Mechanical hemolytic anemia,Condition,SNOMED,S,y
+341,4082917,From initial search,"Drug-induced immune hemolytic anemia, immune complex type",Condition,SNOMED,S,y
+342,4088386,From initial search,Acquired Heinz body anemia,Condition,SNOMED,S,y
+348,4308125,From initial search,Macrocytic anemia,Condition,SNOMED,S,y
+349,436659,From initial search,Iron deficiency anemia,Condition,SNOMED,S,y
+354,439777,From initial search,Anemia,Condition,SNOMED,S,y
+355,4173028,From initial search,Idiopathic sideroblastic anemia,Condition,SNOMED,S,y
+357,4291002,From initial search,Megaloblastic anemia due to drugs,Condition,SNOMED,S,y
+361,432875,From initial search,Anemia due to chronic blood loss,Condition,SNOMED,S,y
+362,4187355,From initial search,Refractory anemia with excess blasts-2,Condition,SNOMED,S,y
+363,4218974,From initial search,Hypoplastic anemia,Condition,SNOMED,S,y
+364,4184200,From initial search,Secondary aplastic anemia,Condition,SNOMED,S,y
+365,435789,From initial search,Megaloblastic anemia,Condition,SNOMED,S,y
+367,140681,From initial search,Constitutional aplastic anemia,Condition,SNOMED,S,y
+369,4150547,From initial search,Anemia secondary to renal failure,Condition,SNOMED,S,y
+372,4003186,From initial search,Refractory anemia with ringed sideroblasts (clinical),Condition,SNOMED,S,y
+373,4002495,From initial search,Refractory anemia with excess blasts in transformation (clinical),Condition,SNOMED,S,y
+374,4018378,From initial search,Relative anemia,Condition,SNOMED,S,y
+377,602143,From initial search,Anemia due to chronic kidney disease stage 1,Condition,SNOMED,S,y
+379,36713572,From initial search,Vitamin B12 deficiency anemia caused by drug,Condition,SNOMED,S,y
+388,4101573,From initial search,Vitamin C deficiency anemia,Condition,SNOMED,S,y
+390,42872405,From initial search,"Anemia, pre-end stage renal disease on erythropoietin protocol",Condition,SNOMED,S,y
+445,4258261,From descendants,Drug induced thrombotic thrombocytopenic purpura,Condition,SNOMED,S,y
+653,44810002,From descendants,Recurrent anaemia,Condition,SNOMED,S,y
