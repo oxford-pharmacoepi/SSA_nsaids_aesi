@@ -170,7 +170,7 @@ for (i in seq_len(nrow(index_marker_combos))) {
       variable_name == "temporal_symmetry",
       estimate_name == "count",
       group_level == combo
-    )I
+    )
   
   if (nrow(filtered_result) == 0) {
     cli::cli_alert_warning(paste("Skipping plot for", index, "→", marker, "- no data found"))

@@ -304,6 +304,29 @@ cdm$nsaids |>
 cli::cli_alert_success("- Got nsaids")
 info(logger, "GOT NSAIDS")
 
+cli::cli_alert_info("- Getting outcome definitions")
+info(logger, "GETTING OUTCOME DEFINITIONS")
+
+# get concept sets from cohorts----
+# apart from the GI related ones the rest are from Darwin adverse events of special interest (aesi)
+aesi_codelists <- CodelistGenerator::codesFromCohort(
+  path = here::here("1_InstantiateCohorts", "Cohorts"),
+  cdm = cdm
+)
+
+# use cohort constructor to create cohort with age restriction and study period restriction
+cdm$aesi <- CohortConstructor::conceptCohort(
+  cdm = cdm,
+  conceptSet = aesi_codelists,
+  name = "aesi",
+) %>% 
+  CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date))) %>% 
+  CohortConstructor::requireAge(indexDate = "cohort_start_date",
+                                ageRange = list(c(18, 150)))
+
+cli::cli_alert_success("- Got outcome definitions")
+info(logger, "GOT OUTCOME DEFINITIONS")
+
 cli::cli_alert_info("- Get SA cohorts")
 info(logger, "GET SA COHORTS")
 
