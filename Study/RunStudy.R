@@ -28,27 +28,6 @@ logfile(logger) <- here::here("Results", db_name, Sys.Date(), logger_name)
 level(logger) <- "INFO"
 info(logger, "LOG CREATED")
 
-# Create subfolders for each analysis
-sex_strat_folder <- file.path(output_folder, "sex_stratification")
-age_strat_folder <- file.path(output_folder, "age_stratification")
-htn_strat_folder <- file.path(output_folder, "hypertension_stratification")
-sensitivity_folder <- file.path(output_folder, "sensitivity_365")
-characterisation_folder <- file.path(output_folder, "characterisation")
-symmetry_folder <- file.path(output_folder, "symmetry")
-
-folders <- list(sex_strat_folder, age_strat_folder, htn_strat_folder, sensitivity_folder, characterisation_folder, symmetry_folder)
-lapply(folders, function(f) {
-  if (!dir.exists(f)) dir.create(f, recursive = TRUE)
-})
-
-
-#log file
-logger_name <- gsub(":| |-", "_", paste0("log_01_001_", Sys.time(), ".txt"))
-logger <- create.logger()
-logfile(logger) <- here::here("Results", logger_name)
-level(logger) <- "INFO"
-info(logger, "LOG CREATED")
-
 # add start and end dates for index and marker drugs -----
 starting_date <- as.Date("2013-01-01")
 ending_date <- as.Date("2023-01-01")
