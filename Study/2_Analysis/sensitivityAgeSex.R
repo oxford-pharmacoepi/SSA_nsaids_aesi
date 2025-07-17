@@ -1,3 +1,6 @@
+sensitivity_as_folder <- file.path(output_folder, "sensitivity_age_sex")
+if (!dir.exists(sensitivity_as_folder)) dir.create(sensitivity_as_folder, recursive = TRUE)
+
 cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  name = "nsaids_ssa_sens",
                                                  cohortDateRange = c(starting_date, ending_date),
@@ -8,6 +11,10 @@ cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  markerTable = "aesi")
 
 results_sa <- CohortSymmetry::summariseSequenceRatios(cdm$nsaids_ssa_sens)
+
+exportSummarisedResult(results_sa,
+                       path = here::here(sensitivity_as_folder),
+                       fileName = paste0(db_name, "all_nsaids_sa_result.csv"))
 
 # sr_tidy_sa <- results_sa |>
 #   omopgenerics::tidy() %>% 
@@ -74,6 +81,11 @@ cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  markerTable = "aesi")
 
 results_sa_age_sex <- CohortSymmetry::summariseSequenceRatios(cdm$all_nsaids_ssa_age_sex)
+
+exportSummarisedResult(results_sa_age_sex,
+                       path = here::here(sensitivity_as_folder),
+                       fileName = paste0(db_name, "all_nsaids_age_sex_sa_result.csv"))
+
 
 # sr_tidy_sa_age_sex <- results_sa_age_sex |>
 #   omopgenerics::tidy() %>% 
