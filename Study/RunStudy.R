@@ -13,6 +13,7 @@ sex_strat_folder <- file.path(output_folder, "sex_stratification")
 age_strat_folder <- file.path(output_folder, "age_stratification")
 htn_strat_folder <- file.path(output_folder, "hypertension_stratification")
 sensitivity_folder <- file.path(output_folder, "sensitivity_365")
+sensitivity_as_folder <- file.path(output_folder, "sensitivity_age_sex")
 characterisation_folder <- file.path(output_folder, "characterisation")
 symmetry_folder <- file.path(output_folder, "symmetry")
 
