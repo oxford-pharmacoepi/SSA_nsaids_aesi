@@ -306,32 +306,32 @@ cdm <- generateDrugUtilisationCohortSet(
   gapEra = 30
 )
  
-cox_2_pref_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_2_pref.csv"), type = "csv")
+#cox_2_pref_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_2_pref.csv"), type = "csv")
 
  #Non selective with cox 2 preference
-cdm <- generateDrugUtilisationCohortSet(
-  cdm = cdm,
-  name = "cox_2_pref",
-  conceptSet = cox_2_pref_codelist,
-  gapEra = 30
-)
+#cdm <- generateDrugUtilisationCohortSet(
+#  cdm = cdm,
+#  name = "cox_2_pref",
+#  conceptSet = cox_2_pref_codelist,
+#  gapEra = 30
+#)
  
-cox_1_pref_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_1_pref.csv"), type = "csv")
+#cox_1_pref_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_1_pref.csv"), type = "csv")
 
- #Non selective with cox 1 preference
-cdm <- generateDrugUtilisationCohortSet(
-  cdm = cdm,
-  name = "cox_1_pref",
-  conceptSet = cox_1_pref_codelist,
-  gapEra = 30
-)
+ #Non selective with cox 1 preference#
+#cdm <- generateDrugUtilisationCohortSet(
+#  cdm = cdm,
+#  name = "cox_1_pref",
+#  conceptSet = cox_1_pref_codelist,
+#  gapEra = 30
+#)
  
  cdm <- omopgenerics::bind(
    cdm$all_nsaids,
    cdm$cox_2,
    cdm$non_selective,
-   cdm$cox_2_pref,
-   cdm$cox_1_pref,
+   #cdm$cox_2_pref,
+   #cdm$cox_1_pref,
    name = "nsaids_sa"
  ) 
  
