@@ -23,7 +23,7 @@ amiodarone_levothyroxin <- CohortSymmetry::summariseSequenceRatios(cohort = cdm$
 cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  name = "ace_cough",
                                                  cohortDateRange = c(starting_date, ending_date),
-                                                 indexTable = "ace_inh",
+                                                 indexTable = "ace_inhib",
                                                  markerTable = "cough",
                                                  daysPriorObservation = 365,
                                                  washoutWindow = 365,
@@ -69,7 +69,7 @@ summary_seq_ratio_final <- omopgenerics::bind(summary_seq_ratio)
 # write out summarised results object
 omopgenerics::exportSummarisedResult(summary_seq_ratio_final,
                                      minCellCount = 5,
-                                     path = here::here("Results",db_name),
+                                     path = here::here(symmetry_folder),
                                      fileName = paste0(cdmName(cdm),
                                                        "_results_ssa_estimates_controls.csv")
 )
@@ -84,7 +84,7 @@ marker_settings_controls <- bind_rows(
 )
   
 
-write_csv(marker_settings_controls, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_marker_settings_controls.csv"
+write_csv(marker_settings_controls, here::here(symmetry_folder, paste0("/", cdmName(cdm), "_ssa_marker_settings_controls.csv"
 )))
 
 
@@ -98,7 +98,7 @@ attrition_seq_ratio_controls <- list(attrition(cdm[["amiodarone_levothyroxine"]]
   bind_rows()
 
 
-write_csv(attrition_seq_ratio_controls, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_attrition_controls.csv"
+write_csv(attrition_seq_ratio_controls, here::here(symmetry_folder, paste0("/", cdmName(cdm), "_ssa_attrition_controls.csv"
 )))
 
 
@@ -115,7 +115,7 @@ summary_temp_trends_months_controls <-
        
        
 
-write_csv(summary_temp_trends_months_controls, here::here("Results", paste0(db_name, "/", cdmName(cdm), "_ssa_temporal_symmetry_summary_controls.csv"
+write_csv(summary_temp_trends_months_controls, here::here(symmetry_folder, paste0("/", cdmName(cdm), "_ssa_temporal_symmetry_summary_controls.csv"
 )))
 
 
@@ -173,7 +173,7 @@ record_trends_overall_pnc4 <- cdm[["cough"]] %>%
     by = "cohort_definition_id"
   )
 
-record_trends_overall_pnc5 <- cdm[["ace_inh"]] %>%
+record_trends_overall_pnc5 <- cdm[["ace_inhib"]] %>%
   filter(cohort_start_date >= starting_date,
          cohort_start_date <= ending_date) %>%
   mutate(year = year(cohort_start_date)) %>%
@@ -181,7 +181,7 @@ record_trends_overall_pnc5 <- cdm[["ace_inh"]] %>%
   summarise(n_records = n(), .groups = "drop") %>%
   collect() %>%
   left_join(
-    settings(cdm$ace_inh) %>%
+    settings(cdm$ace_inhib) %>%
       select(cohort_definition_id, cohort_name),
     by = "cohort_definition_id"
   )
@@ -197,5 +197,5 @@ record_trends_overall_controls <- bind_rows(
 
 # write out the results
 write_csv(record_trends_overall_controls, 
-          here::here("Results", paste0(db_name, "/", cdmName(cdm), "_record_trend_controls.csv"
+          here::here(symmetry_folder, paste0("/", cdmName(cdm), "_record_trend_controls.csv"
           )))
