@@ -122,6 +122,27 @@ info(logger, "CREATED NAUSEA CONTROL COHORT")
 cli::cli_alert_info("- Creating vomiting control cohort")
 info(logger, "CREATING VOMITING CONTROL COHORT")
 
+vomiting_concept_ids <- read_csv("1_InstantiateCohorts/Controls/Vomit.csv") |>
+  pull(concept_id) |>
+  as.numeric() |>
+  na.omit() |>
+  unique()
+
+vomiting_codes <- list(
+  vomiting = vomiting_concept_ids
+)
+
+cdm[["vomiting"]] <- conceptCohort(
+  cdm,
+  conceptSet = vomiting_codes,
+  exit = "event_end_date",
+  useSourceFields = FALSE,
+  name = "vomiting"
+)
+
+cli::cli_alert_success("- Created vomiting control cohort")
+info(logger, "CREATED VOMITING CONTROL COHORT")
+
 #anemia diagnosis
 cli::cli_alert_info("- Creating anemia control cohort")
 info(logger, "CREATING ANEMIA CONTROL COHORT")
