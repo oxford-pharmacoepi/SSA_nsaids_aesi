@@ -3,9 +3,10 @@
 # use this format: output_folder <- here("Results", db_name, "_new folder name")
 output_folder <- here("Results", db_name, Sys.Date())
 
-# output files ---- 
-if (!file.exists(output_folder)){
-  dir.create(output_folder, recursive = TRUE)}
+# output files ----
+if (!file.exists(output_folder)) {
+  dir.create(output_folder, recursive = TRUE)
+}
 
 # Create subfolders for each analysis
 sex_strat_folder <- file.path(output_folder, "sex_stratification")
@@ -13,6 +14,7 @@ age_strat_folder <- file.path(output_folder, "age_stratification")
 htn_strat_folder <- file.path(output_folder, "hypertension_stratification")
 anticoag_strat_folder <- file.path(output_folder, "anticoagulants_stratification")
 sensitivity_folder <- file.path(output_folder, "sensitivity_365")
+sensitivity_as_folder <- file.path(output_folder, "sensitivity_age_sex")
 characterisation_folder <- file.path(output_folder, "characterisation")
 symmetry_folder <- file.path(output_folder, "symmetry")
 
@@ -21,7 +23,7 @@ lapply(folders, function(f) {
   if (!dir.exists(f)) dir.create(f, recursive = TRUE)
 })
 
-#log file
+# log file
 logger_name <- gsub(":| |-", "_", paste0("log_01_001_", Sys.time(), ".txt"))
 logger <- create.logger()
 logfile(logger) <- here::here("Results", db_name, Sys.Date(), logger_name)
@@ -32,14 +34,6 @@ info(logger, "LOG CREATED")
 starting_date <- as.Date("2013-01-01")
 ending_date <- as.Date("2023-01-01")
 
-# run analysis
-run_symmetry <- TRUE
-run_characterisation <- TRUE
-run_sex_stratification <- TRUE
-run_age_stratification <- TRUE
-run_hypertension_stratification <- TRUE
-run_sensitivity_365 <- TRUE
-
 # get cdm snapshot
 info(logger, "RETRIEVING SNAPSHOT")
 
@@ -48,12 +42,10 @@ OmopSketch::exportSummarisedResult(
   fileName = here(output_folder, paste0("/", db_name, "_cdm_snapshot_.csv")),
   path = output_folder
 )
-
 info(logger, "SNAPSHOT COMPLETED")
 
-
-source(here("1_InstantiateCohorts","InstantiateCohorts.R"))
-
+info(logger, "INSTANTIATING COHORTS")
+source(here("1_InstantiateCohorts", "InstantiateCohorts.R"))
 
 # run main analysis ------------
 if(isTRUE(run_symmetry)){
@@ -71,119 +63,168 @@ if(isTRUE(run_symmetry)){
   })
   
   info(logger, "RAN COHORT SYMMETRY MAIN ANALYSIS")
-  
 }
 
 
 # database and study postive and negative controls ----------
-if(isTRUE(run_symmetry)){
+if (isTRUE(run_symmetry)) {
   cli::cli_text("- Running cohort symmetry for controls ({Sys.time()})")
-  
+
   info(logger, "RUNNING COHORT SYMMETRY FOR CONTROLS")
-  
-  tryCatch({
-    source(here("2_Analysis", "controls.R"))
-  }, error = function(e) {
-    writeLines(as.character(e),
-               here(output_folder, paste0("/", db_name,
-                                          
-                                          "_error_controls.txt")))
-  })
-  
+
+  tryCatch(
+    {
+      source(here("2_Analysis", "controls.R"))
+    },
+    error = function(e) {
+      writeLines(
+        as.character(e),
+        here(output_folder, paste0(
+          "/", db_name,
+          "_error_controls.txt"
+        ))
+      )
+    }
+  )
   info(logger, "RAN COHORT SYMMETRY FOR CONTROLS")
 }
 
 
 # characterisation analysis -----
-if(isTRUE(run_characterisation)){
+
+if (isTRUE(run_characterisation)) {
   cli::cli_text("- Running characterisation ({Sys.time()})")
-  
+
   info(logger, "RUNNING CHARACTERISATION")
-  
-  tryCatch({
-    source(here("2_Analysis", "characterisation.R"))
-  }, error = function(e) {
-    writeLines(as.character(e),
-               here(output_folder, paste0("/", db_name,
-                                          
-                                          "_error_characterisation.txt")))
-  })
-  
+
+  tryCatch(
+    {
+      source(here("2_Analysis", "characterisation.R"))
+    },
+    error = function(e) {
+      writeLines(
+        as.character(e),
+        here(output_folder, paste0(
+          "/", db_name,
+          "_error_characterisation.txt"
+        ))
+      )
+    }
+  )
   info(logger, "RAN CHARACTERISATION")
 }
 
 
 # sex stratification analysis
-if(isTRUE(run_sex_stratification)){
+if (isTRUE(run_sex_stratification)) {
   cli::cli_text("- Running sex stratification ({Sys.time()})")
-  
+
   info(logger, "RUNNING SEX STRATIFICATION")
-  
-  tryCatch({
-    source(here("2_Analysis", "SexStratification.R"))
-  }, error = function(e) {
-    writeLines(as.character(e),
-               here(output_folder, paste0("/", db_name,
-                                          
-                                          "_error_sex_stratification.txt")))
-  })
-  
+
+  tryCatch(
+    {
+      source(here("2_Analysis", "SexStratification.R"))
+    },
+    error = function(e) {
+      writeLines(
+        as.character(e),
+        here(output_folder, paste0(
+          "/", db_name,
+          "_error_sex_stratification.txt"
+        ))
+      )
+    }
+  )
   info(logger, "RAN SEX STRATIFICATION")
 }
 
 
 # age stratification analysis
-if(isTRUE(run_age_stratification)){
+if (isTRUE(run_age_stratification)) {
   cli::cli_text("- Running age stratification ({Sys.time()})")
-  
+
   info(logger, "RUNNING AGE STRATIFICATION")
-  
-  tryCatch({
-    source(here("2_Analysis", "AgeStratification.R"))
-  }, error = function(e) {
-    writeLines(as.character(e),
-               here(output_folder, paste0("/", db_name,
-                                          
-                                          "_error_age_stratification.txt")))
-  })
-  
+
+  tryCatch(
+    {
+      source(here("2_Analysis", "AgeStratification.R"))
+    },
+    error = function(e) {
+      writeLines(
+        as.character(e),
+        here(output_folder, paste0(
+          "/", db_name,
+          "_error_age_stratification.txt"
+        ))
+      )
+    }
+  )
   info(logger, "RAN AGE STRATIFICATION")
 }
 
 # hypertension stratification analysis
-if(isTRUE(run_hypertension_stratification)){
+if (isTRUE(run_hypertension_stratification)) {
   cli::cli_text("- Running hypertension stratification ({Sys.time()})")
-  
+
   info(logger, "RUNNING HYPERTENSION STRATIFICATION")
-  
-  tryCatch({
-    source(here("2_Analysis", "HypertensionStratification.R"))
-  }, error = function(e) {
-    writeLines(as.character(e),
-               here(output_folder, paste0("/", db_name,
-                                          
-                                          "_error_hypertension_stratification.txt")))
-  })
-  
+
+  tryCatch(
+    {
+      source(here("2_Analysis", "HypertensionStratification.R"))
+    },
+    error = function(e) {
+      writeLines(
+        as.character(e),
+        here(output_folder, paste0(
+          "/", db_name,
+          "_error_hypertension_stratification.txt"
+        ))
+      )
+    }
+  )
   info(logger, "RAN HYPERTENSION STRATIFICATION")
 }
 
 # sensivity analysis of 365 day combination window using unstratified population
-if(isTRUE(run_sensitivity_365)){
+if (isTRUE(run_sensitivity_365)) {
   cli::cli_text("- Running sensitivity 365 ({Sys.time()})")
-  
+
   info(logger, "RUNNING SENSITIVITY 365")
-  
-  tryCatch({
-    source(here("2_Analysis", "sensitivity.R"))
-  }, error = function(e) {
-    writeLines(as.character(e),
-               here(output_folder, paste0("/", db_name,
-                                          
-                                          "_error_sensitivity365.txt")))
-  })
-  
+
+  tryCatch(
+    {
+      source(here("2_Analysis", "sensitivity.R"))
+    },
+    error = function(e) {
+      writeLines(
+        as.character(e),
+        here(output_folder, paste0(
+          "/", db_name,
+          "_error_sensitivity365.txt"
+        ))
+      )
+    }
+  )
+
   info(logger, "RAN SENSITIVITY 365")
+}
+
+if (isTRUE(run_sensitivity_age_sex)) {
+  info(logger, "SENSITIVITY AGE + SEX")
+  tryCatch(
+    {
+      source(here("2_Analysis", "sensitivityAgeSex.R"))
+    },
+    error = function(e) {
+      writeLines(
+        as.character(e),
+        here(output_folder, paste0(
+          "/", db_name,
+          "_error_sensitivity_age_sex.txt"
+        ))
+      )
+    }
+  )
 }
 
 
@@ -193,10 +234,13 @@ info(logger, "ZIPPING RESULTS")
 
 # zip all results
 zip::zip(
-  zipfile = file.path(here(output_folder,
-                           paste0("Results", db_name, ".zip"))),
+  zipfile = file.path(here(
+    output_folder,
+    paste0("Results", db_name, ".zip")
+  )),
   files = list.files(here(output_folder)),
-  root = output_folder)
+  root = output_folder
+)
 
 cli::cli_alert_success("- Study Done!")
 cli::cli_alert_success("- If all has worked, there should now be a zip folder with your results in the Results folder to share")
