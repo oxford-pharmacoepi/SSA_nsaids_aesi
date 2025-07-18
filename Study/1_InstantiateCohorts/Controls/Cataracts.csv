@@ -1,0 +1,175 @@
+,concept_id,found_from,concept_name,domain_id,vocabulary_id,standard_concept,Include?
+1,37108933,From initial search,Bilateral after-cataract not obscuring vision,Condition,SNOMED,S,y
+2,761592,From initial search,Posterior subcapsular polar cataract of left eye,Condition,SNOMED,S,y
+3,765090,From initial search,Cataract of lens capsule of right eye,Condition,SNOMED,S,y
+4,36712946,From initial search,Cataract of posterior subcapsule of left eye,Condition,SNOMED,S,y
+5,608992,From initial search,Bilateral eye disorder following cataract surgery,Condition,SNOMED,S,y
+6,4109544,From initial search,"Total, mature senile cataract",Condition,SNOMED,S,y
+8,4109424,From initial search,Lamellar zonular cataract,Condition,SNOMED,S,y
+9,36685058,From initial search,Posterior subcapsular polar senile cataract of right eye,Condition,SNOMED,S,y
+10,760555,From initial search,Bilateral age-related cataract,Condition,SNOMED,S,y
+11,4007451,From initial search,Axial cataract,Condition,SNOMED,S,y
+12,4188446,From initial search,Strabismus following cataract surgery,Condition,SNOMED,S,y
+13,441846,From initial search,After-cataract not obscuring vision following extraction of cataract,Condition,SNOMED,S,y
+14,434145,From initial search,Embryonal nuclear cataract,Condition,SNOMED,S,y
+16,36684670,From initial search,Brunescent cataract of right eye,Condition,SNOMED,S,y
+17,37207942,From initial search,Cystoid macular edema of left eye due to and following cataract surgery,Condition,SNOMED,S,y
+19,36684796,From initial search,Bilateral eye brunescent cataract,Condition,SNOMED,S,y
+20,37208005,From initial search,Senile combined form cataract of right eye,Condition,SNOMED,S,y
+22,4219330,From initial search,Combined form of nonsenile cataract,Condition,SNOMED,S,y
+23,3655164,From initial search,Cataract of left eye present,Observation,SNOMED,S,y
+24,377285,From initial search,Mature cataract,Condition,SNOMED,S,y
+27,4210432,From initial search,Immature cortical cataract,Condition,SNOMED,S,y
+29,37208214,From initial search,Presenile cataract of right eye,Condition,SNOMED,S,y
+30,765527,From initial search,Age-related nuclear cataract of left eye,Condition,SNOMED,S,y
+31,764825,From initial search,Bilateral incipient cataracts,Condition,SNOMED,S,y
+33,44783427,From initial search,Zonular nonsenile cataract,Condition,SNOMED,S,y
+34,44783428,From initial search,Cortical nonsenile cataract,Condition,SNOMED,S,y
+38,35624213,From initial search,Secondary cataract,Condition,SNOMED,S,y
+40,35816781,From initial search,cataract,Observation,UK Biobank,S,y
+41,4334868,From initial search,Cataract in systemic disorders,Condition,SNOMED,S,y
+43,4081144,From initial search,Spontaneous reabsorption of cataract,Condition,SNOMED,S,y
+47,436118,From initial search,After-cataract with vision obscured following extraction of cataract,Condition,SNOMED,S,y
+48,378534,From initial search,Cortical and zonular cataract,Condition,SNOMED,S,y
+49,45757567,From initial search,Hypermature senile cataract,Condition,SNOMED,S,y
+50,604912,From initial search,Pulverulent cataract,Condition,SNOMED,S,y
+51,36685057,From initial search,Posterior subcapsular polar senile cataract of left eye,Condition,SNOMED,S,y
+52,4008296,From initial search,Coronary cataract,Condition,SNOMED,S,y
+53,40487893,From initial search,Immature cataract,Condition,SNOMED,S,y
+55,3656985,From initial search,Cataract lens fragments in vitreous of left eye due to and following cataract surgery,Condition,SNOMED,S,y
+56,36684736,From initial search,Brunescent cataract of left eye,Condition,SNOMED,S,y
+57,37207989,From initial search,Bilateral cystoid macular edema of eyes due to and following cataract surgery,Condition,SNOMED,S,y
+58,37208008,From initial search,Bilateral hypermature senile cataracts of eyes,Condition,SNOMED,S,y
+59,37208009,From initial search,Bilateral senile combined form cataracts of eyes,Condition,SNOMED,S,y
+61,4239578,From initial search,Cataract feature,Observation,SNOMED,S,y
+63,4278316,From initial search,Cataract maturity - finding,Condition,SNOMED,S,y
+64,4154554,From initial search,Suture tip cataract,Condition,SNOMED,S,y
+65,432895,From initial search,Cortical senile cataract,Condition,SNOMED,S,y
+66,4319589,From initial search,Intumescent cataract,Condition,SNOMED,S,y
+70,45890753,From initial search,Unplanned rupture of the posterior capsule requiring vitrectomy during cataract surgery (Deprecated),Observation,HCPCS,S,y
+71,4105159,From initial search,Atopic cataract,Condition,SNOMED,S,y
+79,765242,From initial search,Anterior subcapsular cataract of left eye,Condition,SNOMED,S,y
+81,761584,From initial search,Secondary cataract of right eye with vision obscured,Condition,SNOMED,S,y
+83,761603,From initial search,Total cataract of lens of bilateral eyes,Condition,SNOMED,S,y
+84,1340287,From initial search,Exacerbation of congenital cataract,Condition,OMOP Extension,S,y
+85,372315,From initial search,Anterior subcapsular polar cataract,Condition,SNOMED,S,y
+86,37309693,From initial search,After-cataract of left eye,Condition,SNOMED,S,y
+89,765357,From initial search,Age-related cataract of right eye,Condition,SNOMED,S,y
+90,4007944,From initial search,Stationary cataract,Condition,SNOMED,S,y
+91,376400,From initial search,Combined form of senile cataract,Condition,SNOMED,S,y
+92,4230930,From initial search,Punctate cataract,Condition,SNOMED,S,y
+93,438749,From initial search,Posterior subcapsular polar senile cataract,Condition,SNOMED,S,y
+96,36684802,From initial search,Cortical age-related cataract of left eye,Condition,SNOMED,S,y
+97,4300822,From initial search,Cataract care,Observation,SNOMED,S,y
+98,381295,From initial search,Senile cataract,Condition,SNOMED,S,y
+104,3656900,From initial search,Cataract lens fragments in vitreous of right eye due to and following cataract surgery,Condition,SNOMED,S,y
+106,40769268,From initial search,Cataract [Reported],Observation,LOINC,S,y
+109,764823,From initial search,Bilateral age-related nuclear cataracts,Condition,SNOMED,S,y
+116,35816857,From initial search,Cataract,Observation,UK Biobank,S,y
+118,4130588,From initial search,Morgagnian cataract,Condition,SNOMED,S,y
+119,379811,From initial search,Hypermature cataract,Condition,SNOMED,S,y
+120,761602,From initial search,Total cataract of lens of left eye,Condition,SNOMED,S,y
+121,761582,From initial search,Cataract of lens capsule of left eye,Condition,SNOMED,S,y
+122,37108934,From initial search,Right after-cataract not obscuring vision,Condition,SNOMED,S,y
+123,761587,From initial search,Secondary cataract of right eye,Condition,SNOMED,S,y
+124,4028246,From initial search,Cataract,Observation,SNOMED,S,y
+125,36712945,From initial search,Cataract of posterior subcapsule of right eye,Condition,SNOMED,S,y
+126,375545,From initial search,Cataract,Condition,SNOMED,S,y
+127,4001501,From initial search,Calcified cataract,Condition,SNOMED,S,y
+128,4006784,From initial search,Adherent cataract,Condition,SNOMED,S,y
+129,4199367,From initial search,Operation on cataract planned,Observation,SNOMED,S,y
+130,40479994,From initial search,Presenile cataract,Condition,SNOMED,S,y
+131,40482507,From initial search,Incipient senile cataract,Condition,SNOMED,S,y
+132,376399,From initial search,Incipient cataract,Condition,SNOMED,S,y
+133,373769,From initial search,Nuclear cataract,Condition,SNOMED,S,y
+137,436976,From initial search,Posterior subcapsular polar cataract,Condition,SNOMED,S,y
+139,36684803,From initial search,Bilateral posterior subcapsular polar senile cataract of eyes,Condition,SNOMED,S,y
+141,37311301,From initial search,Cataract of left eye,Condition,SNOMED,S,y
+142,37311300,From initial search,Cataract of right eye,Condition,SNOMED,S,y
+144,4317977,From initial search,Bilateral cataracts,Condition,SNOMED,S,y
+145,4319588,From initial search,Subcapsular cataract,Condition,SNOMED,S,y
+148,4197734,From initial search,Posterior subcapsular cataract,Condition,SNOMED,S,y
+153,37111464,From initial search,Punctate age-related cataract,Condition,SNOMED,S,y
+154,372624,From initial search,Cataract with neovascularization,Condition,SNOMED,S,y
+158,4081142,From initial search,Cupuliform cataract,Condition,SNOMED,S,y
+159,4081143,From initial search,Cataract maturity,Observation,SNOMED,S,y
+160,761585,From initial search,Secondary cataract of left eye with vision obscured,Condition,SNOMED,S,y
+161,765918,From initial search,Posterior subcapsular polar cataract of bilateral eyes,Condition,SNOMED,S,y
+162,761586,From initial search,Secondary cataract of left eye,Condition,SNOMED,S,y
+163,761590,From initial search,Anterior subcapsular cataract of right eye,Condition,SNOMED,S,y
+164,608993,From initial search,Disorder of left eye following cataract surgery,Condition,SNOMED,S,y
+166,4111101,From initial search,Vitreous syndrome following cataract surgery,Condition,SNOMED,S,y
+167,439297,From initial search,Nuclear senile cataract,Condition,SNOMED,S,y
+168,4048060,From initial search,Partial cataract,Condition,SNOMED,S,y
+169,4227806,From initial search,Cataract surgery,Observation,SNOMED,S,y
+177,4230391,From initial search,Nuclear sclerotic cataract,Condition,SNOMED,S,y
+178,377274,From initial search,Nonsenile cataract,Condition,SNOMED,S,y
+181,4152554,From initial search,Mixed type cataract,Condition,SNOMED,S,y
+185,764824,From initial search,Age-related nuclear cataract of right eye,Condition,SNOMED,S,y
+186,37208215,From initial search,Anterior subcapsular polar senile cataract of left eye,Condition,SNOMED,S,y
+187,44782821,From initial search,Cataract fragments in the eye post cataract surgery,Condition,SNOMED,S,y
+198,4088106,From initial search,Cataract finding,Condition,SNOMED,S,y
+201,761583,From initial search,Secondary cataract of bilateral eyes with vision obscured,Condition,SNOMED,S,y
+203,3662352,From initial search,Bilateral anterior subcapsular polar cataract,Condition,SNOMED,S,y
+204,761593,From initial search,Posterior subcapsular polar cataract of right eye,Condition,SNOMED,S,y
+206,761601,From initial search,Total cataract of lens of right eye,Condition,SNOMED,S,y
+207,36712947,From initial search,Cataract of posterior subcapsule of bilateral eyes,Condition,SNOMED,S,y
+208,608991,From initial search,Disorder of right eye following cataract surgery,Condition,SNOMED,S,y
+209,375256,From initial search,Anterior subcapsular polar senile cataract,Condition,SNOMED,S,y
+211,4216423,From initial search,Referral to cataract clinic,Observation,SNOMED,S,y
+218,37208006,From initial search,Hypermature senile cataract of left eye,Condition,SNOMED,S,y
+220,4154702,From initial search,Visual loss after cataract extraction,Condition,SNOMED,S,y
+221,44806987,From initial search,Keratopathy following cataract surgery,Condition,SNOMED,S,y
+225,36713345,From initial search,Presenile cataract of bilateral eyes,Condition,SNOMED,S,y
+226,381279,From initial search,Tetanic cataract,Condition,SNOMED,S,y
+229,42536899,From initial search,Cataract lens fragments in anterior chamber of eye due to and following cataract surgery,Condition,SNOMED,S,y
+232,4301387,From initial search,Cataracta brunescens,Condition,SNOMED,S,y
+234,761588,From initial search,Anterior subcapsular polar cataract of left eye,Condition,SNOMED,S,y
+235,761589,From initial search,Anterior subcapsular polar cataract of right eye,Condition,SNOMED,S,y
+236,761591,From initial search,Anterior subcapsular cataract of bilateral eyes,Condition,SNOMED,S,y
+237,37309694,From initial search,After-cataract of right eye,Condition,SNOMED,S,y
+238,4109548,From initial search,Drug-induced cataract,Condition,SNOMED,S,y
+240,604630,From initial search,Hutterite type cataract,Condition,SNOMED,S,y
+241,760554,From initial search,Age-related cataract of left eye,Condition,SNOMED,S,y
+242,4246990,From initial search,Referral for cataract extraction,Observation,SNOMED,S,y
+243,4259620,From initial search,Anterior capsule opacification following extraction of cataract,Condition,SNOMED,S,y
+246,37208004,From initial search,Hypermature senile cataract of right eye,Condition,SNOMED,S,y
+247,37208007,From initial search,Senile combined form cataract of left eye,Condition,SNOMED,S,y
+248,619198,From initial search,Coralliform cataract,Condition,SNOMED,S,y
+252,764826,From initial search,Incipient cataract of left eye,Condition,SNOMED,S,y
+253,3657141,From initial search,Bilateral cataract of eyes caused by drug,Condition,SNOMED,S,y
+258,37111463,From initial search,Coronary age-related cataract,Condition,SNOMED,S,y
+259,37108935,From initial search,Left after-cataract not obscuring vision,Condition,SNOMED,S,y
+260,37108936,From initial search,After-cataract of bilateral eyes,Condition,SNOMED,S,y
+261,765241,From initial search,Cataract of lens capsule of bilateral eyes,Condition,SNOMED,S,y
+262,761599,From initial search,Non age-related cataract of left eye,Condition,SNOMED,S,y
+263,761600,From initial search,Non age-related cataract of bilateral eyes,Condition,SNOMED,S,y
+264,765243,From initial search,Non age-related cataract of right eye,Condition,SNOMED,S,y
+265,1340271,From initial search,Exacerbation of cataract,Condition,OMOP Extension,S,y
+266,37209532,From initial search,Bilateral anterior subcapsular polar senile cataract of eyes,Condition,SNOMED,S,y
+267,4103579,From initial search,Cortical cataract,Condition,SNOMED,S,y
+269,4070183,From initial search,Capsular cataract,Condition,SNOMED,S,y
+274,37207882,From initial search,Cystoid macular edema of right eye due to and following cataract surgery,Condition,SNOMED,S,y
+278,36684801,From initial search,Cortical age-related cataract of right eye,Condition,SNOMED,S,y
+279,36684804,From initial search,Bilateral cortical age-related cataract eyes,Condition,SNOMED,S,y
+280,374646,From initial search,Toxic cataract,Condition,SNOMED,S,y
+281,3655165,From initial search,Cataract of right eye present,Observation,SNOMED,S,y
+283,3655163,From initial search,Cataract present,Observation,SNOMED,S,y
+285,4199963,From initial search,Anterior subcapsular cataract,Condition,SNOMED,S,y
+286,3045850,From initial search,Cataracts [Minimum Data Set],Observation,LOINC,S,y
+287,37208216,From initial search,Anterior subcapsular polar senile cataract of right eye,Condition,SNOMED,S,y
+288,37208213,From initial search,Presenile cataract of left eye,Condition,SNOMED,S,y
+289,765724,From initial search,Incipient cataract of right eye,Condition,SNOMED,S,y
+293,36717601,From initial search,Bullous aphakic keratopathy following cataract surgery,Condition,SNOMED,S,y
+296,42536898,From initial search,Cataract lens fragments in vitreous of eye due to and following cataract surgery,Condition,SNOMED,S,y
+310,3654993,From descendants,Early opacity of lens,Condition,SNOMED,S,y
+313,4081644,From descendants,Anterior capsular lens opacities,Condition,SNOMED,S,y
+315,4081645,From descendants,Anterior subcapsular lens opacities,Condition,SNOMED,S,y
+316,4082137,From descendants,Lens nuclear hyper-refringence,Condition,SNOMED,S,y
+317,4081141,From descendants,Polychromatic posterior subcapsular lens opacities,Condition,SNOMED,S,y
+319,441006,From descendants,Soemmerring's ring,Condition,SNOMED,S,y
+320,4083471,From descendants,Cortical lens opacities,Condition,SNOMED,S,y
+321,4081027,From descendants,Nuclear lens opacities,Condition,SNOMED,S,y
+322,4081028,From descendants,Posterior subcapsular lens opacities,Condition,SNOMED,S,y
+323,4334130,From descendants,Elschnig's pearls,Condition,SNOMED,S,y
+324,4081026,From descendants,Anterior lens opacities,Condition,SNOMED,S,y

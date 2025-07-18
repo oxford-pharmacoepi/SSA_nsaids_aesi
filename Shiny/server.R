@@ -18,7 +18,7 @@ server <-	function(input, output, session) {
   
   
   
-  # atc ssa -----
+  # overall ssa -----
   get_ssa_estimates <-reactive({
     
     table <- ssa_estimates %>% 
@@ -52,7 +52,7 @@ server <-	function(input, output, session) {
     }
   )
 
-  # forest plot
+  # forest plot OVERALL
   get_overall_forest_plot <-reactive({
     
     
@@ -147,7 +147,267 @@ server <-	function(input, output, session) {
   )
   
   
+  # forest plot SEX
+  get_sex_forest_plot <-reactive({
+    
+    
+    get_data <- ssa_estimates_sex |>
+      dplyr::mutate(
+        `Index cohort name` = stringr::str_replace(`Index cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
+        `Marker cohort name` = stringr::str_replace(`Marker cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", "")
+      ) %>% 
+      dplyr::mutate(
+        # Extract sex BEFORE cleaning names
+        sex = dplyr::case_when(
+          stringr::str_detect(`Index cohort name`, "_female$") ~ "Female",
+          stringr::str_detect(`Index cohort name`, "_male$") ~ "Male",
+          TRUE ~ "Unspecified"
+        ) ) %>% 
+      
+      dplyr::mutate(
+        # Clean cohort names AFTER extracting sex
+        `Index cohort name` = stringr::str_replace(`Index cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
+        `Index cohort name` = stringr::str_remove(`Index cohort name`, "_(female|male)$"),
+        `Marker cohort name` = stringr::str_replace(`Marker cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
+        pair = paste0(`Index cohort name`, "->", `Marker cohort name`
+        )) %>% 
+      
+      filter(asr != Inf) %>% 
+      mutate(highlight = ifelse(asr_lower > 1, "Highlighted", "Not Highlighted")) %>% 
+      rename(index_cohort_name = `Index cohort name`,
+             marker_cohort_name = `Marker cohort name`)  %>%  
+      mutate(
+        index_cohort_name = stringr::str_to_title(index_cohort_name),
+        marker_cohort_name = dplyr::case_when(
+          marker_cohort_name == "pe" ~ "Pulmonary Embolism",
+          marker_cohort_name == "gi_hemorrhage" ~ "GI Hemorrhage",
+          marker_cohort_name == "heart_failure" ~ "Heart Failure",
+          marker_cohort_name == "dvt" ~ "Deep Vein Thrombosis",
+          marker_cohort_name == "stroke_broad" ~ "Stroke",
+          marker_cohort_name == "isbroad" ~ "Ischemic Stroke",
+          marker_cohort_name == "acute_mi" ~ "Myocardial Infarction",
+          marker_cohort_name == "hem_stroke" ~ "Hemorrhagic Stroke",
+          
+          TRUE ~ stringr::str_to_title(marker_cohort_name)  # Default capitalization
+        )
+      )
+    
+    
+    p_sex_comparison <- ggplot(get_data, aes(
+      x = index_cohort_name,
+      y = asr,
+      ymin = asr_lower,
+      ymax = asr_upper,
+      shape = sex,
+      color = sex
+    )) +
+      geom_hline(yintercept = 1, linetype = 2) +
+      # Draw error bars with thicker lines
+      geom_errorbar(
+        aes(ymin = asr_lower, ymax = asr_upper),
+        position = position_dodge(width = 0.8),
+        width = 0,
+        size = 1  # This controls the thickness of the error bar line
+      ) +
+      # Add points separately
+      geom_point(
+        position = position_dodge(width = 0.8),
+        size = 3.5  # Controls the size of the point
+      ) +
+      facet_wrap(~ marker_cohort_name, scales = "free_x") +
+      coord_flip() +
+      theme_bw() +
+      labs(
+        x = "NSAID",
+        y = "Adjusted Sequence Ratio"
+      ) +
+      scale_shape_manual(values = c("Male" = 17, "Female" = 16)) +
+      scale_color_manual(values = c("Male" = "#1f77b4", "Female" = "#d62728")) +
+      theme(
+        legend.position = "right",
+        legend.title = element_blank(),
+        strip.text = element_text(face = "bold", size = 16),
+        axis.text = ggplot2::element_text(size = 14),
+        axis.title = ggplot2::element_text(size = 16)
+      )
+    
+    
+    
+    p_sex_comparison
+    
+    
+    
+  })
   
+  output$forestPlot_sex <- renderPlot(
+    get_sex_forest_plot()
+  )
+  
+  # forest plot AGE
+  get_age_forest_plot <-reactive({
+    
+    
+    get_data <- ssa_estimates_age |>
+      dplyr::mutate(
+        `Index cohort name` = stringr::str_replace(`Index cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
+        `Marker cohort name` = stringr::str_replace(`Marker cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", "")
+      ) %>% 
+      dplyr::mutate(
+        # Extract sex BEFORE cleaning names
+        age = dplyr::case_when(
+          stringr::str_detect(`Index cohort name`, "_18_to_65$") ~ "Under 65",
+          stringr::str_detect(`Index cohort name`, "_65_and_over$") ~ "Over 65",
+          TRUE ~ "Unspecified"
+        ) ) %>% 
+      
+      dplyr::mutate(
+        # Clean cohort names AFTER extracting age
+        `Index cohort name` = stringr::str_replace(`Index cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
+        `Index cohort name` = stringr::str_remove(`Index cohort name`, "_(65_and_over|18_to_65)$"),
+        `Marker cohort name` = stringr::str_replace(`Marker cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
+        pair = paste0(`Index cohort name`, "->", `Marker cohort name`
+        )) %>% 
+      
+      filter(asr != Inf) %>% 
+      mutate(highlight = ifelse(asr_lower > 1, "Highlighted", "Not Highlighted")) %>% 
+      rename(index_cohort_name = `Index cohort name`,
+             marker_cohort_name = `Marker cohort name`)  %>%  
+      mutate(
+        index_cohort_name = stringr::str_to_title(index_cohort_name),
+        marker_cohort_name = dplyr::case_when(
+          marker_cohort_name == "pe" ~ "Pulmonary Embolism",
+          marker_cohort_name == "gi_hemorrhage" ~ "GI Hemorrhage",
+          marker_cohort_name == "heart_failure" ~ "Heart Failure",
+          marker_cohort_name == "dvt" ~ "Deep Vein Thrombosis",
+          marker_cohort_name == "stroke_broad" ~ "Stroke",
+          marker_cohort_name == "isbroad" ~ "Ischemic Stroke",
+          marker_cohort_name == "acute_mi" ~ "Myocardial Infarction",
+          marker_cohort_name == "hem_stroke" ~ "Hemorrhagic Stroke",
+          
+          TRUE ~ stringr::str_to_title(marker_cohort_name)  # Default capitalization
+        )
+      )
+    
+    
+    p_age_comparison <- ggplot(get_data, aes(
+      x = index_cohort_name,
+      y = asr,
+      ymin = asr_lower,
+      ymax = asr_upper,
+      shape = age,
+      color = age
+    )) +
+      geom_hline(yintercept = 1, linetype = 2) +
+      # Draw error bars with thicker lines
+      geom_errorbar(
+        aes(ymin = asr_lower, ymax = asr_upper),
+        position = position_dodge(width = 0.8),
+        width = 0,
+        size = 1  # This controls the thickness of the error bar line
+      ) +
+      # Add points separately
+      geom_point(
+        position = position_dodge(width = 0.8),
+        size = 3.5  # Controls the size of the point
+      ) +
+      facet_wrap(~ marker_cohort_name, scales = "free_x") +
+      coord_flip() +
+      theme_bw() +
+      labs(
+        x = "NSAID",
+        y = "Adjusted Sequence Ratio"
+      ) +
+      scale_shape_manual(values = c("Under 65" = 17, "Over 65" = 16)) +
+      scale_color_manual(values = c("Under 65" = "#1f77b4", "Over 65" = "#d62728")) +
+      theme(
+        legend.position = "right",
+        legend.title = element_blank(),
+        strip.text = element_text(face = "bold", size = 16),
+        axis.text = ggplot2::element_text(size = 14),
+        axis.title = ggplot2::element_text(size = 16)
+      )
+    
+    
+    
+    p_age_comparison
+    
+    
+    
+  })
+  
+  output$forestPlot_age <- renderPlot(
+    get_age_forest_plot()
+  )
+  
+  
+  # sex ssa -----
+  get_ssa_sex_estimates <-reactive({
+    
+    table <- ssa_estimates_sex %>% 
+      select(-c(
+        asr   ,            
+        asr_lower    ,
+        asr_upper 
+        
+      )) %>% 
+      filter(`Database name` %in% input$sex_ssa_database_name_selector) %>% 
+      filter(signal %in% input$sex_ssa_signal_selector) %>% 
+      filter(`Index cohort name` %in% input$sex_ssa_index_name_selector) %>% 
+      filter(`Marker cohort name` %in% input$sex_ssa_marker_name_selector)
+    
+    table
+    
+  }) 
+  
+  output$tbl_sex_ssa <- renderText(kable(get_ssa_sex_estimates()) %>%
+                                         kable_styling("striped", full_width = F) )
+  
+  
+  
+  output$gt_sex_ssa_word <- downloadHandler(
+    filename = function() {
+      "sex_ssa_estimates.docx"
+    },
+    content = function(file) {
+      x <- gt(get_ssa_sex_estimates())
+      gtsave(x, file)
+    }
+  )
+  
+  
+  # age ssa -----
+  get_ssa_age_estimates <-reactive({
+    
+    table <- ssa_estimates_age %>% 
+      select(-c(
+        asr   ,            
+        asr_lower    ,
+        asr_upper 
+        
+      )) %>% 
+      filter(`Database name` %in% input$age_ssa_database_name_selector) %>% 
+      filter(signal %in% input$age_ssa_signal_selector) %>% 
+      filter(`Index cohort name` %in% input$age_ssa_index_name_selector) %>% 
+      filter(`Marker cohort name` %in% input$age_ssa_marker_name_selector)
+    
+    table
+    
+  }) 
+  
+  output$tbl_age_ssa <- renderText(kable(get_ssa_age_estimates()) %>%
+                                     kable_styling("striped", full_width = F) )
+  
+  
+  
+  output$gt_age_ssa_word <- downloadHandler(
+    filename = function() {
+      "age_ssa_estimates.docx"
+    },
+    content = function(file) {
+      x <- gt(get_ssa_age_estimates())
+      gtsave(x, file)
+    }
+  )
   
  
   # im settings -----
