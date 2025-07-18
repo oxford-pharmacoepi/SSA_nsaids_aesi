@@ -12,12 +12,13 @@ if (!file.exists(output_folder)) {
 sex_strat_folder <- file.path(output_folder, "sex_stratification")
 age_strat_folder <- file.path(output_folder, "age_stratification")
 htn_strat_folder <- file.path(output_folder, "hypertension_stratification")
+anticoag_strat_folder <- file.path(output_folder, "anticoagulants_stratification")
 sensitivity_folder <- file.path(output_folder, "sensitivity_365")
 sensitivity_as_folder <- file.path(output_folder, "sensitivity_age_sex")
 characterisation_folder <- file.path(output_folder, "characterisation")
 symmetry_folder <- file.path(output_folder, "symmetry")
 
-folders <- list(sex_strat_folder, age_strat_folder, htn_strat_folder, sensitivity_folder, characterisation_folder, symmetry_folder)
+folders <- list(sex_strat_folder, age_strat_folder, htn_strat_folder, anticoag_strat_folder, sensitivity_folder, characterisation_folder, symmetry_folder)
 lapply(folders, function(f) {
   if (!dir.exists(f)) dir.create(f, recursive = TRUE)
 })
