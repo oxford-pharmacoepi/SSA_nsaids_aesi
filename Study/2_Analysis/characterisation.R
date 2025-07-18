@@ -12,6 +12,7 @@ if (isTRUE(run_characterisation)) {
   cli::cli_alert_info("Instantiating table one Comorbidities ({Sys.time()})")
   info(logger, "INSTANTIATING TABLE ONE COMORBIDITIES")
   
+  if(isFALSE(instantiated)){
   codelistConditions <- CodelistGenerator::codesFromConceptSet(here("1_InstantiateCohorts", "Conditions"), cdm)
   
   cdm <- CDMConnector::generateConceptCohortSet(
@@ -20,6 +21,7 @@ if (isTRUE(run_characterisation)) {
     name = "conditions",
     overwrite = TRUE
   )
+  }
   
   cli::cli_alert_info("Summarising table one Comorbidities ({Sys.time()})")
   info(logger, "SUMMARISING TABLE ONE COMORBIDITIES")
@@ -28,6 +30,7 @@ if (isTRUE(run_characterisation)) {
   cli::cli_alert_info("Instantiating table one Medications ({Sys.time()})")
   info(logger, "INSTANTIATING TABLE ONE MEDICATIONS")
   
+  if(isFALSE(instantiated)){
   codelistMedications <- CodelistGenerator::codesFromConceptSet(here("1_InstantiateCohorts", "Medications"), cdm)
   
   cdm <- DrugUtilisation::generateDrugUtilisationCohortSet(
@@ -35,6 +38,7 @@ if (isTRUE(run_characterisation)) {
     conceptSet = codelistMedications,
     name = "medications"
   )
+  }
   
   cli::cli_alert_info("Summarising table one Medications ({Sys.time()})")
   info(logger, "SUMMARISING TABLE ONE MEDICATIONS")

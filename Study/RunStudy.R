@@ -12,13 +12,13 @@ if (!file.exists(output_folder)) {
 sex_strat_folder <- file.path(output_folder, "sex_stratification")
 age_strat_folder <- file.path(output_folder, "age_stratification")
 htn_strat_folder <- file.path(output_folder, "hypertension_stratification")
-anticoag_strat_folder <- file.path(output_folder, "anticoagulants_stratification")
 sensitivity_folder <- file.path(output_folder, "sensitivity_365")
 sensitivity_as_folder <- file.path(output_folder, "sensitivity_age_sex")
 characterisation_folder <- file.path(output_folder, "characterisation")
 symmetry_folder <- file.path(output_folder, "symmetry")
+#anticoag_strat_folder <- file.path(output_folder, "anticoagulants_stratification")
 
-folders <- list(sex_strat_folder, age_strat_folder, htn_strat_folder, anticoag_strat_folder, sensitivity_folder, characterisation_folder, symmetry_folder)
+folders <- list(sex_strat_folder, age_strat_folder, htn_strat_folder, sensitivity_folder, characterisation_folder, symmetry_folder)
 lapply(folders, function(f) {
   if (!dir.exists(f)) dir.create(f, recursive = TRUE)
 })
@@ -45,7 +45,20 @@ OmopSketch::exportSummarisedResult(
 info(logger, "SNAPSHOT COMPLETED")
 
 info(logger, "INSTANTIATING COHORTS")
+if(isFALSE(instantiated)){
+  
 source(here("1_InstantiateCohorts", "InstantiateCohorts.R"))
+}
+
+if(isTRUE(instantiated)){
+cdm <- CDMConnector::cdmFromCon(con = db,
+                                cdmSchema = cdm_database_schema,
+                                writeSchema = results_database_schema,
+                                cohortTables = c( "nsaids", "aesi", "medications", "conditions", "all_nsaids", "cox_2", "non_selective", "nsaids_sa", "hypertension", "nsaids_no_hypertension", "nsaids_prior_hypertension", "amiodarone", "levothyroxine", "allopurinol", "ace_inhib", "cough", "asthma", "edema", "cataracts", "nausea", "vomiting", "anemia", "aki"),
+                                writePrefix = table_stem,
+                                achillesSchema = results_database_schema,
+                                cdmName = db_name)
+}
 
 # run main analysis ------------
 if(isTRUE(run_symmetry)){
@@ -185,7 +198,7 @@ if (isTRUE(run_hypertension_stratification)) {
   info(logger, "RAN HYPERTENSION STRATIFICATION")
 }
 
-# sensivity analysis of 365 day combination window using unstratified population
+# sensitivity analysis of 365 day combination window using unstratified population
 if (isTRUE(run_sensitivity_365)) {
   cli::cli_text("- Running sensitivity 365 ({Sys.time()})")
 
