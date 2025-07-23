@@ -54,11 +54,33 @@ if(isTRUE(instantiated)){
 cdm <- CDMConnector::cdmFromCon(con = db,
                                 cdmSchema = cdm_database_schema,
                                 writeSchema = results_database_schema,
-                                cohortTables = c( "nsaids", "aesi", "medications", "conditions", "all_nsaids", "cox_2", "non_selective", "nsaids_sa", "hypertension", "nsaids_no_hypertension", "nsaids_prior_hypertension", "amiodarone", "levothyroxine", "allopurinol", "ace_inhib", "cough", "asthma", "edema", "cataracts", "nausea", "vomiting", "anemia", "aki"),
+                                cohortTables = c( "nsaids", 
+                                                  "aesi", 
+                                                  "medications", 
+                                                  "conditions", 
+                                                  "all_nsaids", 
+                                                  "cox_2", 
+                                                  "non_selective", 
+                                                  "nsaids_sa", 
+                                                  "hypertension", 
+                                                  "amiodarone", 
+                                                  "levothyroxine", 
+                                                  "allopurinol", 
+                                                  "ace_inh", 
+                                                  "cough", 
+                                                  "asthma", 
+                                                  "edema", 
+                                                  "cataracts", 
+                                                  "nausea", 
+                                                  "vomiting",
+                                                  "anemia", 
+                                                  "aki"),
+                                
                                 writePrefix = table_stem,
                                 achillesSchema = results_database_schema,
                                 cdmName = db_name)
 }
+# "nsaids_no_hypertension", "nsaids_prior_hypertension"
 
 # run main analysis ------------
 if(isTRUE(run_symmetry)){
@@ -197,6 +219,29 @@ if (isTRUE(run_hypertension_stratification)) {
   )
   info(logger, "RAN HYPERTENSION STRATIFICATION")
 }
+
+## anticoagulants stratification analysis
+# if (isTRUE(run_anticoagulants_stratification)) {
+#   cli::cli_text("- Running anticoagulants stratification ({Sys.time()})")
+#   
+#   info(logger, "RUNNING ANTICOAGULANTS STRATIFICATION")
+#   
+#   tryCatch(
+#     {
+#       source(here("2_Analysis", "AnticoagulantsStratification.R"))
+#     },
+#     error = function(e) {
+#       writeLines(
+#         as.character(e),
+#         here(output_folder, paste0(
+#           "/", db_name,
+#           "_error_anticoagulants_stratification.txt"
+#         ))
+#       )
+#     }
+#   )
+#   info(logger, "RAN ANTICOAGULANTS STRATIFICATION")
+# }
 
 # sensitivity analysis of 365 day combination window using unstratified population
 if (isTRUE(run_sensitivity_365)) {

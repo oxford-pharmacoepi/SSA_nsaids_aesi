@@ -1,4 +1,4 @@
-ace_inhib <- getATCCodes(
+ace_inh <- getATCCodes(
   cdm,
   level = c("ATC 3rd"),
   name = "ACE INHIBITORS, PLAIN",
@@ -145,7 +145,7 @@ nsaids_codelist1 <- getDrugIngredientCodes(
   type = "codelist")
   
 omopgenerics::exportCodelist(x = nsaids_codelist1, path = "1_InstantiateCohorts/Codelists/NSAIDs", type = "csv")
-omopgenerics::exportCodelist(x = ace_inhib, path = "1_InstantiateCohorts/Codelists", type = "csv")
+omopgenerics::exportCodelist(x = ace_inh, path = "1_InstantiateCohorts/Codelists", type = "csv")
 omopgenerics::exportConceptSetExpression(x = cough_codelist, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
 write.csv(cough_codes, "1_InstantiateCohorts/Codelists/coughCodes.csv")
