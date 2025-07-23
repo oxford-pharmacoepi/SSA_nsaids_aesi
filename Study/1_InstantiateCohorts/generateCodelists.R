@@ -1,3 +1,6 @@
+# Code showing how codelists were generating for this study
+
+# ace inhibitors ----
 ace_inh <- getATCCodes(
   cdm,
   level = c("ATC 3rd"),
@@ -8,9 +11,20 @@ ace_inh <- getATCCodes(
   type = "codelist"
 )
 
-cough_codes <- getDescendants(cdm, conceptId = c(254761))
+# export ace inhibitor codelist
+omopgenerics::exportCodelist(x = ace_inh, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
-# use codelists generator to get the ingredient levels for all nsaids -----
+# cough ------
+#get code and descendents and create codelist
+coughCodes <- omopgenerics::newCodelist(
+  list(coughCodes = getDescendants(cdm, conceptId = 254761)$concept_id)
+)
+
+# export codelist
+omopgenerics::exportCodelist(x = coughCodes, path = "1_InstantiateCohorts/Codelists", type = "csv")
+
+# NSAIDS ----------
+# use codelists generator to get the ingredient levels for all nsaids
 # extract ATC for NSAIDS at 4th level to get the ingredients
 
 # M01AA Butylpyrazolidines
@@ -143,40 +157,29 @@ nsaids_codelist1 <- getDrugIngredientCodes(
   routeCategory = "oral",
   ingredientRange = c(1, 1),
   type = "codelist")
-  
+
+# export nsaids codelists
 omopgenerics::exportCodelist(x = nsaids_codelist1, path = "1_InstantiateCohorts/Codelists/NSAIDs", type = "csv")
-omopgenerics::exportCodelist(x = ace_inh, path = "1_InstantiateCohorts/Codelists", type = "csv")
-omopgenerics::exportConceptSetExpression(x = cough_codelist, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
-write.csv(cough_codes, "1_InstantiateCohorts/Codelists/coughCodes.csv")
+# all nsaids ----
 
-### Cox-2
+# union cohort hangs on server do not use for now
+# cdm$nsaid_union <- CohortConstructor::unionCohorts(
+#   cohort = cdm$nsaids,
+#   name = "nsaid_union",
+#   cohortName = "all_nsaids",
+#   keepOriginalCohorts = FALSE
+# )
 
-
-
-# Sensitivity Analysis
-
-cdm$nsaid_union <- CohortConstructor::unionCohorts(
-  cohort = cdm$nsaids,
-  name = "nsaid_union",
-  cohortName = "all_nsaids",
-  keepOriginalCohorts = FALSE
+# create a codelist with all nsaid concepts but exclude acetaminophen
+all_nsaids <- omopgenerics::newCodelist(
+  list(all_nsaids = unlist(nsaids_codelist2[!grepl("acetaminophen", names(nsaids_codelist2), ignore.case = TRUE)], use.names = FALSE))
 )
 
-all_nsaids_codelist <- cohortCodelist(cdm$nsaid_union, cohortId = 1)
-
-all_nsaids_codelist <- unlist(all_nsaids_codelist)
-
-# 2. Convert the combined vector into a list containing only that vector
-names(all_nsaids_codelist) <- NULL
-
-# 3. Convert the combined vector into a list containing only that vector
-all_nsaids <- list("all_nsaids" = all_nsaids_codelist)
-
+# export the codelist
 omopgenerics::exportCodelist(x = all_nsaids, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
-###
-
+### hypertension ---
 hyper_codelists <- CodelistGenerator::codesFromConceptSet(
   path = here::here("1_InstantiateCohorts", "Conditions", "hypertension.json"),
   cdm = cdm
@@ -184,7 +187,7 @@ hyper_codelists <- CodelistGenerator::codesFromConceptSet(
 
 omopgenerics::exportCodelist(x = hyper_codelists, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
-###
+### Cox-2
 cox_2_codelist <- bind(nsaids_codelist2["celecoxib"], nsaids_codelist2["etoricoxib"], 
                        nsaids_codelist2["lumiracoxib"],
                        nsaids_codelist2["rofecoxib"],
@@ -200,10 +203,9 @@ cox_2_codelist <- list("cox_2" = cox_2_codelist)
 
 omopgenerics::exportCodelist(x = cox_2_codelist, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
-###
+### non selective nsaids -----
 
 non_selective_codelist <- within(nsaids_codelist2, rm("celecoxib", "etoricoxib", "lumiracoxib", "rofecoxib", "valdecoxib"))
-
 non_selective_codelist <- unlist(non_selective_codelist)
 
 # 2. Convert the combined vector into a list containing only that vector
@@ -214,7 +216,7 @@ non_selective_codelist <- list("non_selective" = non_selective_codelist)
 
 omopgenerics::exportCodelist(x = non_selective_codelist, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
-###
+### cox 2 preference -------
 
 cox_2_pref_codelist <- bind(nsaids_codelist2["aceclofenac"], nsaids_codelist2["diclofenac"], nsaids_codelist2["etodolac"], nsaids_codelist2["meloxicam"], 
                             nsaids_codelist2["nabumetone"],nsaids_codelist2["sulindac"])
@@ -229,7 +231,7 @@ cox_2_pref_codelist <- list("cox_2_pref" = cox_2_pref_codelist)
 
 omopgenerics::exportCodelist(x = cox_2_pref_codelist, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
-###
+### cox 1 preference --------
 
 cox_1_pref_codelist <- bind(nsaids_codelist2["aspirin"], nsaids_codelist2["flurbiprofen"], nsaids_codelist2["indomethacin"], nsaids_codelist2["ketoprofen"], 
                             nsaids_codelist2["naproxen"],nsaids_codelist2["piroxicam"])
