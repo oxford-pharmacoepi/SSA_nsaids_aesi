@@ -24,7 +24,7 @@ amiodarone_levothyroxin <- CohortSymmetry::summariseSequenceRatios(cohort = cdm$
 cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  name = "ace_cough",
                                                  cohortDateRange = c(starting_date, ending_date),
-                                                 indexTable = "ace_inhib",
+                                                 indexTable = "ace_inh",
                                                  markerTable = "cough",
                                                  daysPriorObservation = 365,
                                                  washoutWindow = 365,
@@ -339,7 +339,7 @@ record_trends_overall_pnc4 <- cdm[["cough"]] %>%
     by = "cohort_definition_id"
   )
 
-record_trends_overall_pnc5 <- cdm[["ace_inhib"]] %>%
+record_trends_overall_pnc5 <- cdm[["ace_inh"]] %>%
   filter(cohort_start_date >= starting_date,
          cohort_start_date <= ending_date) %>%
   mutate(year = year(cohort_start_date)) %>%
@@ -347,7 +347,7 @@ record_trends_overall_pnc5 <- cdm[["ace_inhib"]] %>%
   summarise(n_records = n(), .groups = "drop") %>%
   collect() %>%
   left_join(
-    settings(cdm$ace_inhib) %>%
+    settings(cdm$ace_inh) %>%
       select(cohort_definition_id, cohort_name),
     by = "cohort_definition_id"
   )

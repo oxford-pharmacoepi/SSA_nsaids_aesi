@@ -39,11 +39,11 @@ info(logger, "GOT BENCHMARK DEFINITIONS DRUG-DRUG NEGATIVE CONTROLS")
 cli::cli_alert_info("- Creating ace inhibitor and cough cohorts")
 info(logger, "CREATING ACE INHIBITOR AND COUGH COHORTS")
 
-ace_inhib <- omopgenerics::importCodelist(path = "1_InstantiateCohorts/Codelists/C09A_ace_inhibitors_plain.csv", type = "csv")
+ace_inh <- omopgenerics::importCodelist(path = "1_InstantiateCohorts/Codelists/C09A_ace_inhibitors_plain.csv", type = "csv")
 
-cdm[["ace_inhib"]] <- conceptCohort(cdm,
-                                  conceptSet = ace_inhib,
-                                 name = "ace_inhib",
+cdm[["ace_inh"]] <- conceptCohort(cdm,
+                                  conceptSet = ace_inh,
+                                 name = "ace_inh",
                                 exit = "event_end_date",
                                useSourceFields = FALSE,
                               subsetCohort = NULL,
@@ -387,6 +387,46 @@ cdm <- generateDrugUtilisationCohortSet(
      window = c(-Inf,0),
      name = "nsaids_prior_hypertension"
    )
+ 
+## anticoagulants
+ # anticoagulants <- getATCCodes(
+ #   cdm,
+ #   level = c("ATC 4th"),
+ #   name = c("Vitamin K antagonists",
+ #            "Heparin group",
+ #            "Direct thrombin inhibitors",
+ #            "Direct factor Xa inhibitors"),
+ #   doseForm = NULL,
+ #   doseUnit = NULL,
+ #   routeCategory = NULL,
+ #   type = "codelist"
+ # )
+ # 
+ # cdm$anticoagulants <- CohortConstructor::conceptCohort(
+ #   cdm = cdm,
+ #   conceptSet = anticoagulants,
+ #   name = "anticoagulants"
+ # )
+ # 
+ # 
+ # cdm$nsaids_no_anticoagulants <- cdm$nsaids |>
+ #   CohortConstructor::requireTableIntersect(
+ #     intersections = 0,
+ #     tableName = "anticoagulants",
+ #     indexDate = "cohort_start_date",
+ #     window = c(-Inf,0),
+ #     name = "nsaids_no_anticoagulants"
+ #   )
+ # 
+ # cdm$nsaids_prior_anticoagulants <- cdm$nsaids |>
+ #   CohortConstructor::requireTableIntersect(
+ #     tableName = "anticoagulants",
+ #     indexDate = "cohort_start_date",
+ #     window = c(-Inf,0),
+ #     name = "nsaids_prior_anticoagulants"
+ #   )
+ 
+
 
 cli::cli_alert_success("- Completed Instantiate Cohorts")
 info(logger, "COMPLETED INSTANTIATE COHORTS")
