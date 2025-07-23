@@ -244,7 +244,7 @@ attrition_seq_ratio_controls <- list(attrition(cdm[["amiodarone_levothyroxine"]]
                                      attrition(cdm[["all_nsaids_anemia"]]) %>% 
                                        mutate(cohort_name = "all_nsaids_anemia"),
                                      attrition(cdm[["all_nsaids_cataracts"]]) %>% 
-                                       mutate(cohort_name = "all_nsaids_cataracts"),
+                                       mutate(cohort_name = "all_nsaids_cataracts")
 ) %>% 
   bind_rows()
 
