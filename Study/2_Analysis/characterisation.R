@@ -47,30 +47,73 @@ if (isTRUE(run_characterisation)) {
   cli::cli_alert_info("Add demographics to cohort ({Sys.time()})")
   info(logger, "ADDING DEMOGRAPHICS TO COHORT")
   
-  # take the nsaids_ssa_sens cohort (all nsaids into one cohort index versus all markers)
-  # only take the index name all_nsaids (excluding GI hem as it is a positive control)
-  # take the earliest index date ie. nsaid and then remove duplicate patients
-  # get demographics based on the index date ie nsaid
-  cdm$nsaids_characteristics <- cdm$nsaids_ssa_sens %>% 
-    filter(cohort_definition_id %in% 1:9 & cohort_definition_id != 4) %>%
-    arrange(subject_id, index_date) %>%
-    distinct(subject_id, .keep_all = TRUE) %>%
-    compute(name = "nsaids_characteristics") %>% 
-    PatientProfiles::addDemographics(indexDate = "index_date",
-                                     ageGroup = list(
-                                       "age_group" = list(
-                                         "18 to 49" = c(18, 49),
-                                         "50 to 59" = c(50, 59),
-                                         "60 to 69" = c(60, 69),
-                                         "70 to 79" = c(70, 79),
-                                         "80 to 89" = c(80, 89),
-                                         "90+" = c(90, 150)
-                                       )
-                                     )
-                                     
-    )
-  
+  # take the nsaids_aesi cohort (individual nsaids versus all markers)
+  # bind to the settings and remove rows where marker is gi hem or stroke broad
+  # only take the index name all_nsaids (excluding GI hem, stroke broad as it is a positive control)
+  # replace cohort_definition id with index_id (so it will run per nsaid)
+  cdm$nsaids_characteristics <- cdm$nsaids_aesi %>%
+    left_join(
+      settings(cdm$nsaids_aesi) %>%
+        select(cohort_definition_id, index_id, index_name, marker_name),
+      by = "cohort_definition_id",
+      copy = TRUE
+    ) %>%
+    filter(!marker_name %in% c("gi_hemorrhage", "stroke_broad")) %>%
+    mutate(cohort_definition_id = index_id) %>%
+    PatientProfiles::addDemographics(
+      indexDate = "index_date",
+      ageGroup = list(
+        "age_group" = list(
+          "18 to 49" = c(18, 49),
+          "50 to 59" = c(50, 59),
+          "60 to 69" = c(60, 69),
+          "70 to 79" = c(70, 79),
+          "80 to 89" = c(80, 89),
+          "90+"     = c(90, 150)
+        )
+      )
+    ) %>% 
+    compute(name = "nsaids_characteristics", temporary = FALSE)
 
+
+  # need to create new settings, attrition and codelist
+  # settings
+  new_settings <- cdm$nsaids_characteristics %>%
+    distinct(cohort_definition_id, index_id, index_name) %>%  # all together!
+    rename(cohort_name = index_name) %>%
+    collect() %>%  # collect locally if needed
+    tibble::as_tibble()
+  
+  # attrition
+  new_attrition <- tibble(
+    cohort_definition_id = integer(),
+    number_subjects = integer(),
+    number_records = integer(),
+    reason_id = integer(),
+    reason = character(),
+    excluded_subjects = integer(),
+    excluded_records = integer()
+  )
+  
+  # codelist ref
+  new_codelist_ref <- tibble(
+    cohort_definition_id = integer(),
+    codelist_name = character(),
+    concept_id = integer(),
+    codelist_type = character()
+  )
+    
+
+  # add new settings, attrition and codelist ref to new cohort table
+  cdm$nsaids_characteristics <- omopgenerics::newCohortTable(
+    table = cdm$nsaids_characteristics,
+    cohortSetRef = new_settings,
+    cohortAttritionRef = new_attrition,
+    cohortCodelistRef = new_codelist_ref,
+    .softValidation = TRUE
+    
+  )
+  
   info(logger, "ADDED DEMOGRAPHICS TO COHORT")
   
   suppressWarnings({
