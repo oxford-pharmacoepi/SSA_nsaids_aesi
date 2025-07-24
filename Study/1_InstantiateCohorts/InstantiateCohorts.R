@@ -34,7 +34,7 @@ cdm <- DrugUtilisation::generateIngredientCohortSet(
 cli::cli_alert_success("- Got benchmarker definitions drug - drug negative controls")
 info(logger, "GOT BENCHMARK DEFINITIONS DRUG-DRUG NEGATIVE CONTROLS")
 
-
+if(isTRUE(run_phenotyped_controls)){
 # ace inhibitors ----
 cli::cli_alert_info("- Creating ace inhibitor and cough cohorts")
 info(logger, "CREATING ACE INHIBITOR AND COUGH COHORTS")
@@ -221,6 +221,7 @@ info(logger, "CREATED EDEMA CONTROL COHORT")
 
 cli::cli_alert_success("- Created phenotyped control cohorts")
 info(logger, "CREATED PHENOTYPED CONTROL COHORTS")
+}
 
 #NSAIDs
 cli::cli_alert_info("- Getting nsaids")
@@ -275,97 +276,97 @@ cdm$aesi <- CohortConstructor::conceptCohort(
 cli::cli_alert_success("- Got outcome definitions")
 info(logger, "GOT OUTCOME DEFINITIONS")
 
-cli::cli_alert_info("- Get SA cohorts")
-info(logger, "GET SA COHORTS")
-
-all_nsaids <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "all_nsaids.csv"), type = "csv")
-
-cdm <- generateDrugUtilisationCohortSet(
-  cdm = cdm,
-  name = "all_nsaids",
-  conceptSet = all_nsaids ,
-  gapEra = 30
-) 
-
-#Cox2 selective cohort
-cox_2_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_2.csv"), type = "csv")
-
-cdm <- generateDrugUtilisationCohortSet(
-  cdm = cdm,
-  name = "cox_2",
-  conceptSet = cox_2_codelist,
-  gapEra = 30
-)
- 
-non_selective_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "non_selective.csv"), type = "csv")
-
-cdm <- generateDrugUtilisationCohortSet(
-  cdm = cdm,
-  name = "non_selective",
-  conceptSet = non_selective_codelist,
-  gapEra = 30
-)
- 
-cox_2_pref_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_2_pref.csv"), type = "csv")
-
- #Non selective with cox 2 preference
-cdm <- generateDrugUtilisationCohortSet(
-  cdm = cdm,
-  name = "cox_2_pref",
-  conceptSet = cox_2_pref_codelist,
-  gapEra = 30
-)
- 
-cox_1_pref_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_1_pref.csv"), type = "csv")
-
- #Non selective with cox 1 preference
-cdm <- generateDrugUtilisationCohortSet(
-  cdm = cdm,
-  name = "cox_1_pref",
-  conceptSet = cox_1_pref_codelist,
-  gapEra = 30
-)
- 
- cdm <- omopgenerics::bind(
-   cdm$all_nsaids,
-   cdm$cox_2,
-   cdm$non_selective,
-   cdm$cox_2_pref,
-   cdm$cox_1_pref,
-   name = "nsaids_sa"
- ) 
- 
- cdm$nsaids_sa |> 
-   CohortConstructor::requireAge(indexDate = "cohort_start_date",
-                                 ageRange = list(c(18, 150))) |> 
-   CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date))) 
- 
- ###
- 
- hyper_codelist <- omopgenerics::importCodelist(path = "1_InstantiateCohorts/Codelists/hypertension.csv", type = "csv")
- 
- cdm$hypertension <- CohortConstructor::conceptCohort(
-   cdm = cdm,
-   conceptSet = hyper_codelist,
-   name = "hypertension"
- )
- 
- cdm$nsaids_no_hypertension <- cdm$nsaids |>
-   CohortConstructor::requireTableIntersect(
-     intersections = 0,
-     tableName = "hypertension",
-     indexDate = "cohort_start_date",
-     window = c(-Inf,0),
-     name = "nsaids_no_hypertension"
-   )
- 
- cdm$nsaids_prior_hypertension <- cdm$nsaids |>
-   CohortConstructor::requireTableIntersect(
-     tableName = "hypertension",
-     indexDate = "cohort_start_date",
-     window = c(-Inf,0),
-     name = "nsaids_prior_hypertension"
-   )
+# cli::cli_alert_info("- Get SA cohorts")
+# info(logger, "GET SA COHORTS")
+# 
+# all_nsaids <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "all_nsaids.csv"), type = "csv")
+# 
+# cdm <- generateDrugUtilisationCohortSet(
+#   cdm = cdm,
+#   name = "all_nsaids",
+#   conceptSet = all_nsaids ,
+#   gapEra = 30
+# ) 
+# 
+# #Cox2 selective cohort
+# cox_2_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_2.csv"), type = "csv")
+# 
+# cdm <- generateDrugUtilisationCohortSet(
+#   cdm = cdm,
+#   name = "cox_2",
+#   conceptSet = cox_2_codelist,
+#   gapEra = 30
+# )
+#  
+# non_selective_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "non_selective.csv"), type = "csv")
+# 
+# cdm <- generateDrugUtilisationCohortSet(
+#   cdm = cdm,
+#   name = "non_selective",
+#   conceptSet = non_selective_codelist,
+#   gapEra = 30
+# )
+#  
+# cox_2_pref_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_2_pref.csv"), type = "csv")
+# 
+#  #Non selective with cox 2 preference
+# cdm <- generateDrugUtilisationCohortSet(
+#   cdm = cdm,
+#   name = "cox_2_pref",
+#   conceptSet = cox_2_pref_codelist,
+#   gapEra = 30
+# )
+#  
+# cox_1_pref_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_1_pref.csv"), type = "csv")
+# 
+#  #Non selective with cox 1 preference
+# cdm <- generateDrugUtilisationCohortSet(
+#   cdm = cdm,
+#   name = "cox_1_pref",
+#   conceptSet = cox_1_pref_codelist,
+#   gapEra = 30
+# )
+#  
+#  cdm <- omopgenerics::bind(
+#    cdm$all_nsaids,
+#    cdm$cox_2,
+#    cdm$non_selective,
+#    cdm$cox_2_pref,
+#    cdm$cox_1_pref,
+#    name = "nsaids_sa"
+#  ) 
+#  
+#  cdm$nsaids_sa |> 
+#    CohortConstructor::requireAge(indexDate = "cohort_start_date",
+#                                  ageRange = list(c(18, 150))) |> 
+#    CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date))) 
+#  
+#  ###
+#  
+#  hyper_codelist <- omopgenerics::importCodelist(path = "1_InstantiateCohorts/Codelists/hypertension.csv", type = "csv")
+#  
+#  cdm$hypertension <- CohortConstructor::conceptCohort(
+#    cdm = cdm,
+#    conceptSet = hyper_codelist,
+#    name = "hypertension"
+#  )
+#  
+#  cdm$nsaids_no_hypertension <- cdm$nsaids |>
+#    CohortConstructor::requireTableIntersect(
+#      intersections = 0,
+#      tableName = "hypertension",
+#      indexDate = "cohort_start_date",
+#      window = c(-Inf,0),
+#      name = "nsaids_no_hypertension"
+#    )
+#  
+#  cdm$nsaids_prior_hypertension <- cdm$nsaids |>
+#    CohortConstructor::requireTableIntersect(
+#      tableName = "hypertension",
+#      indexDate = "cohort_start_date",
+#      window = c(-Inf,0),
+#      name = "nsaids_prior_hypertension"
+#    )
 
 cli::cli_alert_success("- Completed Instantiate Cohorts")
 info(logger, "COMPLETED INSTANTIATE COHORTS")
