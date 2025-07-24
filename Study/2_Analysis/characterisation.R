@@ -47,40 +47,31 @@ if (isTRUE(run_characterisation)) {
   cli::cli_alert_info("Add demographics to cohort ({Sys.time()})")
   info(logger, "ADDING DEMOGRAPHICS TO COHORT")
   
-  cdm$nsaids_characteristics <- cdm$nsaids_aesi %>%
-    PatientProfiles::addDemographics()
+  # take the nsaids_ssa_sens cohort (all nsaids into one cohort index versus all markers)
+  # only take the index name all_nsaids (excluding GI hem as it is a positive control)
+  # take the earliest index date ie. nsaid and then remove duplicate patients
+  # get demographics based on the index date ie nsaid
+  cdm$nsaids_characteristics <- cdm$nsaids_ssa_sens %>% 
+    filter(cohort_definition_id %in% 1:9 & cohort_definition_id != 4) %>%
+    arrange(subject_id, index_date) %>%
+    distinct(subject_id, .keep_all = TRUE) %>%
+    compute(name = "nsaids_characteristics") %>% 
+    PatientProfiles::addDemographics(indexDate = "index_date",
+                                     ageGroup = list(
+                                       "age_group" = list(
+                                         "18 to 49" = c(18, 49),
+                                         "50 to 59" = c(50, 59),
+                                         "60 to 69" = c(60, 69),
+                                         "70 to 79" = c(70, 79),
+                                         "80 to 89" = c(80, 89),
+                                         "90+" = c(90, 150)
+                                       )
+                                     )
+                                     
+    )
   
-  cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
-    PatientProfiles::addDemographics(ageGroup = list(
-      "age_group" = list(
-        "18 to 49" = c(18, 49),
-        "50 to 59" = c(50, 59),
-        "60 to 69" = c(60, 69),
-        "70 to 79" = c(70, 79),
-        "80 to 89" = c(80, 89),
-        "90+" = c(90, 150)
-      )
-    ))
-  info(logger, "ADDED DEMOGRAPHICS TO COHORT")
-  
-  cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
-    filter(prior_observation >= 365)
-  
-  cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
-    compute(name = "nsaids_characteristics", temporary = FALSE, overwrite = TRUE) %>%
-    CDMConnector::recordCohortAttrition(reason = "Excluded patients with less than 365 prior history")
-  
-  info(logger, "EXCLUDED PATIENTS WITH LESS THAN 365 PRIOR HISTORY")
-  
-  cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
-    filter(sex %in% c("Male", "Female"))
-  
-  info(logger, "EXCLUDED PATIENTS WITH NO SEX RECORDED")
 
-  cdm$nsaids_characteristics <- cdm$nsaids_characteristics %>%
-    CohortConstructor::requireIsFirstEntry()
-  
-  info(logger, "CHARACTERISING AT FIRST ENTRY")
+  info(logger, "ADDED DEMOGRAPHICS TO COHORT")
   
   suppressWarnings({
     summarycharacteristics <- cdm$nsaids_characteristics %>%
