@@ -163,16 +163,6 @@ omopgenerics::exportCodelist(x = nsaids_codelist1, path = "1_InstantiateCohorts/
 
 # all nsaids ----
 
-# union cohort hangs on server do not use for now
-# cdm$nsaid_union <- CohortConstructor::unionCohorts(
-#   cohort = cdm$nsaids,
-#   name = "nsaid_union",
-#   cohortName = "all_nsaids",
-#   keepOriginalCohorts = FALSE
-# )
-
-# create a codelist with all nsaid concepts but exclude non M ATC NSAIDs (different indications)
-
 # # Create a combined regex pattern from the inclusions and "acetaminophen" and other nsaids from non M class
 exclusions4allnsaids <- c("acetaminophen", inclusions)
 pattern <- paste(exclusions4allnsaids, collapse = "|")  # create regex pattern
@@ -186,11 +176,6 @@ all_nsaids <- omopgenerics::newCodelist(
     )
   )
 )
-
-
-# all_nsaids <- omopgenerics::newCodelist(
-#   list(all_nsaids = unlist(nsaids_codelist2[!grepl("acetaminophen|aspirin", names(nsaids_codelist2), ignore.case = TRUE)], use.names = FALSE))
-# )
 
 # export the codelist
 omopgenerics::exportCodelist(x = all_nsaids, path = "1_InstantiateCohorts/Codelists", type = "csv")
@@ -211,52 +196,23 @@ cox_2_codelist <- bind(nsaids_codelist2["celecoxib"], nsaids_codelist2["etoricox
 
 cox_2_codelist <- unlist(cox_2_codelist)
 
-# 2. Convert the combined vector into a list containing only that vector
 names(cox_2_codelist) <- NULL
 
-# 3. Convert the combined vector into a list containing only that vector
 cox_2_codelist <- list("cox_2" = cox_2_codelist)
 
 omopgenerics::exportCodelist(x = cox_2_codelist, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
 ### non selective nsaids -----
 
-non_selective_codelist <- within(nsaids_codelist2, rm("celecoxib", "etoricoxib", "lumiracoxib", "rofecoxib", "valdecoxib"))
+non_selective_codelist <- within(nsaids_codelist2, rm("celecoxib", "etoricoxib", "lumiracoxib", "rofecoxib", "valdecoxib",
+                                                      "acetaminophen", "aspirin", "dilfunisal"))
+
 non_selective_codelist <- unlist(non_selective_codelist)
 
-# 2. Convert the combined vector into a list containing only that vector
 names(non_selective_codelist) <- NULL
 
-# 3. Convert the combined vector into a list containing only that vector
 non_selective_codelist <- list("non_selective" = non_selective_codelist)
 
 omopgenerics::exportCodelist(x = non_selective_codelist, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
-### cox 2 preference -------
-
-cox_2_pref_codelist <- bind(nsaids_codelist2["aceclofenac"], nsaids_codelist2["diclofenac"], nsaids_codelist2["etodolac"], nsaids_codelist2["meloxicam"], 
-                            nsaids_codelist2["nabumetone"],nsaids_codelist2["sulindac"])
-
-cox_2_pref_codelist <- unlist(cox_2_pref_codelist)
-
-# 2. Convert the combined vector into a list containing only that vector
-names(cox_2_pref_codelist) <- NULL
-
-# 3. Convert the combined vector into a list containing only that vector
-cox_2_pref_codelist <- list("cox_2_pref" = cox_2_pref_codelist)
-
-omopgenerics::exportCodelist(x = cox_2_pref_codelist, path = "1_InstantiateCohorts/Codelists", type = "csv")
-
-### cox 1 preference --------
-
-cox_1_pref_codelist <- bind(nsaids_codelist2["aspirin"], nsaids_codelist2["flurbiprofen"], nsaids_codelist2["indomethacin"], nsaids_codelist2["ketoprofen"], 
-                            nsaids_codelist2["naproxen"],nsaids_codelist2["piroxicam"])
-
-cox_1_pref_codelist <- unlist(cox_1_pref_codelist)
-
-names(cox_1_pref_codelist) <- NULL
-
-cox_1_pref_codelist <- list("cox_1_pref" = cox_1_pref_codelist)
-
-omopgenerics::exportCodelist(x = cox_1_pref_codelist, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
