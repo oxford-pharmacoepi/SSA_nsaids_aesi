@@ -171,10 +171,26 @@ omopgenerics::exportCodelist(x = nsaids_codelist1, path = "1_InstantiateCohorts/
 #   keepOriginalCohorts = FALSE
 # )
 
-# create a codelist with all nsaid concepts but exclude acetaminophen
+# create a codelist with all nsaid concepts but exclude non M ATC NSAIDs (different indications)
+
+# # Create a combined regex pattern from the inclusions and "acetaminophen" and other nsaids from non M class
+exclusions4allnsaids <- c("acetaminophen", inclusions)
+pattern <- paste(exclusions4allnsaids, collapse = "|")  # create regex pattern
+
+# Filter out matching names and build the codelist
 all_nsaids <- omopgenerics::newCodelist(
-  list(all_nsaids = unlist(nsaids_codelist2[!grepl("acetaminophen|aspirin", names(nsaids_codelist2), ignore.case = TRUE)], use.names = FALSE))
+  list(
+    all_nsaids = unlist(
+      nsaids_codelist2[!grepl(pattern, names(nsaids_codelist2), ignore.case = TRUE)],
+      use.names = FALSE
+    )
+  )
 )
+
+
+# all_nsaids <- omopgenerics::newCodelist(
+#   list(all_nsaids = unlist(nsaids_codelist2[!grepl("acetaminophen|aspirin", names(nsaids_codelist2), ignore.case = TRUE)], use.names = FALSE))
+# )
 
 # export the codelist
 omopgenerics::exportCodelist(x = all_nsaids, path = "1_InstantiateCohorts/Codelists", type = "csv")
