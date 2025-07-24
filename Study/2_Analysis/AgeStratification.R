@@ -189,20 +189,20 @@ for (i in seq_len(nrow(index_age_combos))) {
   
   
 #make temporal plots 
-  p_age_plot <- plotTemporalSymmetry1(
-    result = filtered_result,
-    plotTitle = paste0("Temporal Trends - Age: ", age_group, " - ", index_strat)
-  )
+  #p_age_plot <- plotTemporalSymmetry1(
+   # result = filtered_result,
+  #  plotTitle = paste0("Temporal Trends - Age: ", age_group, " - ", index_strat)
+  #)
   
   safe_index  <- stringr::str_replace_all(index_strat, "[^a-zA-Z0-9]", "_")
   safe_marker <- stringr::str_replace_all(marker, "[^a-zA-Z0-9]", "_")
   safe_age    <- stringr::str_replace_all(age_group, "[^a-zA-Z0-9]", "_")
   
-  plot_filename <- paste0("temporal_symmetry_age_", safe_age, "_", safe_index, "_", safe_marker, ".png")
+  #plot_filename <- paste0("temporal_symmetry_age_", safe_age, "_", safe_index, "_", safe_marker, ".png")
   
-  png(file.path(age_strat_folder, plot_filename), width = 20, height = 10, units = "in", res = 300, type = "cairo")
-  print(p_age_plot)
-  dev.off()
+  #png(file.path(age_strat_folder, plot_filename), width = 20, height = 10, units = "in", res = 300, type = "cairo")
+  #print(p_age_plot)
+  #dev.off()
 }
 
 cli::cli_alert_success("- Made temporal symmetry plots")

@@ -201,21 +201,21 @@ for (i in seq_len(nrow(index_sex_combos))) {
   
   # Make plot
   
-  p_split_plot <- plotTemporalSymmetry1(
-    result = filtered_result,
-    plotTitle = paste0("Temporal Trends - ", sex, " - ", index)
-  )
+  #p_split_plot <- plotTemporalSymmetry1(
+  #  result = filtered_result,
+  #  plotTitle = paste0("Temporal Trends - ", sex, " - ", index)
+  #)
   
   
   safe_index  <- stringr::str_replace_all(index, "[^a-zA-Z0-9]", "_")
   safe_marker <- stringr::str_replace_all(marker, "[^a-zA-Z0-9]", "_")
   safe_sex    <- ifelse(is.na(sex), "unknown", stringr::str_to_lower(sex))
   
-  plot_filename <- paste0("temporal_symmetry_", safe_sex, "_", safe_index, "_", safe_marker, ".png")
+  #plot_filename <- paste0("temporal_symmetry_", safe_sex, "_", safe_index, "_", safe_marker, ".png")
   
-  png(file.path(sex_strat_folder, plot_filename), width = 20, height = 10, units = "in", res = 300, type = "cairo")
-  print(p_split_plot)
-  dev.off()
+  #png(file.path(sex_strat_folder, plot_filename), width = 20, height = 10, units = "in", res = 300, type = "cairo")
+  #print(p_split_plot)
+  #dev.off()
 
 }
 
