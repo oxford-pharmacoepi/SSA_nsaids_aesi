@@ -1,3 +1,5 @@
+
+if(isTRUE(run_controls)){
 # positive controls -------
 cli::cli_alert_info("- Getting benchmarker definitions drug - drug positive controls")
 info(logger, "GETTING BENCHMARK DEFINITIONS DRUG-DRUG POSITIVE CONTROLS")
@@ -242,6 +244,7 @@ info(logger, "CREATED EDEMA CONTROL COHORT")
 
 cli::cli_alert_success("- Created phenotyped control cohorts")
 info(logger, "CREATED PHENOTYPED CONTROL COHORTS")
+}
 
 #NSAIDs
 cli::cli_alert_info("- Getting nsaids")
@@ -341,6 +344,7 @@ cdm <- generateDrugUtilisationCohortSet(
    CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date))) 
  
  ###
+ if(isTRUE(run_hypertension_stratification)){
  
  hyper_codelist <- omopgenerics::importCodelist(path = "1_InstantiateCohorts/Codelists/hypertension.csv", type = "csv")
  
@@ -366,6 +370,7 @@ cdm <- generateDrugUtilisationCohortSet(
      window = c(-Inf,0),
      name = "nsaids_prior_hypertension"
    )
+ }
  
 ## anticoagulants
  # anticoagulants <- getATCCodes(
