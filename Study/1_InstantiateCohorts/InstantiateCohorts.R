@@ -1,3 +1,5 @@
+
+if(isTRUE(run_controls)){
 # positive controls -------
 cli::cli_alert_info("- Getting benchmarker definitions drug - drug positive controls")
 info(logger, "GETTING BENCHMARK DEFINITIONS DRUG-DRUG POSITIVE CONTROLS")
@@ -242,6 +244,7 @@ info(logger, "CREATED EDEMA CONTROL COHORT")
 
 cli::cli_alert_success("- Created phenotyped control cohorts")
 info(logger, "CREATED PHENOTYPED CONTROL COHORTS")
+}
 
 #NSAIDs
 cli::cli_alert_info("- Getting nsaids")
@@ -326,33 +329,12 @@ cdm <- generateDrugUtilisationCohortSet(
   conceptSet = non_selective_codelist,
   gapEra = 30
 )
- 
-#cox_2_pref_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_2_pref.csv"), type = "csv")
 
- #Non selective with cox 2 preference
-#cdm <- generateDrugUtilisationCohortSet(
-#  cdm = cdm,
-#  name = "cox_2_pref",
-#  conceptSet = cox_2_pref_codelist,
-#  gapEra = 30
-#)
- 
-#cox_1_pref_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_1_pref.csv"), type = "csv")
-
- #Non selective with cox 1 preference#
-#cdm <- generateDrugUtilisationCohortSet(
-#  cdm = cdm,
-#  name = "cox_1_pref",
-#  conceptSet = cox_1_pref_codelist,
-#  gapEra = 30
-#)
  
  cdm <- omopgenerics::bind(
    cdm$all_nsaids,
    cdm$cox_2,
    cdm$non_selective,
-   #cdm$cox_2_pref,
-   #cdm$cox_1_pref,
    name = "nsaids_sa"
  ) 
  
@@ -362,6 +344,7 @@ cdm <- generateDrugUtilisationCohortSet(
    CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date))) 
  
  ###
+ if(isTRUE(run_hypertension_stratification)){
  
  hyper_codelist <- omopgenerics::importCodelist(path = "1_InstantiateCohorts/Codelists/hypertension.csv", type = "csv")
  
@@ -387,6 +370,7 @@ cdm <- generateDrugUtilisationCohortSet(
      window = c(-Inf,0),
      name = "nsaids_prior_hypertension"
    )
+ }
  
 ## anticoagulants
  # anticoagulants <- getATCCodes(
