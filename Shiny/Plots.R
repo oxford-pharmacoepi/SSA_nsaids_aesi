@@ -1,7 +1,7 @@
 ### Figure 1
 
 figure1_data <- ssa_estimates |>
-  #dplyr::filter(`Combination window` == "0, 180") |>
+  dplyr::filter(`Combination window` == "0, 180") |>
   dplyr::mutate(
     `Index cohort name` = stringr::str_replace(`Index cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
     `Marker cohort name` = stringr::str_replace(`Marker cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", "")

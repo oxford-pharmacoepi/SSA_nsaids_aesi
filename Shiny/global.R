@@ -213,14 +213,14 @@ ssa_estimates <- ssa_estimates_bind %>%
     `CDM name`,
     `Index cohort name`,
     `Marker cohort name`,
-    #`Combination window`
+    `Combination window`
   ) %>%
   summarise(
     `Index N (%)` = na.omit(`Index N (%)`)[1],
     `Marker N (%)` = na.omit(`Marker N (%)`)[1],
     `CSR (99% CI)` = na.omit(`CSR (99% CI)`)[1],
     `ASR (99% CI)` = na.omit(`ASR (99% CI)`)[1],
-    #`Variable level` = paste(unique(na.omit(`Variable level`)), collapse = ", "),
+    `Variable level` = paste(unique(na.omit(`Variable level`)), collapse = ", "),
     .groups = "drop"
   ) %>%
   mutate(
