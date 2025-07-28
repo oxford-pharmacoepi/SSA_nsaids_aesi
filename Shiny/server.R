@@ -57,9 +57,10 @@ server <-	function(input, output, session) {
     
     
     get_data <- ssa_estimates |>
-      filter(`Database name` %in% input$forest_plot_database_selector) %>% 
-      filter(`Index cohort name` %in% input$forest_plot_index_selector) %>% 
-      filter(`Marker cohort name` %in% input$forest_plot_marker_selector) %>% 
+      filter(`Database name` %in% input$forest_plot_database_selector) %>%
+      filter(`Index cohort name` %in% input$forest_plot_index_selector) %>%
+      filter(`Marker cohort name` %in% input$forest_plot_marker_selector) %>%
+      filter(`Combination window` %in% input$forest_plot_window_selector) %>%
       dplyr::mutate(
         `Index cohort name` = stringr::str_replace(`Index cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
         `Marker cohort name` = stringr::str_replace(`Marker cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", "")
@@ -67,7 +68,8 @@ server <-	function(input, output, session) {
       filter(asr != Inf) %>% 
       mutate(highlight = ifelse(asr_lower > 1, "Highlighted", "Not Highlighted")) %>% 
       rename(index_cohort_name = `Index cohort name`,
-             marker_cohort_name = `Marker cohort name`)  %>%  
+             marker_cohort_name = `Marker cohort name`,
+             combination_window = `Combination window`)  %>%  
       mutate(
         index_cohort_name = stringr::str_to_title(index_cohort_name),
         marker_cohort_name = dplyr::case_when(
@@ -80,65 +82,55 @@ server <-	function(input, output, session) {
           marker_cohort_name == "acute_mi" ~ "Myocardial Infarction",
           marker_cohort_name == "hem_stroke" ~ "Hemorrhagic Stroke",
           
-          TRUE ~ stringr::str_to_title(marker_cohort_name)  # Default capitalization
+          TRUE ~ stringr::str_to_title(marker_cohort_name)),
+          index_cohort_name = dplyr::case_when(
+            index_cohort_name == "All_nsaids" ~ "All NSAIDs",
+            index_cohort_name == "Non_selective" ~ "Non-selective",
+            TRUE ~ index_cohort_name
+          )
         )
-      )
     
     
     labs = c("Adjusted Sequence Ratio", "NSAID")
     custom_colors <- c("adjusted" = "black")
     
-    plot_data <- visOmopResults::scatterPlot(
-      get_data,
-      x = "index_cohort_name",
-      y = "asr",
-      line = FALSE,
-      point = TRUE,
-      ribbon = FALSE,
-      ymin = "asr_lower",
-      ymax = "asr_upper",
-      facet = "marker_cohort_name",
-      colour = "highlight"
-    ) +
-      ggplot2::ylab(labs[1]) +
-      ggplot2::xlab(labs[2]) +
-      ggplot2::coord_flip() +
-      #ggplot2::facet_wrap(~marker_cohort_name, scales = "free_x") +  # facet with free x-scale
-      ggplot2::theme_bw(base_size = 16) +  # base font size
-      ggplot2::geom_hline(yintercept = 1, linetype = 2, linewidth = 1) +
-      ggplot2::scale_shape_manual(values = rep(19, 5)) +
-      ggplot2::theme(
-        # KEY PART: box around each facet
-        panel.border = ggplot2::element_rect(color = "black", fill = NA, size = 0.5),
-
-        # Optional: make facets more visible
-        strip.background = ggplot2::element_rect(fill = "gray90", color = "black"),
-        strip.text = ggplot2::element_text(size = 16),
-
-        # Fonts
-        axis.text = ggplot2::element_text(size = 14),
-        axis.title = ggplot2::element_text(size = 16),
-        plot.title = ggplot2::element_text(hjust = 0.5, size = 18),
-
-        # Legend
-        legend.position = "none",
-        legend.title = ggplot2::element_blank()
-      )
-    
-    plot_data <-  plot_data + ggplot2::geom_point(size = 4)+  # bigger points
-      ggplot2::geom_errorbar(         # thicker lines from ymin to ymax
-        ggplot2::aes(ymin = asr_lower, ymax = asr_upper),
+    plot_data <- ggplot(get_data, aes(
+      x = index_cohort_name,
+      y = asr,
+      ymin = asr_lower,
+      ymax = asr_upper,
+      shape = combination_window,
+      color = combination_window
+    )) +
+      geom_hline(yintercept = 1, linetype = 2) +
+      # Draw error bars with thicker lines
+      geom_errorbar(
+        aes(ymin = asr_lower, ymax = asr_upper),
+        position = position_dodge(width = 0.8),
         width = 0,
-        linewidth = 1
+        size = 1  # This controls the thickness of the error bar line
+      ) +
+      # Add points separately
+      geom_point(
+        position = position_dodge(width = 0.8),
+        size = 3.5  # Controls the size of the point
+      ) +
+      facet_wrap(~ marker_cohort_name, scales = "free_x") +
+      coord_flip() +
+      theme_bw() +
+      labs(
+        x = "NSAID",
+        y = "Adjusted Sequence Ratio"
+      ) +
+      theme(
+        legend.position = "right",
+        legend.title = element_blank(),
+        strip.text = element_text(face = "bold", size = 16),
+        axis.text = ggplot2::element_text(size = 14),
+        axis.title = ggplot2::element_text(size = 16)
       )
 
     plot_data
-
-    
-
-    
-    
-
 
   })
 
@@ -189,6 +181,11 @@ server <-	function(input, output, session) {
           marker_cohort_name == "hem_stroke" ~ "Hemorrhagic Stroke",
           
           TRUE ~ stringr::str_to_title(marker_cohort_name)  # Default capitalization
+        ),
+        index_cohort_name = dplyr::case_when(
+          index_cohort_name == "All_nsaids" ~ "All NSAIDs",
+          index_cohort_name == "Non_selective" ~ "Non-selective",
+          TRUE ~ index_cohort_name
         )
       )
     
@@ -284,7 +281,11 @@ server <-	function(input, output, session) {
           marker_cohort_name == "acute_mi" ~ "Myocardial Infarction",
           marker_cohort_name == "hem_stroke" ~ "Hemorrhagic Stroke",
           
-          TRUE ~ stringr::str_to_title(marker_cohort_name)  # Default capitalization
+          TRUE ~ stringr::str_to_title(marker_cohort_name)),
+        index_cohort_name = dplyr::case_when(
+          index_cohort_name == "All_nsaids" ~ "All NSAIDs",
+          index_cohort_name == "Non_selective" ~ "Non-selective",
+          TRUE ~ index_cohort_name
         )
       )
     

@@ -715,6 +715,18 @@ ui <- dashboardPage(
             multiple = TRUE
           )
         ),
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "forest_plot_window_selector",
+            label = "Combination window",
+            choices = unique(ssa_estimates$`Combination window`),
+            selected = unique(ssa_estimates$`Combination window`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
 
 
         div(

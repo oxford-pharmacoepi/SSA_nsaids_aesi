@@ -138,12 +138,7 @@ snapshotcdm <- omopgenerics::bind(snapshotcdm) %>%
 
 
 # pssa settings ------
-im_settings_files <- results[stringr::str_detect(results, ".csv")]
-im_settings_files <- results[
-  stringr::str_detect(results, "marker_settings") &
-    !stringr::str_detect(results, "sex") &
-    !stringr::str_detect(results, "age")
-]
+im_settings_files <- results[stringr::str_detect(results, "marker_settings")]
 
 im_settings <- list()
 
@@ -170,13 +165,10 @@ im_settings <- dplyr::bind_rows(im_settings) %>%
 
 # pssa results OVERALL ------
 # pssa results for all markers
-ssa_estimates_files <- results[stringr::str_detect(results, ".csv")]
-ssa_estimates_files <- results[
-  stringr::str_detect(results, "result") &
-    !stringr::str_detect(results, "sex") &
-    !stringr::str_detect(results, "age")
-]
-
+ssa_estimates_files <- results[stringr::str_detect(results, "result")]
+ssa_estimates_files <- ssa_estimates_files[!stringr::str_detect(ssa_estimates_files, "sex")]
+ssa_estimates_files <- ssa_estimates_files[!stringr::str_detect(ssa_estimates_files, "_age")]
+ssa_estimates_files <- ssa_estimates_files[!stringr::str_detect(ssa_estimates_files, "controls")]
 ssa_estimates <- list()
 
 for(i in seq_along(ssa_estimates_files)){
@@ -185,13 +177,26 @@ for(i in seq_along(ssa_estimates_files)){
   
 }
 
+all_nsaids_ssa_files <- results[stringr::str_detect(results, "all_nsaids")]
+all_nsaids_ssa_files <- all_nsaids_ssa_files[!stringr::str_detect(all_nsaids_ssa_files, "age_sex_sa")]
+
+all_nsaids_estimates <- list()
+
+for(i in seq_along(all_nsaids_ssa_files)){
+  all_nsaids_estimates[[i]] <- omopgenerics::importSummarisedResult(all_nsaids_ssa_files[[i]])
+}
+
 # bind the results for the class result
-ssa_estimates <- omopgenerics::bind(ssa_estimates) %>% 
+ssa_estimates_bind <- omopgenerics::bind(ssa_estimates) 
+all_nsaids_bind <- omopgenerics::bind(all_nsaids_estimates)
+
+ssa_estimates_bind <- omopgenerics::bind(ssa_estimates_bind, all_nsaids_bind)
+
+ssa_estimates <- ssa_estimates_bind %>% 
   visOmopResults::visOmopTable(
     estimateName = c("N (%)" = "<count> (<percentage>%)",
                      "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
-    header = c("Variable name", "Estimate name"),
-    rename = c("Database name" = "cdm_name"),
+    header = c("variable_name", "estimate_name"),
     groupColumn = "cdm_name",
     type = "tibble",
     hide = "variable_level"
@@ -204,6 +209,20 @@ ssa_estimates <- omopgenerics::bind(ssa_estimates) %>%
     ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>% 
   rename_with(
     ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>% 
+  group_by(
+    `CDM name`,
+    `Index cohort name`,
+    `Marker cohort name`,
+    #`Combination window`
+  ) %>%
+  summarise(
+    `Index N (%)` = na.omit(`Index N (%)`)[1],
+    `Marker N (%)` = na.omit(`Marker N (%)`)[1],
+    `CSR (99% CI)` = na.omit(`CSR (99% CI)`)[1],
+    `ASR (99% CI)` = na.omit(`ASR (99% CI)`)[1],
+    #`Variable level` = paste(unique(na.omit(`Variable level`)), collapse = ", "),
+    .groups = "drop"
+  ) %>%
   mutate(
     `CSR (99% CI)` = if_else(
       `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
@@ -217,8 +236,9 @@ ssa_estimates <- omopgenerics::bind(ssa_estimates) %>%
     )
   ) %>%
   extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
-          regex = "(\\d+\\.?\\d*) \\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]",
+          regex = "(\\d+\\.?\\d*)\\s*\\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]", # Adjusted regex for potential spaces
           convert = TRUE, remove = FALSE) %>%
+  rename("Database name" = "CDM name") %>%
   mutate(signal = case_when(
     asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
     asr_upper < 1 ~ "Negative", 
@@ -229,14 +249,13 @@ ssa_estimates <- omopgenerics::bind(ssa_estimates) %>%
     TRUE ~ "Null"                  # All other cases
   )) 
 
-
-
 # pssa results SEX ------
 # pssa results for all markers
 ssa_estimates_sex_files <- results[stringr::str_detect(results, ".csv")]
 ssa_estimates_sex_files <- results[
   stringr::str_detect(results, "result") &
-    stringr::str_detect(results, "sex")
+    stringr::str_detect(results, "sex") &
+    !stringr::str_detect(results, "_sa_") 
 ]
 
 ssa_estimates_sex <- list()
@@ -247,8 +266,28 @@ for(i in seq_along(ssa_estimates_sex_files)){
   
 }
 
+ssa_estimates_sex <- omopgenerics::bind(ssa_estimates_sex)
+
+all_nsaids_sex_files <- results[
+  stringr::str_detect(results, "all_nsaids") &
+    stringr::str_detect(results, "_age_sex_")]
+
+all_nsaids_sex <- list()
+
+for(i in seq_along(all_nsaids_sex_files)){
+  
+  all_nsaids_sex[[i]] <- omopgenerics::importSummarisedResult(all_nsaids_sex_files[[i]])
+  
+}
+
+all_nsaids_sex <- omopgenerics::bind(all_nsaids_sex) %>%
+  omopgenerics::splitGroup() %>%
+  dplyr::filter(!str_detect(index_cohort_name, "18_to_65")) %>%
+  dplyr::filter(!str_detect(index_cohort_name, "65_and_over")) %>%
+  omopgenerics::uniteGroup(c("index_cohort_name", "marker_cohort_name"))
+
 # bind the results for the class result
-ssa_estimates_sex <- omopgenerics::bind(ssa_estimates_sex) %>% 
+ssa_estimates_sex <- omopgenerics::bind(ssa_estimates_sex, all_nsaids_sex) %>% 
   visOmopResults::visOmopTable(
     estimateName = c("N (%)" = "<count> (<percentage>%)",
                      "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
@@ -291,14 +330,12 @@ ssa_estimates_sex <- omopgenerics::bind(ssa_estimates_sex) %>%
     TRUE ~ "Null"                  # All other cases
   )) 
 
-
-
 # # pssa results AGE ------
 # # pssa results for all markers
-ssa_estimates_age_files <- results[stringr::str_detect(results, ".csv")]
 ssa_estimates_age_files <- results[
   stringr::str_detect(results, "result") &
-    stringr::str_detect(results, "age")
+    stringr::str_detect(results, "_age") &
+    !stringr::str_detect(results, "_sa_") 
 ]
 
 ssa_estimates_age <- list()
@@ -309,25 +346,56 @@ for(i in seq_along(ssa_estimates_age_files)){
 
 }
 
+ssa_estimates_age <- omopgenerics::bind(ssa_estimates_age)
+
+all_nsaids_age_files <- results[
+  stringr::str_detect(results, "all_nsaids") &
+    stringr::str_detect(results, "_age_sex_")]
+
+all_nsaids_age <- list()
+
+for(i in seq_along(all_nsaids_age_files)){
+  
+  all_nsaids_age[[i]] <- omopgenerics::importSummarisedResult(all_nsaids_age_files[[i]])
+  
+}
+
+all_nsaids_age <- omopgenerics::bind(all_nsaids_age) %>%
+  omopgenerics::splitGroup() %>%
+  dplyr::filter(!str_detect(index_cohort_name, "male")) %>%
+  dplyr::filter(!str_detect(index_cohort_name, "female")) %>%
+  omopgenerics::uniteGroup(c("index_cohort_name", "marker_cohort_name"))
+
 # bind the results for the class result
-ssa_estimates_age <- omopgenerics::bind(ssa_estimates_age) %>%
+ssa_estimates_age <- omopgenerics::bind(ssa_estimates_age, all_nsaids_age) %>%
   visOmopResults::visOmopTable(
     estimateName = c("N (%)" = "<count> (<percentage>%)",
                      "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
-    header = c("Variable name", "Estimate name"),
-    rename = c("Database name" = "cdm_name"),
+    header = c("variable_name", "estimate_name"),
     groupColumn = "cdm_name",
     type = "tibble",
     hide = "variable_level"
-  ) %>%
+  ) %>% 
   rename_with(
     ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
   rename_with(
-    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>%
+    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>% 
   rename_with(
-    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>%
+    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>% 
   rename_with(
-    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>%
+    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>% 
+  group_by(
+    `CDM name`,
+    `Index cohort name`,
+    `Marker cohort name`,
+  ) %>%
+  summarise(
+    `Index N (%)` = na.omit(`Index N (%)`)[1],
+    `Marker N (%)` = na.omit(`Marker N (%)`)[1],
+    `CSR (99% CI)` = na.omit(`CSR (99% CI)`)[1],
+    `ASR (99% CI)` = na.omit(`ASR (99% CI)`)[1],
+    .groups = "drop"
+  ) %>%
   mutate(
     `CSR (99% CI)` = if_else(
       `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
@@ -341,17 +409,18 @@ ssa_estimates_age <- omopgenerics::bind(ssa_estimates_age) %>%
     )
   ) %>%
   extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
-          regex = "(\\d+\\.?\\d*) \\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]",
+          regex = "(\\d+\\.?\\d*)\\s*\\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]", # Adjusted regex for potential spaces
           convert = TRUE, remove = FALSE) %>%
+  rename("Database name" = "CDM name") %>%
   mutate(signal = case_when(
     asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
-    asr_upper < 1 ~ "Negative",
+    asr_upper < 1 ~ "Negative", 
     asr == 0 ~ NA_character_,
     is.na(asr) ~ NA_character_,
     `Index N (%)` == "<5" ~ NA_character_,
     `Marker N (%)` == "<5" ~ NA_character_,
     TRUE ~ "Null"                  # All other cases
-  ))
+  )) 
 
 
 # attrition index - markers ----
@@ -359,7 +428,7 @@ im_attrition_files <- results[stringr::str_detect(results, ".csv")]
 im_attrition_files <- results[
   stringr::str_detect(results, "attrition") &
     !stringr::str_detect(results, "sex") &
-    !stringr::str_detect(results, "age")
+    !stringr::str_detect(results, "_age")
 ]
 
 im_attrition <- list()
@@ -386,7 +455,7 @@ im_temporal_files <- results[stringr::str_detect(results, ".csv")]
 im_temporal_files <- results[
   stringr::str_detect(results, "temporal_symmetry_summary") &
     !stringr::str_detect(results, "sex") &
-    !stringr::str_detect(results, "age")
+    !stringr::str_detect(results, "_age")
 ]
 
 im_temporal <- list()
@@ -500,11 +569,68 @@ rm(tableone_demo)
 
 }
 
-# to add -----------
+### Controls
+ssa_estimates_controls_files <- results[
+  stringr::str_detect(results, "result") &
+    stringr::str_detect(results, "control")
+]
 
-#sex stratification
-#age stratification
+ssa_estimates_controls <- importSummarisedResult(ssa_estimates_controls_files) |>
+visOmopResults::visOmopTable(
+  estimateName = c("N (%)" = "<count> (<percentage>%)",
+                   "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
+  header = c("variable_name", "estimate_name"),
+  groupColumn = "cdm_name",
+  type = "tibble",
+  hide = "variable_level"
+) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
+  rename_with(
+    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>% 
+  group_by(
+    `CDM name`,
+    `Index cohort name`,
+    `Marker cohort name`,
+  ) %>%
+  summarise(
+    `Index N (%)` = na.omit(`Index N (%)`)[1],
+    `Marker N (%)` = na.omit(`Marker N (%)`)[1],
+    `CSR (99% CI)` = na.omit(`CSR (99% CI)`)[1],
+    `ASR (99% CI)` = na.omit(`ASR (99% CI)`)[1],
+    .groups = "drop"
+  ) %>%
+  mutate(
+    `CSR (99% CI)` = if_else(
+      `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `CSR (99% CI)`
+    ),
+    `ASR (99% CI)` = if_else(
+      `ASR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `ASR (99% CI)`
+    )
+  ) %>%
+  extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
+          regex = "(\\d+\\.?\\d*)\\s*\\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]", # Adjusted regex for potential spaces
+          convert = TRUE, remove = FALSE) %>%
+  rename("Database name" = "CDM name") %>%
+  mutate(signal = case_when(
+    asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
+    asr_upper < 1 ~ "Negative", 
+    asr == 0 ~ NA_character_,
+    is.na(asr) ~ NA_character_,
+    `Index N (%)` == "<5" ~ NA_character_,
+    `Marker N (%)` == "<5" ~ NA_character_,
+    TRUE ~ "Null"                  # All other cases
+  )) 
+
+
+# to add -----------
 #sensitivity analysis
 #comorbs stratification
-
-
