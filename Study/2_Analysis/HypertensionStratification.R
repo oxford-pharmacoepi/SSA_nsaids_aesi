@@ -4,27 +4,23 @@ if (!dir.exists(htn_strat_folder)) dir.create(htn_strat_folder, recursive = TRUE
 cli::cli_alert_success("- Running hypertension stratification analysis")
 info(logger, "RUNNING HYPERTENSION STRATIFICATION ANALYSIS")
 
-cdm <- CohortSymmetry::generateSequenceCohortSet(
-  cdm = cdm,
-  name = "nsaids_aesi_no_hypertension",
-  cohortDateRange = c(starting_date, ending_date),
-  daysPriorObservation = 365,
-  combinationWindow = c(0, 365),
-  washoutWindow = 365,
-  indexTable = "nsaids_no_hypertension",
-  markerTable = "aesi"
-)
 
-cdm <- CohortSymmetry::generateSequenceCohortSet(
-  cdm = cdm,
-  name = "nsaids_aesi_prior_hypertension",
-  cohortDateRange = c(starting_date, ending_date),
-  daysPriorObservation = 365,
-  combinationWindow = c(0, 365),
-  washoutWindow = 365,
-  indexTable = "nsaids_prior_hypertension",
-  markerTable = "aesi"
-)
+cdm$nsaids_aesi_no_hypertension <- cdm$nsaids_aesi |>
+    CohortConstructor::requireTableIntersect(
+      intersections = 0,
+      tableName = "hypertension",
+      indexDate = "cohort_start_date",
+      window = c(-Inf,0),
+      name = "nsaids_aesi_no_hypertension"
+    )
+
+cdm$nsaids_aesi_prior_hypertension <- cdm$nsaids_aesi |>
+  CohortConstructor::requireTableIntersect(
+    tableName = "hypertension",
+    indexDate = "cohort_start_date",
+    window = c(-Inf,0),
+    name = "nsaids_aesi_prior_hypertension"
+  )
 
 #no prior hypertension
 cli::cli_alert_success("- Running no prior hypertension analysis")
