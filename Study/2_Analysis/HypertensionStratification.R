@@ -10,7 +10,7 @@ cdm$nsaids_aesi_no_hypertension <- cdm$nsaids_aesi |>
       intersections = 0,
       tableName = "hypertension",
       indexDate = "cohort_start_date",
-      window = c(-Inf,0),
+      window = c(-Inf,-1),
       name = "nsaids_aesi_no_hypertension"
     )
 
@@ -18,7 +18,7 @@ cdm$nsaids_aesi_prior_hypertension <- cdm$nsaids_aesi |>
   CohortConstructor::requireTableIntersect(
     tableName = "hypertension",
     indexDate = "cohort_start_date",
-    window = c(-Inf,0),
+    window = c(-Inf,-1),
     name = "nsaids_aesi_prior_hypertension"
   )
 
@@ -158,7 +158,7 @@ info(logger, "RUNNING PRIOR VS NO PRIOR HYPERTENSION ANALYSIS")
 #   y = point_estimate,
 #   ymin = lower_CI,
 #   ymax = upper_CI,
-#   shape = hypertension_status,
+#   shape = highlight,
 #   color = hypertension_status
 # )) +
 #   geom_pointrange(position = position_dodge(width = 0.5), size = 0.4) +
@@ -172,8 +172,8 @@ info(logger, "RUNNING PRIOR VS NO PRIOR HYPERTENSION ANALYSIS")
 #     y = "Adjusted Sequence Ratio"
 #   ) +
 #   scale_shape_manual(values = c(
-#     "No Prior Hypertension" = 16,  # ●
-#     "Prior Hypertension" = 17      # ▲
+#     "Not Highlighted" = 16,  # ●
+#     "Highlighted" = 17      # ▲
 #   )) +
 #   scale_color_manual(values = c(
 #     "No Prior Hypertension" = "#1f77b4",
@@ -183,8 +183,8 @@ info(logger, "RUNNING PRIOR VS NO PRIOR HYPERTENSION ANALYSIS")
 #     legend.position = "top",
 #     legend.title = element_blank(),
 #     strip.text = element_text(face = "bold")
-#   )
-# 
+  )
+
 # # Save plot
 # srPlotName <- paste0("hypertension_comparison", ".png")
 # png(here::here(htn_strat_folder, srPlotName), width = 8, height = 6, units = "in", res = 1500, type = "cairo")
