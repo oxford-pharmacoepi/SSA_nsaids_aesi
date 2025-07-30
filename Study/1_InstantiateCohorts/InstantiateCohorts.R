@@ -353,23 +353,6 @@ cdm <- generateDrugUtilisationCohortSet(
    conceptSet = hyper_codelist,
    name = "hypertension"
  )
- 
- cdm$nsaids_no_hypertension <- cdm$nsaids |>
-   CohortConstructor::requireTableIntersect(
-     intersections = 0,
-     tableName = "hypertension",
-     indexDate = "cohort_start_date",
-     window = c(-Inf,0),
-     name = "nsaids_no_hypertension"
-   )
- 
- cdm$nsaids_prior_hypertension <- cdm$nsaids |>
-   CohortConstructor::requireTableIntersect(
-     tableName = "hypertension",
-     indexDate = "cohort_start_date",
-     window = c(-Inf,0),
-     name = "nsaids_prior_hypertension"
-   )
  }
  
 ## anticoagulants

@@ -4,27 +4,23 @@ if (!dir.exists(htn_strat_folder)) dir.create(htn_strat_folder, recursive = TRUE
 cli::cli_alert_success("- Running hypertension stratification analysis")
 info(logger, "RUNNING HYPERTENSION STRATIFICATION ANALYSIS")
 
-cdm <- CohortSymmetry::generateSequenceCohortSet(
-  cdm = cdm,
-  name = "nsaids_aesi_no_hypertension",
-  cohortDateRange = c(starting_date, ending_date),
-  daysPriorObservation = 365,
-  combinationWindow = c(0, 365),
-  washoutWindow = 365,
-  indexTable = "nsaids_no_hypertension",
-  markerTable = "aesi"
-)
 
-cdm <- CohortSymmetry::generateSequenceCohortSet(
-  cdm = cdm,
-  name = "nsaids_aesi_prior_hypertension",
-  cohortDateRange = c(starting_date, ending_date),
-  daysPriorObservation = 365,
-  combinationWindow = c(0, 365),
-  washoutWindow = 365,
-  indexTable = "nsaids_prior_hypertension",
-  markerTable = "aesi"
-)
+cdm$nsaids_aesi_no_hypertension <- cdm$nsaids_aesi |>
+    CohortConstructor::requireTableIntersect(
+      intersections = 0,
+      tableName = "hypertension",
+      indexDate = "cohort_start_date",
+      window = c(-Inf,-1),
+      name = "nsaids_aesi_no_hypertension"
+    )
+
+cdm$nsaids_aesi_prior_hypertension <- cdm$nsaids_aesi |>
+  CohortConstructor::requireTableIntersect(
+    tableName = "hypertension",
+    indexDate = "cohort_start_date",
+    window = c(-Inf,-1),
+    name = "nsaids_aesi_prior_hypertension"
+  )
 
 #no prior hypertension
 cli::cli_alert_success("- Running no prior hypertension analysis")
@@ -162,7 +158,7 @@ info(logger, "RUNNING PRIOR VS NO PRIOR HYPERTENSION ANALYSIS")
 #   y = point_estimate,
 #   ymin = lower_CI,
 #   ymax = upper_CI,
-#   shape = hypertension_status,
+#   shape = highlight,
 #   color = hypertension_status
 # )) +
 #   geom_pointrange(position = position_dodge(width = 0.5), size = 0.4) +
@@ -176,8 +172,8 @@ info(logger, "RUNNING PRIOR VS NO PRIOR HYPERTENSION ANALYSIS")
 #     y = "Adjusted Sequence Ratio"
 #   ) +
 #   scale_shape_manual(values = c(
-#     "No Prior Hypertension" = 16,  # ●
-#     "Prior Hypertension" = 17      # ▲
+#     "Not Highlighted" = 16,  # ●
+#     "Highlighted" = 17      # ▲
 #   )) +
 #   scale_color_manual(values = c(
 #     "No Prior Hypertension" = "#1f77b4",
@@ -187,8 +183,8 @@ info(logger, "RUNNING PRIOR VS NO PRIOR HYPERTENSION ANALYSIS")
 #     legend.position = "top",
 #     legend.title = element_blank(),
 #     strip.text = element_text(face = "bold")
-#   )
-# 
+  )
+
 # # Save plot
 # srPlotName <- paste0("hypertension_comparison", ".png")
 # png(here::here(htn_strat_folder, srPlotName), width = 8, height = 6, units = "in", res = 1500, type = "cairo")
