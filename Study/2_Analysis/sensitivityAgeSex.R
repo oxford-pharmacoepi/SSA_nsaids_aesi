@@ -2,7 +2,7 @@ sensitivity_as_folder <- file.path(output_folder, "sensitivity_age_sex")
 if (!dir.exists(sensitivity_as_folder)) dir.create(sensitivity_as_folder, recursive = TRUE)
 
 cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
-                                                 name = "nsaids_ssa_sens",
+                                                 name = "nsaids_ssa_sens_180",
                                                  cohortDateRange = c(starting_date, ending_date),
                                                  daysPriorObservation = 365,
                                                  combinationWindow = c(0, 180),
@@ -10,11 +10,41 @@ cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  indexTable = "nsaids_sa",
                                                  markerTable = "aesi")
 
-results_sa <- CohortSymmetry::summariseSequenceRatios(cdm$nsaids_ssa_sens)
+results_180 <- CohortSymmetry::summariseSequenceRatios(cdm$nsaids_ssa_sens_180)
 
-exportSummarisedResult(results_sa,
+exportSummarisedResult(results_180,
                        path = here::here(sensitivity_as_folder),
-                       fileName = paste0(db_name, "all_nsaids_sa_result.csv"))
+                       fileName = paste0(db_name, "all_nsaids_180_result.csv"))
+
+cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
+                                                 name = "nsaids_ssa_sens_365",
+                                                 cohortDateRange = c(starting_date, ending_date),
+                                                 daysPriorObservation = 365,
+                                                 combinationWindow = c(0, 365),
+                                                 washoutWindow = 365,
+                                                 indexTable = "nsaids_sa",
+                                                 markerTable = "aesi")
+
+results_180 <- CohortSymmetry::summariseSequenceRatios(cdm$nsaids_ssa_sens_365)
+
+exportSummarisedResult(results_365,
+                       path = here::here(sensitivity_as_folder),
+                       fileName = paste0(db_name, "all_nsaids_365_result.csv"))
+
+cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
+                                                 name = "nsaids_ssa_sens_90",
+                                                 cohortDateRange = c(starting_date, ending_date),
+                                                 daysPriorObservation = 365,
+                                                 combinationWindow = c(0, 90),
+                                                 washoutWindow = 365,
+                                                 indexTable = "nsaids_sa",
+                                                 markerTable = "aesi")
+
+results_90 <- CohortSymmetry::summariseSequenceRatios(cdm$nsaids_ssa_sens_90)
+
+exportSummarisedResult(results_90,
+                       path = here::here(sensitivity_as_folder),
+                       fileName = paste0(db_name, "all_nsaids_90_result.csv"))
 
 # sr_tidy_sa <- results_sa |>
 #   omopgenerics::tidy() %>% 
@@ -72,7 +102,7 @@ cdm$all_nsaids_age_sex <- cdm$all_nsaids|>
 
 
 cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
-                                                 name = "all_nsaids_ssa_age_sex",
+                                                 name = "all_nsaids_ssa_age_sex_180",
                                                  cohortDateRange = c(starting_date, ending_date),
                                                  daysPriorObservation = 365,
                                                  combinationWindow = c(0, 180),
@@ -80,11 +110,41 @@ cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  indexTable = "all_nsaids_age_sex",
                                                  markerTable = "aesi")
 
-results_sa_age_sex <- CohortSymmetry::summariseSequenceRatios(cdm$all_nsaids_ssa_age_sex)
+results_age_sex_180 <- CohortSymmetry::summariseSequenceRatios(cdm$all_nsaids_ssa_age_sex_180)
 
-exportSummarisedResult(results_sa_age_sex,
+exportSummarisedResult(results_age_sex_180,
                        path = here::here(sensitivity_as_folder),
-                       fileName = paste0(db_name, "all_nsaids_age_sex_sa_result.csv"))
+                       fileName = paste0(db_name, "all_nsaids_age_sex_180_result.csv"))
+
+cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
+                                                 name = "all_nsaids_ssa_age_sex_365",
+                                                 cohortDateRange = c(starting_date, ending_date),
+                                                 daysPriorObservation = 365,
+                                                 combinationWindow = c(0, 365),
+                                                 washoutWindow = 365,
+                                                 indexTable = "all_nsaids_age_sex",
+                                                 markerTable = "aesi")
+
+results_age_sex_365 <- CohortSymmetry::summariseSequenceRatios(cdm$all_nsaids_ssa_age_sex_365)
+
+exportSummarisedResult(results_age_sex_365,
+                       path = here::here(sensitivity_as_folder),
+                       fileName = paste0(db_name, "all_nsaids_age_sex_365_result.csv"))
+
+cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
+                                                 name = "all_nsaids_ssa_age_sex_90",
+                                                 cohortDateRange = c(starting_date, ending_date),
+                                                 daysPriorObservation = 365,
+                                                 combinationWindow = c(0, 90),
+                                                 washoutWindow = 365,
+                                                 indexTable = "all_nsaids_age_sex",
+                                                 markerTable = "aesi")
+
+results_age_sex_90 <- CohortSymmetry::summariseSequenceRatios(cdm$all_nsaids_ssa_age_sex_90)
+
+exportSummarisedResult(results_age_sex_90,
+                       path = here::here(sensitivity_as_folder),
+                       fileName = paste0(db_name, "all_nsaids_age_sex_90_result.csv"))
 
 
 # sr_tidy_sa_age_sex <- results_sa_age_sex |>
