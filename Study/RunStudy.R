@@ -62,14 +62,14 @@ cdm <- CDMConnector::cdmFromCon(con = db,
                                                   "cox_2", 
                                                   "non_selective", 
                                                   "nsaids_sa", 
-                                                  "hypertension", 
                                                   "amiodarone", 
                                                   "levothyroxine", 
                                                   "allopurinol", 
                                                   "ace_inh", 
                                                   "cough", 
                                                   "asthma", 
-                                                  "edema", 
+                                                  "edema",
+                                                  "hypertension",
                                                   "cataracts", 
                                                   "nausea", 
                                                   "vomiting",
@@ -80,7 +80,6 @@ cdm <- CDMConnector::cdmFromCon(con = db,
                                 achillesSchema = results_database_schema,
                                 cdmName = db_name)
 }
-# "nsaids_no_hypertension", "nsaids_prior_hypertension"
 
 # run main analysis ------------
 if(isTRUE(run_symmetry)){

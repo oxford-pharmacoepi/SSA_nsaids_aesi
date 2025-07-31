@@ -65,9 +65,27 @@ write_csv(summary_temp_trends_months_365,
           here::here(sensitivity_folder, paste0(cdmName(cdm), "_ssa_temporal_symmetry_summary_365.csv")))
 info(logger, "WROTE TEMPORAL SEQUENCE SUMMARY 365 CSV")
 
-# Generate tidy data for plotting
-cli::cli_alert_info("- Making a pretty plot for nsaids-aesis (365d)")
-info(logger, "MAKING ASR SCATTER PLOT FOR 365 SENSITIVITY ANALYSIS")
+#90 day analysis
+cdm <- CohortSymmetry::generateSequenceCohortSet(
+  cdm = cdm,
+  name = "nsaids_aesi_90",
+  cohortDateRange = c(starting_date, ending_date),
+  daysPriorObservation = 365,
+  combinationWindow = c(0, 90),
+  washoutWindow = 365,
+  indexTable = "nsaids",
+  markerTable = "aesi"
+)
+
+results_90 <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi_90"]])
+
+exportSummarisedResult( results_90, 
+                        path = here::here(sensitivity_folder), 
+                        fileName = paste0(db_name, "_result_90.csv") )
+
+# # Generate tidy data for plotting
+# cli::cli_alert_info("- Making a pretty plot for nsaids-aesis (365d)")
+# info(logger, "MAKING ASR SCATTER PLOT FOR 365 SENSITIVITY ANALYSIS")
 
 # sr_tidy_365 <- results_cs_365 %>%
 #   omopgenerics::tidy() %>%
@@ -120,9 +138,9 @@ info(logger, "MAKING ASR SCATTER PLOT FOR 365 SENSITIVITY ANALYSIS")
 # png(here::here(sensitivity_folder, srPlotName), width = 8, height = 6, units = "in", res = 1500, type = "cairo") 
 #     print(p_365, newpage = FALSE) 
 #     dev.off()
-
-cli::cli_alert_info("- Made a pretty plot for nsaids-aesis (365d)")
-info(logger, "Made ASR SCATTER PLOT FOR 365 SENSITIVITY ANALYSIS")
+# 
+# cli::cli_alert_info("- Made a pretty plot for nsaids-aesis (365d)")
+# info(logger, "Made ASR SCATTER PLOT FOR 365 SENSITIVITY ANALYSIS")
 
 cli::cli_alert_info("- Completed 365 sensitivity analysis")
 info(logger, "COMPLETED 365 SENSITIVITY ANALYSIS")

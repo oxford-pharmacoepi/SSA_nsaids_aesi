@@ -25,7 +25,7 @@ cdm <- CohortSymmetry::generateSequenceCohortSet(cdm = cdm,
                                                  indexTable = "nsaids_sa",
                                                  markerTable = "aesi")
 
-results_180 <- CohortSymmetry::summariseSequenceRatios(cdm$nsaids_ssa_sens_365)
+results_365 <- CohortSymmetry::summariseSequenceRatios(cdm$nsaids_ssa_sens_365)
 
 exportSummarisedResult(results_365,
                        path = here::here(sensitivity_as_folder),
