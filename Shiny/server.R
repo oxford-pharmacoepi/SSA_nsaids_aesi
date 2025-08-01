@@ -60,7 +60,6 @@ server <-	function(input, output, session) {
       filter(`Database name` %in% input$forest_plot_database_selector) %>%
       filter(`Index cohort name` %in% input$forest_plot_index_selector) %>%
       filter(`Marker cohort name` %in% input$forest_plot_marker_selector) %>%
-      filter(`Combination window` %in% input$forest_plot_window_selector) %>%
       dplyr::mutate(
         `Index cohort name` = stringr::str_replace(`Index cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
         `Marker cohort name` = stringr::str_replace(`Marker cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", "")
@@ -68,8 +67,7 @@ server <-	function(input, output, session) {
       filter(asr != Inf) %>% 
       mutate(highlight = ifelse(asr_lower > 1, "Highlighted", "Not Highlighted")) %>% 
       rename(index_cohort_name = `Index cohort name`,
-             marker_cohort_name = `Marker cohort name`,
-             combination_window = `Combination window`)  %>%  
+             marker_cohort_name = `Marker cohort name`)  %>%  
       mutate(
         index_cohort_name = stringr::str_to_title(index_cohort_name),
         marker_cohort_name = dplyr::case_when(
@@ -86,21 +84,50 @@ server <-	function(input, output, session) {
           index_cohort_name = dplyr::case_when(
             index_cohort_name == "All_nsaids" ~ "All NSAIDs",
             index_cohort_name == "Non_selective" ~ "Non-selective",
+            index_cohort_name == "Cox_2" ~ "Cox-2",
             TRUE ~ index_cohort_name
           )
-        )
+        ) |>
+      filter(index_cohort_name != "Acetaminophen") |>
+      mutate(index_cohort_name = factor(index_cohort_name, 
+                                         levels = rev(c("All NSAIDs", "Cox-2", "Celecoxib", "Etoricoxib", "Non-selective", "Aspirin", 
+                                                    "Diclofenac", "Etodolac", "Ibuprofen", "Indomethacin", "Mefenamate", "Meloxicam", "Naproxen",
+                                                    "Piroxicam")),
+                                         ordered = TRUE),
+             signal = factor(signal, levels = c("Positive", "Negative", "Null"), ordered = TRUE))
     
     
     labs = c("Adjusted Sequence Ratio", "NSAID")
     custom_colors <- c("adjusted" = "black")
+    
+    y_labels_list <- list(
+      "All NSAIDs" = "All NSAIDs",
+      "Cox-2" = "Cox-2",
+      "Celecoxib" = "Celecoxib",
+      "Etoricoxib" = "Etoricoxib",
+      "Non-selective" = "Non-selective",
+      "Aspirin" = "Aspirin",
+      "Diclofenac" = "Diclofenac",
+      "Etodolac" = "Etodolac",
+      "Ibuprofen" = "Ibuprofen",
+      "Indomethacin" = "Indomethacin",
+      "Mefenamate" = "Mefenamate",
+      "Meloxicam" = "Meloxicam",
+      "Naproxen" = "Naproxen",
+      "Piroxicam" = "Piroxicam"
+    )
+    
+    # Modify the labels you want to be bold
+    y_labels_list$`All NSAIDs` <- expression(bold("All NSAIDs"))
+    y_labels_list$`Cox-2` <- expression(bold("Cox-2"))
+    y_labels_list$`Non-selective` <- expression(bold("Non-selective"))
     
     plot_data <- ggplot(get_data, aes(
       x = index_cohort_name,
       y = asr,
       ymin = asr_lower,
       ymax = asr_upper,
-      shape = combination_window,
-      color = combination_window
+      color = signal
     )) +
       geom_hline(yintercept = 1, linetype = 2) +
       # Draw error bars with thicker lines
@@ -115,13 +142,15 @@ server <-	function(input, output, session) {
         position = position_dodge(width = 0.8),
         size = 3.5  # Controls the size of the point
       ) +
-      facet_wrap(~ marker_cohort_name, scales = "free_x") +
+      facet_wrap(~ marker_cohort_name) +
       coord_flip() +
       theme_bw() +
       labs(
         x = "NSAID",
         y = "Adjusted Sequence Ratio"
       ) +
+      scale_y_discrete(labels = y_labels_list) +
+      scale_color_manual(values = c("Positive" = "#1f77b4", "Negative" = "#d62728", "Null" = "darkgreen")) +
       theme(
         legend.position = "right",
         legend.title = element_blank(),
@@ -187,7 +216,35 @@ server <-	function(input, output, session) {
           index_cohort_name == "Non_selective" ~ "Non-selective",
           TRUE ~ index_cohort_name
         )
-      )
+      )|>
+      filter(index_cohort_name != "Acetaminophen") |>
+      mutate(index_cohort_name = factor(index_cohort_name, 
+                                        levels = rev(c("All NSAIDs", "Cox-2", "Celecoxib", "Etoricoxib", "Non-selective", "Aspirin", 
+                                                       "Diclofenac", "Etodolac", "Ibuprofen", "Indomethacin", "Mefenamate", "Meloxicam", "Naproxen",
+                                                       "Piroxicam")),
+                                        ordered = TRUE))
+    
+    y_labels_list <- list(
+      "All NSAIDs" = "All NSAIDs",
+      "Cox-2" = "Cox-2",
+      "Celecoxib" = "Celecoxib",
+      "Etoricoxib" = "Etoricoxib",
+      "Non-selective" = "Non-selective",
+      "Aspirin" = "Aspirin",
+      "Diclofenac" = "Diclofenac",
+      "Etodolac" = "Etodolac",
+      "Ibuprofen" = "Ibuprofen",
+      "Indomethacin" = "Indomethacin",
+      "Mefenamate" = "Mefenamate",
+      "Meloxicam" = "Meloxicam",
+      "Naproxen" = "Naproxen",
+      "Piroxicam" = "Piroxicam"
+    )
+    
+    # Modify the labels you want to be bold
+    y_labels_list$`All NSAIDs` <- expression(bold("All NSAIDs"))
+    y_labels_list$`Cox-2` <- expression(bold("Cox-2"))
+    y_labels_list$`Non-selective` <- expression(bold("Non-selective"))
     
     
     p_sex_comparison <- ggplot(get_data, aes(
@@ -211,7 +268,7 @@ server <-	function(input, output, session) {
         position = position_dodge(width = 0.8),
         size = 3.5  # Controls the size of the point
       ) +
-      facet_wrap(~ marker_cohort_name, scales = "free_x") +
+      facet_wrap(~ marker_cohort_name) +
       coord_flip() +
       theme_bw() +
       labs(
@@ -219,6 +276,7 @@ server <-	function(input, output, session) {
         y = "Adjusted Sequence Ratio"
       ) +
       scale_shape_manual(values = c("Male" = 17, "Female" = 16)) +
+      scale_y_discrete(labels = y_labels_list) +
       scale_color_manual(values = c("Male" = "#1f77b4", "Female" = "#d62728")) +
       theme(
         legend.position = "right",
@@ -311,7 +369,7 @@ server <-	function(input, output, session) {
         position = position_dodge(width = 0.8),
         size = 3.5  # Controls the size of the point
       ) +
-      facet_wrap(~ marker_cohort_name, scales = "free_x") +
+      facet_wrap(~ marker_cohort_name) +
       coord_flip() +
       theme_bw() +
       labs(
@@ -581,6 +639,223 @@ server <-	function(input, output, session) {
       )
     }
   )
+  
+  # temporal sequence plot sex
+  
+  get_ts_plot_sex <- reactive({
+    
+    validate(need(input$ts_plot_index_selector_sex != "", "Please select a Index"))
+    validate(need(input$ts_plot_marker_selector_sex != "", "Please select a Marker"))
+    validate(need(input$ts_plot_database_selector_sex != "", "Please select a database"))
+    
+    
+    plot_data_sex <- im_temporal_test_sex %>%
+      filter(cdm_name %in% input$ts_plot_database_selector_sex)  %>%
+      filter(index_name %in% input$ts_plot_index_selector_sex)%>%
+      filter(marker_name %in% input$ts_plot_marker_selector_sex)
+    
+    plot_sex <- plot_data_sex %>%
+      plotTemporalSymmetry1_sex(
+        labs = c("Time (Months)", "Individuals (N)"),
+        xlim = c(-6, 6),
+        colours = c( "#1f77b4", "#ff7f0e")
+      )
+    
+    plot_sex 
+    
+  })
+  
+  output$ts_plot_sex <- renderPlot(
+    get_ts_plot_sex()
+  )
+  
+  output$ts_plot_download_plot_sex <- downloadHandler(
+    filename = function() {
+      "Temporal_sequence_plot_sex.png"
+    },
+    content = function(file) {
+      ggsave(
+        file,
+        get_ts_plot_sex(),
+        width = as.numeric(input$ts_plot_download_width_sex),
+        height = as.numeric(input$ts_plot_download_height_sex),
+        dpi = as.numeric(input$ts_plot_download_dpi_sex),
+        units = "cm"
+      )
+    }
+  )
+  
+  # temporal sequence plot age
+  
+  get_ts_plot_age <- reactive({
+    
+    validate(need(input$ts_plot_index_selector_age != "", "Please select a Index"))
+    validate(need(input$ts_plot_marker_selector_age != "", "Please select a Marker"))
+    validate(need(input$ts_plot_database_selector_age != "", "Please select a database"))
+    
+    
+    plot_data_age <- im_temporal_test_age %>%
+      filter(cdm_name %in% input$ts_plot_database_selector_age)  %>%
+      filter(index_name %in% input$ts_plot_index_selector_age)%>%
+      filter(marker_name %in% input$ts_plot_marker_selector_age)
+    
+    plot_age <- plot_data_age %>%
+      plotTemporalSymmetry1_age(
+        labs = c("Time (Months)", "Individuals (N)"),
+        xlim = c(-6, 6),
+        colours = c( "#1f77b4", "#ff7f0e")
+      )
+    
+    plot_age 
+    
+  })
+  
+  output$ts_plot_age <- renderPlot(
+    get_ts_plot_age()
+  )
+  
+  output$ts_plot_download_plot_age <- downloadHandler(
+    filename = function() {
+      "Temporal_sequence_plot_age.png"
+    },
+    content = function(file) {
+      ggsave(
+        file,
+        get_ts_plot_age(),
+        width = as.numeric(input$ts_plot_download_width_age),
+        height = as.numeric(input$ts_plot_download_height_age),
+        dpi = as.numeric(input$ts_plot_download_dpi_age),
+        units = "cm"
+      )
+    }
+  )
 
+  get_sa_forest_plot <-reactive({
+    
+    
+    get_data_sa <- ssa_estimates_sa |>
+      filter(age %in% input$ssa_age_selector_sa,
+             sex %in% input$ssa_sex_selector_sa,
+             combination_window %in% input$ssa_window_selector_sa,
+             `Index cohort name` %in% input$ssa_index_selector_sa,
+             `Marker cohort name` %in% input$ssa_marker_selector_sa) |>
+      dplyr::mutate(
+        `Index cohort name` = stringr::str_replace(`Index cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
+        `Marker cohort name` = stringr::str_replace(`Marker cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", "")
+      )  %>% 
+      dplyr::mutate(
+        # Clean cohort names AFTER extracting age
+        `Index cohort name` = stringr::str_replace(`Index cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
+        `Marker cohort name` = stringr::str_replace(`Marker cohort name`, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
+        pair = paste0(`Index cohort name`, "->", `Marker cohort name`
+        )) %>% 
+      filter(asr != Inf) %>% 
+      mutate(highlight = ifelse(asr_lower > 1, "Highlighted", "Not Highlighted")) %>% 
+      rename(index_cohort_name = `Index cohort name`,
+             marker_cohort_name = `Marker cohort name`)  %>%  
+      mutate(
+        index_cohort_name = stringr::str_to_title(index_cohort_name),
+        marker_cohort_name = dplyr::case_when(
+          marker_cohort_name == "pe" ~ "Pulmonary Embolism",
+          marker_cohort_name == "gi_hemorrhage" ~ "GI Hemorrhage",
+          marker_cohort_name == "heart_failure" ~ "Heart Failure",
+          marker_cohort_name == "dvt" ~ "Deep Vein Thrombosis",
+          marker_cohort_name == "stroke_broad" ~ "Stroke",
+          marker_cohort_name == "isbroad" ~ "Ischemic Stroke",
+          marker_cohort_name == "acute_mi" ~ "Myocardial Infarction",
+          marker_cohort_name == "hem_stroke" ~ "Hemorrhagic Stroke",
+          
+          TRUE ~ stringr::str_to_title(marker_cohort_name)),
+        index_cohort_name = dplyr::case_when(
+          index_cohort_name == "All_nsaids" ~ "All NSAIDs",
+          index_cohort_name == "Non_selective" ~ "Non-selective",
+          TRUE ~ index_cohort_name
+        )
+      )
+    
+    
+    p_sa_comparison <- ggplot(get_data_sa, aes(
+      x = index_cohort_name,
+      y = asr,
+      ymin = asr_lower,
+      ymax = asr_upper,
+      color = signal
+    )) +
+      geom_hline(yintercept = 1, linetype = 2) +
+      # Draw error bars with thicker lines
+      geom_errorbar(
+        aes(ymin = asr_lower, ymax = asr_upper),
+        position = position_dodge(width = 0.8),
+        width = 0,
+        size = 1  # This controls the thickness of the error bar line
+      ) +
+      # Add points separately
+      geom_point(
+        position = position_dodge(width = 0.8),
+        size = 3.5  # Controls the size of the point
+      ) +
+      facet_wrap(~ marker_cohort_name + age + sex + combination_window) +
+      coord_flip() +
+      theme_bw() +
+      labs(
+        x = "NSAID",
+        y = "Adjusted Sequence Ratio"
+      ) +
+      theme(
+        legend.position = "right",
+        legend.title = element_blank(),
+        strip.text = element_text(face = "bold", size = 16),
+        axis.text = ggplot2::element_text(size = 14),
+        axis.title = ggplot2::element_text(size = 16)
+      )
+    
+    
+    
+    p_sa_comparison
+    
+    
+    
+  })
+  
+  output$forestPlot_sa <- renderPlot(
+    get_sa_forest_plot()
+  )
+  
+  # sa ssa -----
+  get_ssa_sa_estimates <-reactive({
+    
+    table <- ssa_estimates_sa %>% 
+      select(-c(
+        asr   ,            
+        asr_lower    ,
+        asr_upper 
+        
+      )) %>% 
+      filter(`Database name` %in% input$ssa_database_name_selector_sa) %>% 
+      filter(signal %in% input$ssa_signal_selector_sa) %>% 
+      filter(`Index cohort name` %in% input$ssa_index_name_selector_sa) %>% 
+      filter(`Marker cohort name` %in% input$ssa_marker_name_selector_sa) %>% 
+      filter(combination_window %in% input$ssa_window_name_selector_sa) %>% 
+      filter(age %in% input$ssa_age_name_selector_sa) %>% 
+      filter(sex %in% input$ssa_sex_name_selector_sa)
+    
+    table
+    
+  }) 
+  
+  output$tbl_ssa_sa <- renderText(kable(get_ssa_sa_estimates()) %>%
+                                     kable_styling("striped", full_width = F) )
+  
+  
+  
+  output$gt_sa_ssa_word <- downloadHandler(
+    filename = function() {
+      "ssa_estimates_sa.docx"
+    },
+    content = function(file) {
+      x <- gt(get_ssa_sa_estimates())
+      gtsave(x, file)
+    }
+  )
    
 }

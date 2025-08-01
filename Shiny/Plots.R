@@ -31,10 +31,21 @@ figure1_data <- ssa_estimates |>
       index_cohort_name == "Non_selective" ~ "Non-selective",
       index_cohort_name == "Cox_2" ~ "COX-2",
       TRUE ~ index_cohort_name
+    ),
+    signal = dplyr::case_when(
+      signal == "Null" ~ "Negative / Null",
+      signal == "Negative" ~ "Negative / Null",
+      TRUE ~ signal
     )
   ) |>
-  filter(!index_cohort_name %in% c("All NSAIDs","Non-selective","COX-2"),
-         marker_cohort_name != "GI Hemorrhage")
+  filter(#!index_cohort_name %in% c("All NSAIDs","Non-selective","COX-2", "Acetaminophen"),
+         !marker_cohort_name %in% c("Hemorrhagic Stroke", "Ischemic Stroke", "GI Hemorrhage")) |>
+  mutate(marker_cohort_name = factor(marker_cohort_name, 
+                                     levels = c("Arrythmia", "Deep Vein Thrombosis",
+                                                "Heart Failure", "Stroke", "Myocardial Infarction",
+                                                "Pulmonary Embolism"),
+                                     ordered = TRUE))
+
 
 labs = c("Adjusted Sequence Ratio", "NSAID")
 custom_colors <- c("adjusted" = "black")
@@ -52,16 +63,16 @@ figure1 <- ggplot(figure1_data, aes(
     aes(ymin = asr_lower, ymax = asr_upper),
     position = position_dodge(width = 0.8),
     width = 0,
-    size = 1  # This controls the thickness of the error bar line
+    linewidth = 1  # This controls the thickness of the error bar line
   ) +
   # Add points separately
   geom_point(
     position = position_dodge(width = 0.8),
     size = 3.5  # Controls the size of the point
   ) +
-  facet_wrap(~ marker_cohort_name, scales = "free_x") +
+  facet_wrap(~ marker_cohort_name, ncol = 2) +
   coord_flip() +
-  theme_bw() +
+  theme_minimal() +
   labs(
     x = "NSAID",
     y = "Adjusted Sequence Ratio"
@@ -325,8 +336,7 @@ figure5_data <- ssa_estimates_sex |>
       TRUE ~ index_cohort_name
     )
   ) |>
-  filter(!index_cohort_name %in% c("All NSAIDs","Non-selective","COX-2"),
-         marker_cohort_name != "GI Hemorrhage")
+  filter(!index_cohort_name %in% c("All NSAIDs","Non-selective","COX-2"))
 
 labs = c("Adjusted Sequence Ratio", "NSAID")
 custom_colors <- c("adjusted" = "black")
