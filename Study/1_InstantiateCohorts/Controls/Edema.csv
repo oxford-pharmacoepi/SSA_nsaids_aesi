@@ -1,0 +1,303 @@
+,concept_id,found_from,concept_name,domain_id,vocabulary_id,standard_concept,Include?
+5,36712936,From initial search,Lymphedema of left lower limb,Condition,SNOMED,S,y
+6,3657789,From initial search,Bilateral edema of upper eyelids,Condition,SNOMED,S,y
+7,3657790,From initial search,Bilateral edema of lower eyelids,Condition,SNOMED,S,y
+8,36717015,From initial search,Edema of optic disc of bilateral eyes,Condition,SNOMED,S,y
+15,4296646,From initial search,Factitious lymphedema,Condition,SNOMED,S,y
+18,40481037,From initial search,Edema of palm of hand,Condition,SNOMED,S,y
+19,40481932,From initial search,Edema of shoulder,Condition,SNOMED,S,y
+20,40482408,From initial search,Edema of dorsum of foot,Condition,SNOMED,S,y
+21,40481124,From initial search,Edema of back,Condition,SNOMED,S,y
+23,4263453,From initial search,Subepidermal edema,Observation,SNOMED,S,y
+24,44802493,From initial search,Oedema of neck,Condition,SNOMED,S,y
+25,4173563,From initial search,Pitting edema,Observation,SNOMED,S,y
+29,4010969,From initial search,Edema of wrist,Condition,SNOMED,S,y
+31,4245407,From initial search,Edema of nasopharynx,Condition,SNOMED,S,y
+32,4276529,From initial search,Edema of spinal cord,Condition,SNOMED,S,y
+38,44805390,From initial search,Worsening peripheral oedema,Condition,SNOMED,S,y
+41,4121791,From initial search,Lipedema,Condition,SNOMED,S,y
+43,4081073,From initial search,Vibratory angioedema,Condition,SNOMED,S,y
+44,4083997,From initial search,NSAID-induced angioedema-urticaria,Condition,SNOMED,S,y
+45,4087152,From initial search,Edema of structure within eye,Condition,SNOMED,S,y
+47,4155910,From initial search,"Edema, generalized",Condition,SNOMED,S,y
+48,4171917,From initial search,Localized edema,Condition,SNOMED,S,y
+49,1340432,From initial search,Exacerbation of peripheral edema,Condition,OMOP Extension,S,y
+50,4124333,From initial search,Edema of clitoris,Condition,SNOMED,S,y
+52,37207850,From initial search,Pseudopapilledema of right eye,Condition,SNOMED,S,y
+53,37207994,From initial search,Bilateral conjunctival edema,Condition,SNOMED,S,y
+54,37208020,From initial search,Bilateral periorbital edema,Condition,SNOMED,S,y
+55,3175599,From initial search,Bilateral lower extremity edema,Condition,Nebraska Lexicon,S,y
+56,377875,From initial search,Idiopathic corneal edema,Condition,SNOMED,S,y
+57,37207425,From initial search,Mild generalized edema,Condition,SNOMED,S,y
+58,37207426,From initial search,Moderate generalized edema,Condition,SNOMED,S,y
+62,376690,From initial search,Cerebral edema,Condition,SNOMED,S,y
+63,37311856,From initial search,Edema of right upper arm,Condition,SNOMED,S,y
+64,44809280,From initial search,Referred by lymphoedema service,Observation,SNOMED,S,y
+67,3656022,From initial search,Edema of vocal cord,Condition,SNOMED,S,y
+68,4317260,From initial search,Edematous skin,Condition,SNOMED,S,y
+72,4270865,From initial search,Episodic angioedema with eosinophilia,Condition,SNOMED,S,y
+73,4223489,From initial search,Idiopathic angioedema,Condition,SNOMED,S,y
+74,4222260,From initial search,Idiopathic urticaria and/or angioedema,Condition,SNOMED,S,y
+76,36712935,From initial search,Lymphedema of right lower limb,Condition,SNOMED,S,y
+77,36712938,From initial search,Lymphedema of right upper limb,Condition,SNOMED,S,y
+78,761571,From initial search,Microcystic edema of cornea of right eye,Condition,SNOMED,S,y
+79,37108959,From initial search,Edema of optic disc of right eye,Condition,SNOMED,S,y
+81,4222871,From initial search,2+ pitting edema,Condition,SNOMED,S,y
+82,4309070,From initial search,Edema of extremity,Condition,SNOMED,S,y
+83,441564,From initial search,Optic disc edema associated with retinal disorder,Condition,SNOMED,S,y
+84,4323491,From initial search,Lymphedema of scrotum,Condition,SNOMED,S,y
+87,40480099,From initial search,Edema of upper arm,Condition,SNOMED,S,y
+88,40482410,From initial search,Edema of entire limb,Condition,SNOMED,S,y
+89,40482463,From initial search,Edema of suprapubic region,Condition,SNOMED,S,y
+90,40482015,From initial search,Soft nonpitting edema,Condition,SNOMED,S,y
+92,4177665,From initial search,Periorbital edema,Condition,SNOMED,S,y
+93,22350,From initial search,Edema of larynx,Condition,SNOMED,S,y
+94,436010,From initial search,Heat edema,Condition,SNOMED,S,y
+96,4009044,From initial search,Edema of glottis,Condition,SNOMED,S,y
+99,4237151,From initial search,Idiopathic edema,Condition,SNOMED,S,y
+101,4244710,From initial search,Edema bullosum vesicae,Condition,SNOMED,S,y
+103,43531690,From initial search,Acquired lymphedema of lower extremity,Condition,SNOMED,S,y
+109,435839,From initial search,Lymphedema,Condition,SNOMED,S,y
+110,4083996,From initial search,Drug-aggravated angioedema-urticaria,Condition,SNOMED,S,y
+111,4096619,From initial search,Edema of cervical cord,Condition,SNOMED,S,y
+112,4095994,From initial search,Traumatic generalized cerebral edema,Condition,SNOMED,S,y
+113,4082015,From initial search,Edema of ear canal,Condition,SNOMED,S,y
+116,4102320,From initial search,Chronic acquired lymphedema,Condition,SNOMED,S,y
+117,4129675,From initial search,Edema of breast,Condition,SNOMED,S,y
+118,4102122,From initial search,Genital edema,Condition,SNOMED,S,y
+119,4136481,From initial search,Under care of lymphedema care nurse,Observation,SNOMED,S,y
+122,37207910,From initial search,Pseudopapilledema of left eye,Condition,SNOMED,S,y
+124,765506,From initial search,Periorbital edema of left eye,Condition,SNOMED,S,y
+129,37311894,From initial search,Pitting edema of lip,Condition,SNOMED,S,y
+131,4220064,From initial search,Peripheral edema,Observation,SNOMED,S,y
+132,380117,From initial search,Conjunctival edema,Condition,SNOMED,S,y
+133,3661559,From initial search,Drug-induced angioedema-urticaria,Condition,SNOMED,S,y
+134,3655098,From initial search,Angioedema of eyelid,Condition,SNOMED,S,y
+136,4231570,From initial search,Cardiac edema,Condition,SNOMED,S,y
+137,4321748,From initial search,Leukedema,Observation,SNOMED,S,y
+138,42596288,From initial search,Subcutaneous edema,Condition,SNOMED Veterinary,S,y
+143,4054198,From initial search,Non-pitting edema,Observation,SNOMED,S,y
+144,761525,From initial search,Papilledema of left eye,Condition,SNOMED,S,y
+145,765087,From initial search,Edema of cornea of left eye,Condition,SNOMED,S,y
+146,761573,From initial search,Edema of cornea of right eye,Condition,SNOMED,S,y
+147,3657793,From initial search,Bilateral edema of corneal stroma of eyes,Condition,SNOMED,S,y
+149,4296364,From initial search,Lymphedema of lip,Condition,SNOMED,S,y
+150,4301157,From initial search,Angioedema due to angiotensin-converting-enzyme inhibitor,Condition,SNOMED,S,y
+151,4296363,From initial search,Lymphedema of eyelid,Condition,SNOMED,S,y
+153,4222414,From initial search,Non-pitting edema,Condition,SNOMED,S,y
+154,4222079,From initial search,4+ pitting edema,Condition,SNOMED,S,y
+155,40483347,From initial search,Skin folds visible on edematous limb,Condition,SNOMED,S,y
+156,40482907,From initial search,Soft pitting edema,Condition,SNOMED,S,y
+157,4179625,From initial search,Subglottic edema,Condition,SNOMED,S,y
+158,44802361,From initial search,Palliative treatment of lymphoedema,Observation,SNOMED,S,y
+159,4010007,From initial search,Edema of the upper extremity,Condition,SNOMED,S,y
+160,4010967,From initial search,Edema of forearm,Condition,SNOMED,S,y
+164,45763811,From initial search,Edema of lower eyelid,Condition,SNOMED,S,y
+168,45766923,From initial search,Massive ovarian edema,Condition,SNOMED,S,y
+172,36717150,From initial search,Fluid overload without edema,Condition,SNOMED,S,y
+173,37110554,From initial search,Physical angioedema,Condition,SNOMED,S,y
+176,4048793,From initial search,Vasogenic cerebral edema,Condition,SNOMED,S,y
+181,4094011,From initial search,Fine corneal edema,Condition,SNOMED,S,y
+183,433595,From initial search,Edema,Condition,SNOMED,S,y
+184,4109678,From initial search,Pitting edema,Condition,SNOMED,S,y
+185,4159367,From initial search,Edema of nipple,Condition,SNOMED,S,y
+186,3656887,From initial search,Edema of right orbit,Condition,SNOMED,S,y
+187,37207887,From initial search,Conjunctival edema of right eye,Condition,SNOMED,S,y
+188,762386,From initial search,Edema of left eyelid,Condition,SNOMED,S,y
+191,37207427,From initial search,Severe generalized edema,Condition,SNOMED,S,y
+195,4195595,From initial search,Localized edema,Observation,SNOMED,S,y
+197,37311248,From initial search,Edema of right lower limb,Condition,SNOMED,S,y
+198,3654345,From initial search,Edema of abdomen,Condition,SNOMED,S,y
+199,3655493,From initial search,Edema of esophagus,Condition,SNOMED,S,y
+201,4339391,From initial search,Intercellular edema,Observation,SNOMED,S,y
+202,44811198,From initial search,Seen in community lymphoedema clinic,Observation,SNOMED,S,y
+203,4318834,From initial search,Retroperitoneal edema,Condition,SNOMED,S,y
+208,4292366,From initial search,Cholinergic angioedema,Condition,SNOMED,S,y
+210,4291466,From initial search,Periodic edema,Condition,SNOMED,S,y
+211,36717276,From initial search,Lymphedema of left upper limb,Condition,SNOMED,S,y
+212,761572,From initial search,Edema of cornea of bilateral eyes,Condition,SNOMED,S,y
+213,36712976,From initial search,Venous stasis edema of bilateral lower limbs,Condition,SNOMED,S,y
+214,3657792,From initial search,Edema of corneal stroma of left eye,Condition,SNOMED,S,y
+216,4043946,From initial search,Leukedema of tongue,Condition,SNOMED,S,y
+218,4267552,From initial search,Primary lymphedema tardum,Condition,SNOMED,S,y
+219,4299807,From initial search,Lymphedema of genitalia,Condition,SNOMED,S,y
+220,4296366,From initial search,Lymphedema of vulva,Condition,SNOMED,S,y
+221,432791,From initial search,Angioedema,Condition,SNOMED,S,y
+224,40480101,From initial search,Edema of calf,Condition,SNOMED,S,y
+225,40482052,From initial search,Edema of face,Condition,SNOMED,S,y
+226,40483788,From initial search,Lymphovenous edema,Condition,SNOMED,S,y
+227,40483302,From initial search,Firm pitting edema,Condition,SNOMED,S,y
+228,40483338,From initial search,Dependent lymphedema,Condition,SNOMED,S,y
+229,40492237,From initial search,Lymphedema care,Observation,SNOMED,S,y
+230,42709835,From initial search,Edema of lower leg,Condition,SNOMED,S,y
+232,44802019,From initial search,Mild lymphoedema of limb,Condition,SNOMED,S,y
+233,44813738,From initial search,Moderate lymphoedema of limb,Condition,SNOMED,S,y
+236,4009381,From initial search,Edema of hand,Condition,SNOMED,S,y
+237,4010012,From initial search,Edema of knee,Condition,SNOMED,S,y
+243,436702,From initial search,Pseudopapilledema,Condition,SNOMED,S,y
+254,4032895,From initial search,Facial lymphedema,Condition,SNOMED,S,y
+255,4084172,From initial search,Chemical-aggravated angioedema-urticaria,Condition,SNOMED,S,y
+261,3043344,From initial search,Edema [Minimum Data Set],Observation,LOINC,S,y
+262,4102131,From initial search,Gravitational edema of leg,Condition,SNOMED,S,y
+263,4199409,From initial search,Edema of trunk,Condition,SNOMED,S,y
+265,3657051,From initial search,Bilateral edema of orbits,Condition,SNOMED,S,y
+266,4233567,From initial search,Alimentary edema,Condition,SNOMED,S,y
+267,4296243,From initial search,Cerebral edema control,Observation,SNOMED,S,y
+272,4196943,From initial search,Edema,Observation,SNOMED,S,y
+273,37311858,From initial search,Bilateral lower leg edema,Condition,SNOMED,S,y
+274,37311855,From initial search,Bilateral upper arm edema,Condition,SNOMED,S,y
+278,4230799,From initial search,Edema of scrotum,Condition,SNOMED,S,y
+282,42593384,From initial search,Edema of soft palate,Condition,SNOMED Veterinary,S,y
+284,4291296,From initial search,Lymphedema of uncertain etiology,Condition,SNOMED,S,y
+285,4292365,From initial search,Angioedema of tongue,Condition,SNOMED,S,y
+287,37108889,From initial search,Macular edema of retina of left eye,Condition,SNOMED,S,y
+288,36712937,From initial search,Lymphedema of bilateral lower limbs,Condition,SNOMED,S,y
+289,761570,From initial search,Microcystic edema of cornea of left eye,Condition,SNOMED,S,y
+290,36717281,From initial search,Venous stasis edema of right lower limb,Condition,SNOMED,S,y
+298,40480516,From initial search,Orbital edema,Condition,SNOMED,S,y
+299,40482879,From initial search,Edema of buttock,Condition,SNOMED,S,y
+300,42709748,From initial search,Lymphedema of upper limb,Condition,SNOMED,S,y
+301,44802020,From initial search,Severe lymphoedema of limb,Condition,SNOMED,S,y
+302,44802882,From initial search,Referral to community lymphoedema service,Observation,SNOMED,S,y
+303,44801795,From initial search,Has lymphoedema key worker,Observation,SNOMED,S,y
+304,44802359,From initial search,Intensive treatment of lymphoedema,Observation,SNOMED,S,y
+305,4010968,From initial search,Edema of elbow,Condition,SNOMED,S,y
+306,4010971,From initial search,Edema of lower extremity,Condition,SNOMED,S,y
+307,4304346,From initial search,Inflammatory edema,Observation,SNOMED,S,y
+310,4242440,From initial search,Dependent edema,Observation,SNOMED,S,y
+313,45763822,From initial search,Edema of upper eyelid,Condition,SNOMED,S,y
+330,4101027,From initial search,Subconjunctival edema,Condition,SNOMED,S,y
+332,4096620,From initial search,Edema of lumbar cord,Condition,SNOMED,S,y
+333,4158343,From initial search,Peripheral edema,Condition,SNOMED,S,y
+334,380102,From initial search,Corneal edema,Condition,SNOMED,S,y
+335,380720,From initial search,Secondary corneal edema,Condition,SNOMED,S,y
+336,1340321,From initial search,Exacerbation of edema,Condition,OMOP Extension,S,y
+337,4154456,From initial search,Localized retinal edema,Condition,SNOMED,S,y
+338,4141850,From initial search,Referral to lymphedema care nurse,Observation,SNOMED,S,y
+340,4195046,From initial search,Clinically significant macular edema,Condition,SNOMED,S,y
+341,37207959,From initial search,Edema of right upper eyelid,Condition,SNOMED,S,y
+342,37207971,From initial search,Bilateral pseudopapilledema of eyes,Condition,SNOMED,S,y
+344,4189298,From initial search,Corneal epithelial edema,Condition,SNOMED,S,y
+347,4105178,From initial search,Cystoid macular edema,Condition,SNOMED,S,y
+351,37311252,From initial search,Edema of left lower leg,Condition,SNOMED,S,y
+352,37311251,From initial search,Edema of right lower leg,Condition,SNOMED,S,y
+353,37311247,From initial search,Edema of left upper limb,Condition,SNOMED,S,y
+354,37311246,From initial search,Edema of right upper limb,Condition,SNOMED,S,y
+355,37311245,From initial search,Bilateral upper limb edema,Condition,SNOMED,S,y
+356,37311857,From initial search,Edema of left upper arm,Condition,SNOMED,S,y
+358,3661528,From initial search,Angioedema,Observation,SNOMED,S,y
+359,3655268,From initial search,Generalized edema due to fluid overload,Condition,SNOMED,S,y
+362,4233682,From initial search,Edema of oral soft tissues,Condition,SNOMED,S,y
+363,4319301,From initial search,Scleredema,Condition,SNOMED,S,y
+364,42598264,From initial search,Submandibular edema,Condition,SNOMED Veterinary,S,y
+369,37108888,From initial search,Macular edema of retina of right eye,Condition,SNOMED,S,y
+371,37117079,From initial search,Edema of optic disc of left eye,Condition,SNOMED,S,y
+372,36712977,From initial search,Venous stasis edema of left lower limb,Condition,SNOMED,S,y
+374,4293698,From initial search,Lymphedema of ear,Condition,SNOMED,S,y
+375,4301048,From initial search,Penile venereal edema,Condition,SNOMED,S,y
+376,4308632,From initial search,Optic disc edema,Condition,SNOMED,S,y
+380,40481968,From initial search,Edema of sole of foot,Condition,SNOMED,S,y
+381,4175817,From initial search,Massive edema,Observation,SNOMED,S,y
+382,44802878,From initial search,Limb oedema of sudden onset,Condition,SNOMED,S,y
+383,44801742,From initial search,Referral for intensive treatment of lymphoedema,Observation,SNOMED,S,y
+384,4010011,From initial search,Edema of thigh,Condition,SNOMED,S,y
+385,4010009,From initial search,Edema of thumb,Condition,SNOMED,S,y
+386,4003006,From initial search,Edema of oral vestibule,Condition,SNOMED,S,y
+390,4246404,From initial search,Hard edema,Observation,SNOMED,S,y
+392,44782959,From initial search,Edema of extremity of sudden onset,Condition,SNOMED,S,y
+394,4321716,From initial search,Gingival edema,Condition,SNOMED,S,y
+400,4334119,From initial search,Aphakic corneal edema,Condition,SNOMED,S,y
+401,4339010,From initial search,Central retinal vein occlusion with macular edema,Condition,SNOMED,S,y
+404,4032595,From initial search,Idiopathic scrotal edema,Condition,SNOMED,S,y
+405,4083998,From initial search,Aspirin-induced angioedema-urticaria,Condition,SNOMED,S,y
+407,4087149,From initial search,Dependent edema,Condition,SNOMED,S,y
+409,4094513,From initial search,Ankle edema,Condition,SNOMED,S,y
+410,4096621,From initial search,Edema of sacral cord,Condition,SNOMED,S,y
+412,4172672,From initial search,Myedema,Condition,SNOMED,S,y
+413,1340248,From initial search,Exacerbation of angioedema,Condition,OMOP Extension,S,y
+418,4101821,From initial search,Edema of prepuce,Condition,SNOMED,S,y
+421,36717304,From initial search,Non-traumatic cerebral edema,Condition,SNOMED,S,y
+423,36684660,From initial search,Cystoid macular edema of right retina,Condition,SNOMED,S,y
+424,3657020,From initial search,Edema of right lower eyelid,Condition,SNOMED,S,y
+428,4161207,From initial search,ACE inhibitor-aggravated angioedema,Condition,SNOMED,S,y
+429,4159968,From initial search,Corneal stromal edema,Condition,SNOMED,S,y
+430,4189299,From initial search,Bullous corneal epithelial edema,Condition,SNOMED,S,y
+431,4024297,From initial search,Nasal mucosa edematous,Condition,SNOMED,S,y
+432,23799,From initial search,Pharynx or nasopharynx edema,Condition,SNOMED,S,y
+433,4056883,From initial search,Edema of pharynx,Condition,SNOMED,S,y
+434,3654235,From initial search,Bilateral feet edema,Condition,SNOMED,S,y
+435,3655099,From initial search,Angioedema of lip,Condition,SNOMED,S,y
+436,374950,From initial search,Edema of eyelid,Condition,SNOMED,S,y
+437,42596548,From initial search,Perivascular edema,Observation,SNOMED Veterinary,S,y
+438,42574098,From initial search,Edema of ventral neck,Condition,SNOMED Veterinary,S,y
+441,4299016,From initial search,Acute edema blisters,Condition,SNOMED,S,y
+442,36712941,From initial search,Macular edema of retina of bilateral eyes,Condition,SNOMED,S,y
+443,761524,From initial search,Papilledema of right eye,Condition,SNOMED,S,y
+444,3657791,From initial search,Edema of corneal stroma of right eye,Condition,SNOMED,S,y
+447,4296365,From initial search,Lymphedema of penis,Condition,SNOMED,S,y
+448,4252207,From initial search,Acute edema,Observation,SNOMED,S,y
+451,4205497,From initial search,Lymphedema of limb,Condition,SNOMED,S,y
+452,40482819,From initial search,Edema of dorsum of hand,Condition,SNOMED,S,y
+453,40483787,From initial search,Edema of extremity with extension to trunk,Condition,SNOMED,S,y
+454,42709749,From initial search,Lymphedema of upper arm,Condition,SNOMED,S,y
+456,44802547,From initial search,Lymphoedema monitoring,Observation,SNOMED,S,y
+457,4198564,From initial search,Supraglottic edema,Condition,SNOMED,S,y
+458,4182393,From initial search,Peripheral retinal edema,Condition,SNOMED,S,y
+461,4010900,From initial search,Transient edema,Observation,SNOMED,S,y
+462,372903,From initial search,Retinal edema,Condition,SNOMED,S,y
+467,45767286,From initial search,Exudative edema,Condition,SNOMED,S,y
+469,36715511,From initial search,Edema due to fluid overload,Condition,SNOMED,S,y
+476,4026047,From initial search,Sacral edema,Condition,SNOMED,S,y
+479,4334751,From initial search,Phakic corneal edema,Condition,SNOMED,S,y
+480,4334752,From initial search,Pseudophakic corneal edema,Condition,SNOMED,S,y
+481,4049236,From initial search,Edema of uvula,Condition,SNOMED,S,y
+486,4086676,From initial search,Swelling or edema,Condition,SNOMED,S,y
+487,4094012,From initial search,Abdominal wall edema,Condition,SNOMED,S,y
+492,3170605,From initial search,Edema with potential skin breakdown,Condition,Nebraska Lexicon,S,y
+494,36684726,From initial search,Cystoid macular edema of left retina,Condition,SNOMED,S,y
+495,762385,From initial search,Edema of right eyelid,Condition,SNOMED,S,y
+496,37207960,From initial search,Edema of left upper eyelid,Condition,SNOMED,S,y
+497,3662401,From initial search,Edema of left lower eyelid,Condition,SNOMED,S,y
+498,36684786,From initial search,Bilateral cystoid macular edema of retinas,Condition,SNOMED,S,y
+501,4265394,From initial search,Edema of vulva,Condition,SNOMED,S,y
+504,201907,From initial search,Edema of male genital organs,Condition,SNOMED,S,y
+505,201346,From initial search,Edema of penis,Condition,SNOMED,S,y
+507,37311250,From initial search,Bilateral lower limb edema,Condition,SNOMED,S,y
+508,3655137,From initial search,Acute edema,Condition,SNOMED,S,y
+509,3655089,From initial search,Respiratory angioedema,Condition,SNOMED,S,y
+511,4319307,From initial search,Mucous membrane edema,Condition,SNOMED,S,y
+517,4270861,From initial search,Allergic angioedema,Condition,SNOMED,S,y
+521,765062,From initial search,Lymphedema of bilateral upper limbs,Condition,SNOMED,S,y
+522,37209358,From initial search,Bilateral edema of eyelids,Condition,SNOMED,S,y
+523,3662351,From initial search,Bilateral microcystic edema of cornea,Condition,SNOMED,S,y
+528,4297361,From initial search,Angioedema and/or urticaria,Condition,SNOMED,S,y
+529,4299806,From initial search,Lymphedema of lower extremity,Condition,SNOMED,S,y
+530,4227224,From initial search,1+ pitting edema,Condition,SNOMED,S,y
+531,4334176,From initial search,Noncystoid edema of macula of retina,Condition,SNOMED,S,y
+532,40480159,From initial search,Edema of chest wall,Condition,SNOMED,S,y
+533,40481573,From initial search,Edema of all toes,Condition,SNOMED,S,y
+534,40482905,From initial search,Firm nonpitting edema,Condition,SNOMED,S,y
+538,44802880,From initial search,Oedema of head,Condition,SNOMED,S,y
+540,4010362,From initial search,Edema of foot,Condition,SNOMED,S,y
+541,4010970,From initial search,Edema of finger,Condition,SNOMED,S,y
+544,4195695,From initial search,Leukedema of mouth,Condition,SNOMED,S,y
+548,36715489,From initial search,Localized edema due to fluid overload,Condition,SNOMED,S,y
+549,37110576,From initial search,Edema of soft tissue due to increased capillary pressure,Condition,SNOMED,S,y
+551,42536675,From initial search,Chronic edema of penis,Condition,SNOMED,S,y
+559,4087153,From initial search,Widespread retinal edema,Condition,SNOMED,S,y
+560,4095997,From initial search,Edema of thoracic cord,Condition,SNOMED,S,y
+561,4131335,From initial search,Stomal edema,Observation,SNOMED,S,y
+562,3045290,From initial search,Edema,Observation,LOINC,S,y
+564,42869826,From initial search,Edema present,Observation,LOINC,S,y
+566,4127843,From initial search,Edema of cervix,Condition,SNOMED,S,y
+568,4147210,From initial search,Lymphatic edema,Observation,SNOMED,S,y
+569,4126002,From initial search,Referral by lymphedema care nurse,Observation,SNOMED,S,y
+573,3656971,From initial search,Edema of left orbit,Condition,SNOMED,S,y
+574,37207947,From initial search,Conjunctival edema of left eye,Condition,SNOMED,S,y
+575,762400,From initial search,Periorbital edema of right eye,Condition,SNOMED,S,y
+576,4290333,From initial search,Macular retinal edema,Condition,SNOMED,S,y
+578,37311249,From initial search,Edema of left lower limb,Condition,SNOMED,S,y
+579,4217627,From initial search,Edema of the tongue,Condition,SNOMED,S,y
+580,44806913,From initial search,Unilateral oedema of arm,Condition,SNOMED,S,y
+582,4311956,From initial search,Chronic edema,Observation,SNOMED,S,y
+584,44811523,From initial search,Seen in lymphoedema clinic,Observation,SNOMED,S,y

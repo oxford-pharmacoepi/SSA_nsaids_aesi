@@ -1,0 +1,135 @@
+,concept_id,concept_name,domain_id,concept_class_id,vocabulary_id,found_from,,Narrow ,narrow_v2,overall,primary or by drug,overall_v2,primary or by drug_v2
+1,36716182,Acute kidney injury due to circulatory failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+2,36716183,Acute kidney injury due to hypovolemia,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+3,36716312,Acute kidney injury due to sepsis,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+4,37111531,Acute kidney injury due to trauma,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+5,37116430,Acute kidney failure stage 1,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+6,37116431,Acute kidney failure stage 2,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+7,37116432,Acute kidney failure stage 3,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+8,37395514,Acute kidney injury due to acute tubular necrosis due to hypovolaemia,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+9,37395516,Acute kidney injury due to acute tubular necrosis due to circulatory failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+10,37395517,Acute kidney injury due to acute tubular necrosis due to sepsis,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+11,37395518,Acute kidney injury due to acute tubular necrosis with histological evidence,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+12,37395519,Acute kidney injury due to acute tubular necrosis due to hypovolaemia with histological evidence,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+13,37395520,Acute kidney injury due to acute tubular necrosis due to sepsis with histological evidence,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+14,37395521,Acute kidney injury due to acute tubular necrosis due to circulatory failure with histological evidence,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+15,44809061,Acute kidney injury stage 1,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+16,44809062,Acute kidney injury stage 2,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+17,44809063,Acute kidney injury stage 3,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+18,45757442,Acute nontraumatic kidney injury,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+19,46286899,At risk of acute kidney injury,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+20,761083,Acute injury of kidney,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+21,36716946,Acute renal insufficiency,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+22,37016366,Acute renal failure caused by contrast agent,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+23,37116834,Postpartum acute renal failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+24,40481064,Acute renal cortical necrosis,condition,Clinical Finding,SNOMED,From initial search,,n,n,y,n,y,n
+25,43530914,Induced termination of pregnancy complicated by acute renal failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+26,43530928,Induced termination of pregnancy complicated by acute renal failure with oliguria,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+27,44808128,Acute renal failure due to traumatic rhabdomyolysis,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+28,44808338,Acute renal failure induced by aminoglycoside,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+29,44808340,Acute renal failure induced by cyclosporin A,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+30,44808744,Acute renal failure due to non-traumatic rhabdomyolysis,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+31,44808821,Acute renal failure induced by animal toxin,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+32,44808822,Acute renal failure induced by plant toxin,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+33,44808823,Acute renal failure induced by heavy metal,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+34,44809170,Acute renal failure induced by poison,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+35,44809173,Acute renal failure induced by radiographic contrast media,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+36,44809286,Acute renal failure induced by solvent,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+37,44813789,Acute renal failure induced by cisplatin,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+38,44813790,Acute renal failure induced by non-steroidal anti-inflammatory drug,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+39,45757398,Acute renal failure on dialysis,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+40,45757466,Acute renal failure due to tubular necrosis,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+41,197320,Acute renal failure syndrome,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+42,197329,Acute renal failure due to acute cortical necrosis,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+43,432961,Acute renal papillary necrosis with renal failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+44,4030519,Acute drug-induced renal failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+45,4031999,Acute pyelitis with renal medullary necrosis,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+46,4032295,Hyperacute rejection of renal transplant,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+47,4032296,Acute rejection of renal transplant - grade II,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+48,4032298,Acute-on-chronic rejection of renal transplant,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+49,4066005,Post-delivery acute renal failure with postnatal problem,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+50,4066405,Failed attempted termination of pregnancy with acute renal failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+51,4126131,Very mild acute rejection of renal transplant,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+52,4126305,Acute renal impairment,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+53,4126424,Nephrotoxic acute renal failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+54,4126439,Acute scleroderma renal crisis,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+55,4127550,Acute rejection of renal transplant - grade I,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+56,4127551,Acute rejection of renal transplant - grade III,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+57,4128067,Acute-on-chronic renal failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+58,4128371,Acute rejection of renal transplant,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+59,4139414,Transient acute renal failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+60,4143190,Illegal termination of pregnancy with acute renal failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+61,4151112,Acute renal failure due to crush syndrome,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+62,4160274,Acute renal failure with oliguria,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+63,4180453,Acute renal failure due to obstruction,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+64,4181114,Legal termination of pregnancy with acute renal failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+65,4211863,Miscarriage with acute renal failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,y,y,y
+66,4215648,Acute renal failure following molar AND/OR ectopic pregnancy,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+67,4219863,Acute pyelitis without renal medullary necrosis,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+68,4232873,Acute postoperative renal failure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+69,4251796,Acute pyonephrosis with renal medullary necrosis,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+70,4264681,Acute renal failure due to procedure,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+71,4310661,Acute pyonephrosis without renal medullary necrosis,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+72,4311129,Acute renal failure due to ischemia,condition,Clinical Finding,SNOMED,From initial search,,y,y,y,n,y,n
+73,35624320,Acute adrenal insufficiency,condition,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+74,4280571,Acute pyelonephritis,condition,Clinical Finding,SNOMED,In synonyms,,n,n,n,n,n,n
+75,45770903,Prerenal renal failure,condition,Clinical Finding,SNOMED,In synonyms,,n,n,n,n,n,n
+76,434275,Waterhouse-Friderichsen syndrome,condition,Clinical Finding,SNOMED,In synonyms,,n,n,n,n,n,n
+77,444044,Acute tubular necrosis,condition,Clinical Finding,SNOMED,In synonyms,,y,y,y,y,y,y
+78,4152839,Acute papillary necrosis,condition,Clinical Finding,SNOMED,In synonyms,,n,n,n,n,n,n
+79,4128029,Crush syndrome,condition,Clinical Finding,SNOMED,In synonyms,,n,n,y,n,y,n
+80,37397202,Congenital lipoid adrenal hyperplasia due to STAR deficiency,condition,Clinical Finding,SNOMED,In synonyms,,n,n,n,n,n,n
+81,4126426,Traumatic anuria - crush syndrome,condition,Clinical Finding,SNOMED,From descendants,,n,n,y,n,y,n
+82,4070939,Legal termination of pregnancy with renal tubular necrosis,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+83,4125968,Postoperative acute tubular necrosis,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+84,4125969,Post-traumatic acute tubular necrosis,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+85,4195297,Illegal termination of pregnancy with renal tubular necrosis,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+86,43530935,Induced termination of pregnancy complicated by renal tubular necrosis,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+87,196455,Hepatorenal syndrome,condition,Clinical Finding,SNOMED,From descendants,,n,n,y,n,y,n
+88,4119093,Hepatorenal syndrome following delivery,condition,Clinical Finding,SNOMED,From descendants,,n,n,y,n,y,n
+89,4126427,Pulmonary renal syndrome,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+90,4149888,Hepatorenal syndrome due to a procedure,condition,Clinical Finding,SNOMED,From descendants,,n,n,y,n,y,n
+91,4200639,Post-renal renal failure,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+92,4228827,Acute milk alkali syndrome,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+93,4265212,Familial arthrogryposis-cholestatic hepatorenal syndrome,condition,Clinical Finding,SNOMED,From descendants,,n,n,y,n,y,n
+94,4308408,Hepatorenal syndrome as a complication of care,condition,Clinical Finding,SNOMED,From descendants,,n,n,y,n,y,n
+95,197253,Hemolytic uremic syndrome,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+96,4159967,Diarrhea-negative hemolytic uremic syndrome,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+97,4190190,Diarrhea-associated hemolytic uremic syndrome,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+98,4267646,Hemolytic uremic syndrome of childhood,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+99,4302298,"Hemolytic uremic syndrome, adult type",condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+100,36717581,Familial hemolytic uremic syndrome,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+101,37312165,Atypical hemolytic uremic syndrome,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+102,37399017,Hemorrhagic fever with renal syndrome,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+103,40481595,Congenital hemolytic uremic syndrome,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+104,4042397,Acute tubulointerstitial nephritis associated with systemic infection,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+105,4100954,Acute viral tubulointerstitial nephritis,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+106,4125953,Emphysematous pyelitis,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+107,4239213,Acute fungal tubulointerstitial nephritis,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+108,4284564,Acute infectious tubulointerstitial nephritis,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+109,4329572,Acute bacterial tubulointerstitial nephritis,condition,Clinical Finding,SNOMED,From descendants,,n,n,n,n,n,n
+110,435308,Acute glomerulonephritis,condition,Clinical Finding,SNOMED,From non-standard,,n,n,n,n,n,n
+111,45769862,Kidney lesion,condition,Clinical Finding,SNOMED,From non-standard,,n,n,n,n,n,n
+112,444094,Finding related to pregnancy,condition,Clinical Finding,SNOMED,From non-standard,,n,n,n,n,n,n
+113,4041280,Postpartum finding,condition,Clinical Finding,SNOMED,From non-standard,,n,n,n,n,n,n
+114,198124,Kidney disease,condition,Clinical Finding,SNOMED,From non-standard,,n,n,n,n,n,n
+115,4170452,Postoperative renal failure,condition,Clinical Finding,SNOMED,From non-standard,,n,y,y,n,y,n
+116,192359,Renal failure syndrome,condition,Clinical Finding,SNOMED,From non-standard,,n,n,n,n,n,n
+117,197035,Acute pyelonephritis with medullary necrosis,condition,Clinical Finding,SNOMED,From non-standard,,n,n,n,n,n,n
+118,196735,Acute pyelonephritis without medullary necrosis,condition,Clinical Finding,SNOMED,From non-standard,,n,n,n,n,n,n
+119,4088744,Severe adrenal insufficiency,condition,Clinical Finding,SNOMED,From non-standard,,n,n,n,n,n,n
+120,37392737,Acute kidney injury warning stage,observation,Observable Entity,SNOMED,From initial search,,n,n,n,n,n,n
+121,46270094,History of acute renal failure,observation,Context-dependent,SNOMED,From initial search,,n,n,n,n,n,n
+122,4146907,Acute renal failure diet,observation,Clinical Finding,SNOMED,From initial search,,n,n,n,n,n,n
+123,4306513,Acute renal failure due to ACE inhibitor,observation,Clinical Finding,SNOMED,From initial search,,n,y,y,y,y,y
+124,1314385,"Documentation of medical reason(s) for prescribing or dispensing antibiotic (e.g., intestinal infection, pertussis, bacterial infection, lyme disease, otitis media, acute sinusitis, acute pharyngitis, acute tonsillitis, chronic sinusitis, infection o...",observation,HCPCS,HCPCS,In synonyms,,n,n,n,n,n,n
+125,40664692,"Patient prescribed or dispensed antibiotic for documented medical reason(s) within three days after the initial diagnosis of uri (e.g., intestinal infection, pertussis, bacterial infection, lyme disease, otitis media, acute sinusitis, acute pharyngitis...",observation,HCPCS,HCPCS,In synonyms,,n,n,n,n,n,n
+,4126119,Toxic nephropathy,,,,recommended by JB,,,y,y,n,y,n
+,4220631,Injury of kidney,,,,recommend by DPA,,,,y,n,y,n
+,435003,Acute nephritis with lesions of necrotizing glomerulitis,,,,recommend by DPA,,,,y,n,y,n
+,435308,Acute glomerulonephritis,,,,recommend by DPA after review data partners results,,,,,,y,y
+,4152839,Acute papillary necrosis,,,,recommend by DPA after review data partners results,,,,,,y,y
+,4189531,Acute nephritis,,,,recommend by DPA after review data partners results,,,,,,y,y
+,,,,,,,,,,,,,
+,,,,,,,,,,,,,
+,, ,,,,,,,,,,,
