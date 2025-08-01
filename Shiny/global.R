@@ -138,12 +138,7 @@ snapshotcdm <- omopgenerics::bind(snapshotcdm) %>%
 
 
 # pssa settings ------
-im_settings_files <- results[stringr::str_detect(results, ".csv")]
-im_settings_files <- results[
-  stringr::str_detect(results, "marker_settings") &
-    !stringr::str_detect(results, "sex") &
-    !stringr::str_detect(results, "age")
-]
+im_settings_files <- results[stringr::str_detect(results, "marker_settings")]
 
 im_settings <- list()
 
@@ -170,13 +165,11 @@ im_settings <- dplyr::bind_rows(im_settings) %>%
 
 # pssa results OVERALL ------
 # pssa results for all markers
-ssa_estimates_files <- results[stringr::str_detect(results, ".csv")]
-ssa_estimates_files <- results[
-  stringr::str_detect(results, "result") &
-    !stringr::str_detect(results, "sex") &
-    !stringr::str_detect(results, "age")
-]
-
+ssa_estimates_files <- results[stringr::str_detect(results, "result")]
+ssa_estimates_files <- ssa_estimates_files[!stringr::str_detect(ssa_estimates_files, "sex")]
+ssa_estimates_files <- ssa_estimates_files[!stringr::str_detect(ssa_estimates_files, "_age")]
+ssa_estimates_files <- ssa_estimates_files[!stringr::str_detect(ssa_estimates_files, "controls")]
+ssa_estimates_files <- ssa_estimates_files[!stringr::str_detect(ssa_estimates_files, "_365")]
 ssa_estimates <- list()
 
 for(i in seq_along(ssa_estimates_files)){
@@ -185,17 +178,31 @@ for(i in seq_along(ssa_estimates_files)){
   
 }
 
+all_nsaids_ssa_files <- results[stringr::str_detect(results, "all_nsaids")]
+all_nsaids_ssa_files <- all_nsaids_ssa_files[!stringr::str_detect(all_nsaids_ssa_files, "age_sex_sa")]
+
+all_nsaids_estimates <- list()
+
+for(i in seq_along(all_nsaids_ssa_files)){
+  all_nsaids_estimates[[i]] <- omopgenerics::importSummarisedResult(all_nsaids_ssa_files[[i]])
+}
+
 # bind the results for the class result
-ssa_estimates <- omopgenerics::bind(ssa_estimates) %>% 
+ssa_estimates_bind <- omopgenerics::bind(ssa_estimates) 
+all_nsaids_bind <- omopgenerics::bind(all_nsaids_estimates)
+
+ssa_estimates_bind <- omopgenerics::bind(ssa_estimates_bind, all_nsaids_bind)
+
+ssa_estimates <- ssa_estimates_bind %>% 
   visOmopResults::visOmopTable(
     estimateName = c("N (%)" = "<count> (<percentage>%)",
                      "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
-    header = c("Variable name", "Estimate name"),
-    rename = c("Database name" = "cdm_name"),
+    header = c("variable_name", "estimate_name"),
     groupColumn = "cdm_name",
-    type = "tibble",
-    hide = "variable_level"
-  ) %>% 
+    type = "tibble"
+  ) 
+
+ssa_estimates <- ssa_estimates[,1:16]%>% 
   rename_with(
     ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
   rename_with(
@@ -203,7 +210,20 @@ ssa_estimates <- omopgenerics::bind(ssa_estimates) %>%
   rename_with(
     ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>% 
   rename_with(
-    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>% 
+    ~ if_else(str_detect(., "]marker"), "Marker N (%)", .)) %>% 
+  group_by(
+    `CDM name`,
+    `Index cohort name`,
+    `Marker cohort name`
+  ) %>%
+  summarise(
+    `Index N (%)` = na.omit(`Index N (%)`)[1],
+    `Marker N (%)` = na.omit(`Marker N (%)`)[1],
+    `CSR (99% CI)` = na.omit(`CSR (99% CI)`)[1],
+    `ASR (99% CI)` = na.omit(`ASR (99% CI)`)[1],
+    `Variable level` = paste(unique(na.omit(`Variable level`)), collapse = ", "),
+    .groups = "drop"
+  ) %>%
   mutate(
     `CSR (99% CI)` = if_else(
       `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
@@ -217,8 +237,9 @@ ssa_estimates <- omopgenerics::bind(ssa_estimates) %>%
     )
   ) %>%
   extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
-          regex = "(\\d+\\.?\\d*) \\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]",
+          regex = "(\\d+\\.?\\d*)\\s*\\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]", # Adjusted regex for potential spaces
           convert = TRUE, remove = FALSE) %>%
+  rename("Database name" = "CDM name") %>%
   mutate(signal = case_when(
     asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
     asr_upper < 1 ~ "Negative", 
@@ -227,8 +248,12 @@ ssa_estimates <- omopgenerics::bind(ssa_estimates) %>%
     `Index N (%)` == "<5" ~ NA_character_,
     `Marker N (%)` == "<5" ~ NA_character_,
     TRUE ~ "Null"                  # All other cases
-  )) 
-
+  ))  %>%
+  dplyr::filter(!str_detect(`Index cohort name`, "male")) %>%
+  dplyr::filter(!str_detect(`Index cohort name`, "female")) %>%
+  dplyr::filter(!str_detect(`Index cohort name`, "18_to_65")) %>%
+  dplyr::filter(!str_detect(`Index cohort name`, "65_and_over")) %>%
+  dplyr::filter(!str_detect(`Index cohort name`, "all_nsaids_none"))
 
 
 # pssa results SEX ------
@@ -236,7 +261,8 @@ ssa_estimates <- omopgenerics::bind(ssa_estimates) %>%
 ssa_estimates_sex_files <- results[stringr::str_detect(results, ".csv")]
 ssa_estimates_sex_files <- results[
   stringr::str_detect(results, "result") &
-    stringr::str_detect(results, "sex")
+    stringr::str_detect(results, "sex.csv") &
+    !stringr::str_detect(results, "_sa_") 
 ]
 
 ssa_estimates_sex <- list()
@@ -247,8 +273,29 @@ for(i in seq_along(ssa_estimates_sex_files)){
   
 }
 
+ssa_estimates_sex <- omopgenerics::bind(ssa_estimates_sex)
+
+all_nsaids_sex_files <- results[
+  stringr::str_detect(results, "all_nsaids") &
+    stringr::str_detect(results, "_age_sex_") &
+    stringr::str_detect(results, "180")]
+
+all_nsaids_sex <- list()
+
+for(i in seq_along(all_nsaids_sex_files)){
+  
+  all_nsaids_sex[[i]] <- omopgenerics::importSummarisedResult(all_nsaids_sex_files[[i]])
+  
+}
+
+all_nsaids_sex <- omopgenerics::bind(all_nsaids_sex) %>%
+  omopgenerics::splitGroup() %>%
+  dplyr::filter(!str_detect(index_cohort_name, "18_to_65")) %>%
+  dplyr::filter(!str_detect(index_cohort_name, "65_and_over")) %>%
+  omopgenerics::uniteGroup(c("index_cohort_name", "marker_cohort_name"))
+
 # bind the results for the class result
-ssa_estimates_sex <- omopgenerics::bind(ssa_estimates_sex) %>% 
+ssa_estimates_sex <- omopgenerics::bind(ssa_estimates_sex, all_nsaids_sex) %>% 
   visOmopResults::visOmopTable(
     estimateName = c("N (%)" = "<count> (<percentage>%)",
                      "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
@@ -289,16 +336,14 @@ ssa_estimates_sex <- omopgenerics::bind(ssa_estimates_sex) %>%
     `Index N (%)` == "<5" ~ NA_character_,
     `Marker N (%)` == "<5" ~ NA_character_,
     TRUE ~ "Null"                  # All other cases
-  )) 
-
-
+  ))
 
 # # pssa results AGE ------
 # # pssa results for all markers
-ssa_estimates_age_files <- results[stringr::str_detect(results, ".csv")]
 ssa_estimates_age_files <- results[
   stringr::str_detect(results, "result") &
-    stringr::str_detect(results, "age")
+    stringr::str_detect(results, "_age.csv") &
+    !stringr::str_detect(results, "_sa_") 
 ]
 
 ssa_estimates_age <- list()
@@ -309,25 +354,57 @@ for(i in seq_along(ssa_estimates_age_files)){
 
 }
 
+ssa_estimates_age <- omopgenerics::bind(ssa_estimates_age)
+
+all_nsaids_age_files <- results[
+  stringr::str_detect(results, "all_nsaids") &
+    stringr::str_detect(results, "_age_sex_") &
+    stringr::str_detect(results, "180")]
+
+all_nsaids_age <- list()
+
+for(i in seq_along(all_nsaids_age_files)){
+  
+  all_nsaids_age[[i]] <- omopgenerics::importSummarisedResult(all_nsaids_age_files[[i]])
+  
+}
+
+all_nsaids_age <- omopgenerics::bind(all_nsaids_age) %>%
+  omopgenerics::splitGroup() %>%
+  dplyr::filter(!str_detect(index_cohort_name, "male")) %>%
+  dplyr::filter(!str_detect(index_cohort_name, "female")) %>%
+  omopgenerics::uniteGroup(c("index_cohort_name", "marker_cohort_name"))
+
 # bind the results for the class result
-ssa_estimates_age <- omopgenerics::bind(ssa_estimates_age) %>%
+ssa_estimates_age <- omopgenerics::bind(ssa_estimates_age, all_nsaids_age) %>%
   visOmopResults::visOmopTable(
     estimateName = c("N (%)" = "<count> (<percentage>%)",
                      "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
-    header = c("Variable name", "Estimate name"),
-    rename = c("Database name" = "cdm_name"),
+    header = c("variable_name", "estimate_name"),
     groupColumn = "cdm_name",
     type = "tibble",
     hide = "variable_level"
-  ) %>%
+  ) %>% 
   rename_with(
     ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
   rename_with(
-    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>%
+    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>% 
   rename_with(
-    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>%
+    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>% 
   rename_with(
-    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>%
+    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>% 
+  group_by(
+    `CDM name`,
+    `Index cohort name`,
+    `Marker cohort name`,
+  ) %>%
+  summarise(
+    `Index N (%)` = na.omit(`Index N (%)`)[1],
+    `Marker N (%)` = na.omit(`Marker N (%)`)[1],
+    `CSR (99% CI)` = na.omit(`CSR (99% CI)`)[1],
+    `ASR (99% CI)` = na.omit(`ASR (99% CI)`)[1],
+    .groups = "drop"
+  ) %>%
   mutate(
     `CSR (99% CI)` = if_else(
       `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
@@ -341,17 +418,18 @@ ssa_estimates_age <- omopgenerics::bind(ssa_estimates_age) %>%
     )
   ) %>%
   extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
-          regex = "(\\d+\\.?\\d*) \\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]",
+          regex = "(\\d+\\.?\\d*)\\s*\\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]", # Adjusted regex for potential spaces
           convert = TRUE, remove = FALSE) %>%
+  rename("Database name" = "CDM name") %>%
   mutate(signal = case_when(
     asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
-    asr_upper < 1 ~ "Negative",
+    asr_upper < 1 ~ "Negative", 
     asr == 0 ~ NA_character_,
     is.na(asr) ~ NA_character_,
     `Index N (%)` == "<5" ~ NA_character_,
     `Marker N (%)` == "<5" ~ NA_character_,
     TRUE ~ "Null"                  # All other cases
-  ))
+  ) )
 
 
 # attrition index - markers ----
@@ -359,7 +437,7 @@ im_attrition_files <- results[stringr::str_detect(results, ".csv")]
 im_attrition_files <- results[
   stringr::str_detect(results, "attrition") &
     !stringr::str_detect(results, "sex") &
-    !stringr::str_detect(results, "age")
+    !stringr::str_detect(results, "_age")
 ]
 
 im_attrition <- list()
@@ -386,7 +464,7 @@ im_temporal_files <- results[stringr::str_detect(results, ".csv")]
 im_temporal_files <- results[
   stringr::str_detect(results, "temporal_symmetry_summary") &
     !stringr::str_detect(results, "sex") &
-    !stringr::str_detect(results, "age")
+    !stringr::str_detect(results, "_age")
 ]
 
 im_temporal <- list()
@@ -475,6 +553,204 @@ plotTemporalSymmetry1 <- function(result,
 
 }
 
+# temporal symmetry sex -----
+im_temporal_sex_files <- results[stringr::str_detect(results, ".csv")]
+im_temporal_sex_files <- results[
+  stringr::str_detect(results, "temporal_symmetry_summary") &
+    stringr::str_detect(results, "sex") &
+    !stringr::str_detect(results, "_age")
+]
+
+im_temporal_sex <- list()
+for(i in seq_along(im_temporal_sex_files)){
+  im_temporal_sex[[i]] <- readr::read_csv(im_temporal_sex_files[[i]],
+                                      show_col_types = FALSE)
+  
+}
+
+im_temporal_sex <- dplyr::bind_rows(im_temporal_sex) 
+
+im_temporal_test_sex <- im_temporal_sex %>%
+  mutate(
+    group_level = str_replace(group_level, "amiodarone", "Amiodarone"),
+    group_level = str_replace(group_level, "(?<=&&& )allopurinol$", "Allopurinol"),
+    group_level = str_replace(group_level, "(?<=&&& )levothyroxine$", "Levothyroxine"),
+    group_level = str_replace(group_level, "(?<=&&& )[a-z0-9]+$", function(x) toupper(x))
+  )|>
+  omopgenerics::splitGroup() |>
+  dplyr::mutate(
+    sex = dplyr::case_when(
+      stringr::str_detect(.data$index_name, "_female$") ~ "Female",
+      stringr::str_detect(.data$index_name, "_male$") ~ "Male",
+      TRUE ~ "Unspecified"
+    )) |>
+  dplyr::mutate(
+    index_name = stringr::str_replace(stringr::str_replace(index_name, "_female", ""), "_male", ""))
+
+
+#tweaking plotting function
+plotTemporalSymmetry1_sex <- function(result,
+                                  plotTitle = NULL,
+                                  labs = c("Time (months)", "Individuals (N)"),
+                                  xlim = c(-12, 12),
+                                  colours = c("blue", "red")) {
+  
+  
+  plot_data <- result |>
+    dplyr::select(.data$index_name, .data$marker_name, .data$variable_name, .data$variable_level, .data$estimate_name, .data$estimate_value, .data$additional_level, .data$additional_name, .data$sex) |>
+    dplyr::group_by(.data$estimate_name) |>
+    dplyr::mutate(row = dplyr::row_number()) |>
+    tidyr::pivot_wider(names_from = "variable_name",
+                       values_from = "variable_level") |>
+    tidyr::pivot_wider(names_from = "estimate_name",
+                       values_from = "estimate_value") |>
+    dplyr::select(-"row") |>
+    dplyr::ungroup() |>
+    dplyr::rename("time" = "temporal_symmetry") |>
+    dplyr::filter(.data$time != 0) |>
+    dplyr::mutate(colour = dplyr::if_else(.data$time > 0, "B", "A")) |>
+    dplyr::mutate(count = as.integer(.data$count),
+                  time = as.integer(.data$time)) |>
+    dplyr::compute()
+  
+  colours = c("A" = colours[1], "B" = colours[2])
+  
+  width_range <- (xlim[2] - xlim[1])/2
+  
+  timescale_breaks <- if (grepl("months", labs[1], ignore.case = TRUE)) {
+    seq(xlim[1], xlim[2], by = 1)
+  } else if (grepl("days", labs[1], ignore.case = TRUE)) {
+    seq(xlim[1], xlim[2], by = 52)
+  } else {
+    seq(xlim[1], xlim[2], by = 1)  # Default fallback
+  }
+  
+  ggplot2::ggplot(data = plot_data, ggplot2::aes(
+    x = .data$time, y = .data$count, fill = .data$colour)) +
+    ggplot2::geom_col(width = 0.01*width_range) +
+    ggplot2::geom_point(ggplot2::aes(colour = .data$colour), size = 4) +
+    ggplot2::coord_cartesian(xlim = c(xlim[1], xlim[2])) +
+    ggplot2::labs(title = plotTitle, x = labs[1], y = labs[2]) +
+    scale_y_continuous(expand = expansion(mult = c(0, .1))) +
+    ggplot2::scale_x_continuous(breaks = timescale_breaks) + 
+    ggplot2::theme_minimal() +  # Use a minimal theme with a white background
+    ggplot2::theme(legend.position = "none",
+                   axis.line = ggplot2::element_line(colour = "black"),  # Make axis lines black
+                   axis.ticks = ggplot2::element_line(colour = "black"),  # Make axis ticks black
+                   axis.text = ggplot2::element_text(colour = "black", size = 20) ,   # Make axis text black
+                   panel.grid.minor = ggplot2::element_blank() ,  # Remove minor grid lines
+                   panel.grid.major.x = ggplot2::element_blank(),  # Remove vertical grid lines
+                   panel.grid.major.y = ggplot2::element_line(colour = "grey96"),  # Keep horizontal grid lines
+                   plot.title = ggplot2::element_text(hjust = 0.5),
+                   strip.text = ggplot2::element_text(size = 20),  # Increase the facet strip labels' text size
+                   axis.title = ggplot2::element_text(size = 20)
+    ) +
+    ggplot2::facet_wrap(~ index_name + marker_name + sex) +
+    ggplot2::geom_vline(xintercept = 0, linetype = "dashed") +
+    ggplot2::scale_fill_manual(values = colours) +
+    ggplot2::scale_colour_manual(values = colours)
+  
+}
+
+# temporal symmetry age -----
+im_temporal_age_files <- results[stringr::str_detect(results, ".csv")]
+im_temporal_age_files <- results[
+  stringr::str_detect(results, "temporal_symmetry_summary") &
+    !stringr::str_detect(results, "sex") &
+    stringr::str_detect(results, "_age")
+]
+
+im_temporal_age <- list()
+for(i in seq_along(im_temporal_age_files)){
+  im_temporal_age[[i]] <- readr::read_csv(im_temporal_age_files[[i]],
+                                          show_col_types = FALSE)
+  
+}
+
+im_temporal_age <- dplyr::bind_rows(im_temporal_age) 
+
+im_temporal_test_age <- im_temporal_age %>%
+  mutate(
+    group_level = str_replace(group_level, "amiodarone", "Amiodarone"),
+    group_level = str_replace(group_level, "(?<=&&& )allopurinol$", "Allopurinol"),
+    group_level = str_replace(group_level, "(?<=&&& )levothyroxine$", "Levothyroxine"),
+    group_level = str_replace(group_level, "(?<=&&& )[a-z0-9]+$", function(x) toupper(x))
+  )|>
+  omopgenerics::splitGroup() |>
+  dplyr::mutate(
+    age = dplyr::case_when(
+      stringr::str_detect(index_name, "_18_to_65$") ~ "Under 65",
+      stringr::str_detect(index_name, "_65_and_over$") ~ "Over 65",
+      TRUE ~ "Unspecified"
+    )) |>
+  dplyr::mutate(
+    index_name = stringr::str_replace(stringr::str_replace(index_name, "_18_to_65", ""), "_65_and_over", ""))
+
+
+#tweaking plotting function
+plotTemporalSymmetry1_age <- function(result,
+                                      plotTitle = NULL,
+                                      labs = c("Time (months)", "Individuals (N)"),
+                                      xlim = c(-12, 12),
+                                      colours = c("blue", "red")) {
+  
+  
+  plot_data <- result |>
+    dplyr::select(.data$index_name, .data$marker_name, .data$variable_name, .data$variable_level, .data$estimate_name, .data$estimate_value, .data$additional_level, .data$additional_name, .data$age) |>
+    dplyr::group_by(.data$estimate_name) |>
+    dplyr::mutate(row = dplyr::row_number()) |>
+    tidyr::pivot_wider(names_from = "variable_name",
+                       values_from = "variable_level") |>
+    tidyr::pivot_wider(names_from = "estimate_name",
+                       values_from = "estimate_value") |>
+    dplyr::select(-"row") |>
+    dplyr::ungroup() |>
+    dplyr::rename("time" = "temporal_symmetry") |>
+    dplyr::filter(.data$time != 0) |>
+    dplyr::mutate(colour = dplyr::if_else(.data$time > 0, "B", "A")) |>
+    dplyr::mutate(count = as.integer(.data$count),
+                  time = as.integer(.data$time)) |>
+    dplyr::compute()
+  
+  colours = c("A" = colours[1], "B" = colours[2])
+  
+  width_range <- (xlim[2] - xlim[1])/2
+  
+  timescale_breaks <- if (grepl("months", labs[1], ignore.case = TRUE)) {
+    seq(xlim[1], xlim[2], by = 1)
+  } else if (grepl("days", labs[1], ignore.case = TRUE)) {
+    seq(xlim[1], xlim[2], by = 52)
+  } else {
+    seq(xlim[1], xlim[2], by = 1)  # Default fallback
+  }
+  
+  ggplot2::ggplot(data = plot_data, ggplot2::aes(
+    x = .data$time, y = .data$count, fill = .data$colour)) +
+    ggplot2::geom_col(width = 0.01*width_range) +
+    ggplot2::geom_point(ggplot2::aes(colour = .data$colour), size = 4) +
+    ggplot2::coord_cartesian(xlim = c(xlim[1], xlim[2])) +
+    ggplot2::labs(title = plotTitle, x = labs[1], y = labs[2]) +
+    scale_y_continuous(expand = expansion(mult = c(0, .1))) +
+    ggplot2::scale_x_continuous(breaks = timescale_breaks) + 
+    ggplot2::theme_minimal() +  # Use a minimal theme with a white background
+    ggplot2::theme(legend.position = "none",
+                   axis.line = ggplot2::element_line(colour = "black"),  # Make axis lines black
+                   axis.ticks = ggplot2::element_line(colour = "black"),  # Make axis ticks black
+                   axis.text = ggplot2::element_text(colour = "black", size = 20) ,   # Make axis text black
+                   panel.grid.minor = ggplot2::element_blank() ,  # Remove minor grid lines
+                   panel.grid.major.x = ggplot2::element_blank(),  # Remove vertical grid lines
+                   panel.grid.major.y = ggplot2::element_line(colour = "grey96"),  # Keep horizontal grid lines
+                   plot.title = ggplot2::element_text(hjust = 0.5),
+                   strip.text = ggplot2::element_text(size = 20),  # Increase the facet strip labels' text size
+                   axis.title = ggplot2::element_text(size = 20)
+    ) +
+    ggplot2::facet_wrap(~ index_name + marker_name + age) +
+    ggplot2::geom_vline(xintercept = 0, linetype = "dashed") +
+    ggplot2::scale_fill_manual(values = colours) +
+    ggplot2::scale_colour_manual(values = colours)
+  
+}
+
 
 
 # table one demographics------
@@ -500,11 +776,243 @@ rm(tableone_demo)
 
 }
 
-# to add -----------
+### Controls
+ssa_estimates_controls_files <- results[
+  stringr::str_detect(results, "result") &
+    stringr::str_detect(results, "control")
+]
 
-#sex stratification
-#age stratification
-#sensitivity analysis
-#comorbs stratification
+ssa_estimates_controls <- importSummarisedResult(ssa_estimates_controls_files) |>
+visOmopResults::visOmopTable(
+  estimateName = c("N (%)" = "<count> (<percentage>%)",
+                   "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
+  header = c("variable_name", "estimate_name"),
+  groupColumn = "cdm_name",
+  type = "tibble",
+  hide = "variable_level"
+) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
+  rename_with(
+    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>% 
+  group_by(
+    `CDM name`,
+    `Index cohort name`,
+    `Marker cohort name`,
+  ) %>%
+  summarise(
+    `Index N (%)` = na.omit(`Index N (%)`)[1],
+    `Marker N (%)` = na.omit(`Marker N (%)`)[1],
+    `CSR (99% CI)` = na.omit(`CSR (99% CI)`)[1],
+    `ASR (99% CI)` = na.omit(`ASR (99% CI)`)[1],
+    .groups = "drop"
+  ) %>%
+  mutate(
+    `CSR (99% CI)` = if_else(
+      `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `CSR (99% CI)`
+    ),
+    `ASR (99% CI)` = if_else(
+      `ASR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `ASR (99% CI)`
+    )
+  ) %>%
+  extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
+          regex = "(\\d+\\.?\\d*)\\s*\\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]", # Adjusted regex for potential spaces
+          convert = TRUE, remove = FALSE) %>%
+  rename("Database name" = "CDM name") %>%
+  mutate(signal = case_when(
+    asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
+    asr_upper < 1 ~ "Negative", 
+    asr == 0 ~ NA_character_,
+    is.na(asr) ~ NA_character_,
+    `Index N (%)` == "<5" ~ NA_character_,
+    `Marker N (%)` == "<5" ~ NA_character_,
+    TRUE ~ "Null"                  # All other cases
+  )) 
 
 
+
+#sensitivity analysis - 365 days
+
+ssa_estimates_365_files <- results[
+    stringr::str_detect(results, "_365")&
+      !stringr::str_detect(results, "attrition") &
+      !stringr::str_detect(results, "settings") &
+      !stringr::str_detect(results, "temporal")
+]
+
+ssa_estimates_365 <- list()
+
+for(i in seq_along(ssa_estimates_365_files)){
+  ssa_estimates_365[[i]] <- omopgenerics::importSummarisedResult(ssa_estimates_365_files[[i]],
+                                          show_col_types = FALSE)
+}
+  
+ssa_estimates_365 <- omopgenerics::bind(ssa_estimates_365) |>
+  visOmopResults::visOmopTable(
+  estimateName = c("N (%)" = "<count> (<percentage>%)",
+                   "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
+  header = c("variable_name", "estimate_name"),
+  groupColumn = "cdm_name",
+  type = "tibble",
+  hide = "variable_level"
+) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
+  rename_with(
+    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>% 
+  group_by(
+    `CDM name`,
+    `Index cohort name`,
+    `Marker cohort name`,
+  ) %>%
+  summarise(
+    `Index N (%)` = na.omit(`Index N (%)`)[1],
+    `Marker N (%)` = na.omit(`Marker N (%)`)[1],
+    `CSR (99% CI)` = na.omit(`CSR (99% CI)`)[1],
+    `ASR (99% CI)` = na.omit(`ASR (99% CI)`)[1],
+    .groups = "drop"
+  ) %>%
+  mutate(
+    `CSR (99% CI)` = if_else(
+      `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `CSR (99% CI)`
+    ),
+    `ASR (99% CI)` = if_else(
+      `ASR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `ASR (99% CI)`
+    )
+  ) %>%
+  extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
+          regex = "(\\d+\\.?\\d*)\\s*\\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]", # Adjusted regex for potential spaces
+          convert = TRUE, remove = FALSE) %>%
+  rename("Database name" = "CDM name") %>%
+  mutate(signal = case_when(
+    asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
+    asr_upper < 1 ~ "Negative", 
+    asr == 0 ~ NA_character_,
+    is.na(asr) ~ NA_character_,
+    `Index N (%)` == "<5" ~ NA_character_,
+    `Marker N (%)` == "<5" ~ NA_character_,
+    TRUE ~ "Null"                  # All other cases
+  )) |>
+  dplyr::mutate(
+    sex = dplyr::case_when(
+      stringr::str_detect(`Index cohort name`, "_female") ~ "Female",
+      stringr::str_detect(`Index cohort name`, "_male") ~ "Male",
+      TRUE ~ "Both"
+    )) |>
+  dplyr::mutate(
+    `Index cohort name` = stringr::str_replace(stringr::str_replace(`Index cohort name`, "_female", ""), "_male", "")) |>
+  dplyr::mutate(
+    age = dplyr::case_when(
+      stringr::str_detect(`Index cohort name`, "_18_to_65$") ~ "Under 65",
+      stringr::str_detect(`Index cohort name`, "_65_and_over$") ~ "Over 65",
+      TRUE ~ "All ages"
+    )) |>
+  dplyr::mutate(
+    `Index cohort name` = stringr::str_replace(stringr::str_replace(`Index cohort name`, "_18_to_65", ""), "_65_and_over", "")) |>
+  dplyr::mutate(combination_window = "(0, 365)")
+
+#sensitivity analysis - 90 days
+
+ssa_estimates_90_files <- results[
+    stringr::str_detect(results, "_90") &
+      !stringr::str_detect(results, "attrition") &
+      !stringr::str_detect(results, "settings") &
+      !stringr::str_detect(results, "temporal")
+]
+
+ssa_estimates_90 <- list()
+
+for(i in seq_along(ssa_estimates_90_files)){
+  ssa_estimates_90[[i]] <- omopgenerics::importSummarisedResult(ssa_estimates_90_files[[i]],
+                                                                 show_col_types = FALSE)
+}
+
+ssa_estimates_90 <- omopgenerics::bind(ssa_estimates_90) |>
+  visOmopResults::visOmopTable(
+    estimateName = c("N (%)" = "<count> (<percentage>%)",
+                     "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
+    header = c("variable_name", "estimate_name"),
+    groupColumn = "cdm_name",
+    type = "tibble",
+    hide = "variable_level"
+  ) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
+  rename_with(
+    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>% 
+  rename_with(
+    ~ if_else(str_detect(., "marker"), "Marker N (%)", .)) %>% 
+  group_by(
+    `CDM name`,
+    `Index cohort name`,
+    `Marker cohort name`,
+  ) %>%
+  summarise(
+    `Index N (%)` = na.omit(`Index N (%)`)[1],
+    `Marker N (%)` = na.omit(`Marker N (%)`)[1],
+    `CSR (99% CI)` = na.omit(`CSR (99% CI)`)[1],
+    `ASR (99% CI)` = na.omit(`ASR (99% CI)`)[1],
+    .groups = "drop"
+  ) %>%
+  mutate(
+    `CSR (99% CI)` = if_else(
+      `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `CSR (99% CI)`
+    ),
+    `ASR (99% CI)` = if_else(
+      `ASR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `ASR (99% CI)`
+    )
+  ) %>%
+  extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
+          regex = "(\\d+\\.?\\d*)\\s*\\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]", # Adjusted regex for potential spaces
+          convert = TRUE, remove = FALSE) %>%
+  rename("Database name" = "CDM name") %>%
+  mutate(signal = case_when(
+    asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
+    asr_upper < 1 ~ "Negative", 
+    asr == 0 ~ NA_character_,
+    is.na(asr) ~ NA_character_,
+    `Index N (%)` == "<5" ~ NA_character_,
+    `Marker N (%)` == "<5" ~ NA_character_,
+    TRUE ~ "Null"                  # All other cases
+  )) |>
+  dplyr::mutate(
+    sex = dplyr::case_when(
+      stringr::str_detect(`Index cohort name`, "_female") ~ "Female",
+      stringr::str_detect(`Index cohort name`, "_male") ~ "Male",
+      TRUE ~ "Both"
+    )) |>
+  dplyr::mutate(
+    `Index cohort name` = stringr::str_replace(stringr::str_replace(`Index cohort name`, "_female", ""), "_male", "")) |>
+  dplyr::mutate(
+    age = dplyr::case_when(
+      stringr::str_detect(`Index cohort name`, "_18_to_65$") ~ "Under 65",
+      stringr::str_detect(`Index cohort name`, "_65_and_over$") ~ "Over 65",
+      TRUE ~ "All ages"
+    )) |>
+  dplyr::mutate(
+    `Index cohort name` = stringr::str_replace(stringr::str_replace(`Index cohort name`, "_18_to_65", ""), "_65_and_over", "")) |>
+  dplyr::mutate(combination_window = "(0, 90)")
+
+ssa_estimates_sa <- bind_rows(ssa_estimates_365, ssa_estimates_90)
