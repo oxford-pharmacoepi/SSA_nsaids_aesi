@@ -67,6 +67,18 @@ cdm[["cough"]] <- conceptCohort(cdm,
 cli::cli_alert_success("- Created ace inhibitor and cough cohorts")
 info(logger, "CREATED ACE INHIBITOR AND COUGH COHORTS")
 
+info(logger, "CREATE PPI DRUG COHORT")
+ppi <- omopgenerics::importCodelist(path = "1_InstantiateCohorts/Codelists/A02BC_proton_pump_inhibitors.csv", type = "csv")
+
+cdm[["ppi"]] <- conceptCohort(cdm,
+                              conceptSet = ppi,
+                              name = "ppi",
+                              exit = "event_end_date",
+                              useSourceFields = FALSE,
+                              subsetCohort = NULL,
+                              subsetCohortId = NULL)
+info(logger, "CREATED PPI DRUG COHORT")
+
 ##phenotyped controls
 cli::cli_alert_success("- Creating phenotyped control cohorts")
 info(logger, "CREATING PHENOTYPED CONTROL COHORTS")
