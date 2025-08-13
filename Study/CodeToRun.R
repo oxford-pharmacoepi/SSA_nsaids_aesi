@@ -93,6 +93,7 @@ run_sensitivity_age_sex <- TRUE
 run_hypertension_stratification <- TRUE
 instantiated <- FALSE
 run_controls <- TRUE
+run_ppi_stratification <- TRUE
 
 # Run the study ------
 source(here("RunStudy.R"))

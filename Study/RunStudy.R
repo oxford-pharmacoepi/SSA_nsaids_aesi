@@ -18,7 +18,12 @@ characterisation_folder <- file.path(output_folder, "characterisation")
 symmetry_folder <- file.path(output_folder, "symmetry")
 #anticoag_strat_folder <- file.path(output_folder, "anticoagulants_stratification")
 
-folders <- list(sex_strat_folder, age_strat_folder, htn_strat_folder, sensitivity_folder, characterisation_folder, symmetry_folder)
+folders <- list(sex_strat_folder, 
+                age_strat_folder, 
+                htn_strat_folder, 
+                sensitivity_folder, 
+                characterisation_folder, 
+                symmetry_folder)
 lapply(folders, function(f) {
   if (!dir.exists(f)) dir.create(f, recursive = TRUE)
 })
@@ -48,6 +53,7 @@ info(logger, "INSTANTIATING COHORTS")
 if(isFALSE(instantiated)){
   
 source(here("1_InstantiateCohorts", "InstantiateCohorts.R"))
+  
 }
 
 if(isTRUE(instantiated)){
@@ -278,6 +284,25 @@ if (isTRUE(run_sensitivity_age_sex)) {
         here(output_folder, paste0(
           "/", db_name,
           "_error_sensitivity_age_sex.txt"
+        ))
+      )
+    }
+  )
+}
+
+
+if (isTRUE(run_ppi_stratification)) {
+  info(logger, "PPI STRATIFICATION")
+  tryCatch(
+    {
+      source(here("2_Analysis", "ppiStratification.R"))
+    },
+    error = function(e) {
+      writeLines(
+        as.character(e),
+        here(output_folder, paste0(
+          "/", db_name,
+          "_error_sensitivity_ppi.txt"
         ))
       )
     }

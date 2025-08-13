@@ -216,3 +216,17 @@ non_selective_codelist <- list("non_selective" = non_selective_codelist)
 omopgenerics::exportCodelist(x = non_selective_codelist, path = "1_InstantiateCohorts/Codelists", type = "csv")
 
 
+# ppi ----
+# A02BC Proton pump inhibitors
+ppi <- getATCCodes(
+  cdm,
+  level = c("ATC 4th"),
+  name = "Proton pump inhibitors",
+  doseForm = NULL,
+  doseUnit = NULL,
+  routeCategory = NULL,
+  type = "codelist"
+)
+
+# export ppi codelist
+omopgenerics::exportCodelist(x = ppi, path = "1_InstantiateCohorts/Codelists", type = "csv")
