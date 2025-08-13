@@ -83,64 +83,6 @@ exportSummarisedResult( results_90,
                         path = here::here(sensitivity_folder), 
                         fileName = paste0(db_name, "_result_90.csv") )
 
-# # Generate tidy data for plotting
-# cli::cli_alert_info("- Making a pretty plot for nsaids-aesis (365d)")
-# info(logger, "MAKING ASR SCATTER PLOT FOR 365 SENSITIVITY ANALYSIS")
 
-# sr_tidy_365 <- results_cs_365 %>%
-#   omopgenerics::tidy() %>%
-#   dplyr::mutate(
-#     index_cohort_name = stringr::str_replace(index_cohort_name, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
-#     marker_cohort_name = stringr::str_replace(marker_cohort_name, "^(?:[A-Za-z][0-9]|[0-9])[^_]*_", ""),
-#     pair = paste0(index_cohort_name, "->", marker_cohort_name),
-#     highlight = ifelse(lower_CI > 1, "Highlighted", "Not Highlighted")
-#   ) %>%
-#   dplyr::filter(
-#     variable_level == "sequence_ratio",
-#     variable_name == "adjusted",
-#     point_estimate != Inf,
-#     abs(upper_CI - lower_CI) <= 10
-#   )
-# 
-# labs_365 <- c("ASR", "Drug Pairs")
-# 
-# p_365 <- visOmopResults::scatterPlot(
-#   sr_tidy_365,
-#   x = "index_cohort_name",
-#   y = "point_estimate",
-#   line = FALSE,
-#   point = TRUE,
-#   ribbon = FALSE,
-#   ymin = "lower_CI",
-#   ymax = "upper_CI",
-#   facet = "marker_cohort_name",
-#   colour = "highlight"
-# ) +
-#   ggplot2::ylab(labs_365[1]) +
-#   ggplot2::xlab(labs_365[2]) +
-#   ggplot2::ylim(c(0, 10)) +
-#   ggplot2::coord_flip() +
-#   ggplot2::theme_bw() +
-#   ggplot2::geom_hline(yintercept = 1, linetype = 2) +
-#   ggplot2::scale_shape_manual(values = rep(19, 5)) +
-#   ggplot2::theme(
-#     panel.border = ggplot2::element_blank(),
-#     axis.line = ggplot2::element_line(),
-#     legend.position = "none",
-#     legend.title = ggplot2::element_blank(),
-#     plot.title = ggplot2::element_text(hjust = 0.5)
-#   )
-# 
-# # Save plot
-# p_365
-# 
-# srPlotName <- paste0("nsaids_aesi_365", ".png")
-# png(here::here(sensitivity_folder, srPlotName), width = 8, height = 6, units = "in", res = 1500, type = "cairo") 
-#     print(p_365, newpage = FALSE) 
-#     dev.off()
-# 
-# cli::cli_alert_info("- Made a pretty plot for nsaids-aesis (365d)")
-# info(logger, "Made ASR SCATTER PLOT FOR 365 SENSITIVITY ANALYSIS")
-
-cli::cli_alert_info("- Completed 365 sensitivity analysis")
-info(logger, "COMPLETED 365 SENSITIVITY ANALYSIS")
+cli::cli_alert_info("- Completed 365 and 90 windown sensitivity analysis")
+info(logger, "COMPLETED 365 AND 90 DAY WINDOW SENSITIVITY ANALYSIS")
