@@ -24,12 +24,25 @@ tryCatch({
   cli::cli_alert_success("- Generated SequenceCohortSet for nsaids-aesis")
   info(logger, "GENERATED SEQUENCE COHORT SET FOR NSAIDS AESI")
   
-  cli::cli_alert_info("- Generate SequenceRatios for nsaids-aesis")
+  cli::cli_alert_info("- Generate SequenceRatios for nsaids-aesis-7-180")
   info(logger, "GENERATE SEQUENCE RATIOS FOR NSAIDS AESI")
   
   results_cs <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi"]])
   
-  cli::cli_alert_success("- Generated SequenceRatios for nsaids-aesis")
+  cdm <- CohortSymmetry::generateSequenceCohortSet(
+    cdm = cdm,
+    name = "nsaids_aesi_7_180",
+    cohortDateRange = c(starting_date, ending_date),
+    daysPriorObservation = 365,
+    combinationWindow = c(7, 180),
+    washoutWindow = 365,
+    indexTable = "nsaids",
+    markerTable = "aesi"
+  )
+  
+  results_cs_7_180 <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi_7_180"]])
+  
+  cli::cli_alert_success("- Generated SequenceRatios for nsaids-aesis-7-180")
   info(logger, "GENERATED SEQUENCE RATIOS FOR NSAIDS AESI")
   
 }, error = function(e) {
@@ -41,7 +54,7 @@ tryCatch({
 cli::cli_alert_success("- Got cohort symmetry results")
 info(logger, "GOT COHORT SYMMETRY RESULTS")
 
-cli::cli_alert_info("- Export results for nsaids-aesis")
+cli::cli_alert_info("- Export results for nsaids-aesis-7-180")
 
 info(logger, "EXPORTING RESULTS")
 
@@ -50,21 +63,38 @@ exportSummarisedResult(
   path = here::here(symmetry_folder),
   fileName = paste0(db_name, "_result.csv")
 )
+
+exportSummarisedResult(
+  results_cs_7_180,
+  path = here::here(symmetry_folder),
+  fileName = paste0(db_name, "_result_7_180.csv")
+)
+
 info(logger, "EXPORTED RESULTS")
 
 #marker settings
 marker_settings <- settings(cdm[["nsaids_aesi"]])
 write.csv(marker_settings, here::here(symmetry_folder, paste0(cdmName(cdm), "_ssa_marker_settings.csv")))
+
+marker_settings_7_180 <- settings(cdm[["nsaids_aesi_7_180"]])
+write.csv(marker_settings_7_180, here::here(symmetry_folder, paste0(cdmName(cdm), "_ssa_marker_settings_7_180.csv")))
 info(logger, "WROTE MARKER SETTINGS CSV")
 
 #attrition
 attrition_seq_ratio <- attrition(cdm[["nsaids_aesi"]])
 write.csv(attrition_seq_ratio, here::here(symmetry_folder, paste0(cdmName(cdm), "_ssa_attrition.csv")))
+
+attrition_seq_ratio_7_180 <- attrition(cdm[["nsaids_aesi_7_180"]])
+write.csv(attrition_seq_ratio_7_180, here::here(symmetry_folder, paste0(cdmName(cdm), "_ssa_attrition_7_180.csv")))
 info(logger, "WROTE ATTRITION CSV")
 
 #temporal plots 
 summary_temp_trends_months <- summariseTemporalSymmetry(cdm[["nsaids_aesi"]], timescale = "month")
 write.csv(summary_temp_trends_months, file.path(symmetry_folder, paste0(cdmName(cdm), "_ssa_temporal_symmetry_summary.csv")))
+
+summary_temp_trends_months_7_180 <- summariseTemporalSymmetry(cdm[["nsaids_aesi_7_180"]], timescale = "month")
+write.csv(summary_temp_trends_months_7_180, file.path(symmetry_folder, paste0(cdmName(cdm), "_ssa_temporal_symmetry_summary_7_180.csv")))
+
 info(logger, "WROTE TEMPORAL PLOTS CSV")
 
 cli::cli_alert_success("- Generating record trends")
