@@ -11,12 +11,10 @@ if (!file.exists(output_folder)) {
 # Create subfolders for each analysis
 sex_strat_folder <- file.path(output_folder, "sex_stratification")
 age_strat_folder <- file.path(output_folder, "age_stratification")
-htn_strat_folder <- file.path(output_folder, "hypertension_stratification")
-sensitivity_folder <- file.path(output_folder, "sensitivity_365")
+sensitivity_folder <- file.path(output_folder, "sensitivity")
 sensitivity_as_folder <- file.path(output_folder, "sensitivity_age_sex")
 characterisation_folder <- file.path(output_folder, "characterisation")
 symmetry_folder <- file.path(output_folder, "symmetry")
-#anticoag_strat_folder <- file.path(output_folder, "anticoagulants_stratification")
 
 folders <- list(sex_strat_folder, 
                 age_strat_folder, 
@@ -61,13 +59,12 @@ cdm <- CDMConnector::cdmFromCon(con = db,
                                 cdmSchema = cdm_database_schema,
                                 writeSchema = results_database_schema,
                                 cohortTables = c( "nsaids", 
-                                                  "aesi", 
+                                                  "aesi",
+                                                  "all_nsaids",
+                                                  "cox_2",
+                                                  "non_selective",
                                                   "medications", 
                                                   "conditions", 
-                                                  "all_nsaids", 
-                                                  "cox_2", 
-                                                  "non_selective", 
-                                                  "nsaids_sa", 
                                                   "amiodarone", 
                                                   "levothyroxine", 
                                                   "allopurinol", 
@@ -75,12 +72,12 @@ cdm <- CDMConnector::cdmFromCon(con = db,
                                                   "cough", 
                                                   "asthma", 
                                                   "edema",
-                                                  "hypertension",
                                                   "cataracts", 
                                                   "nausea", 
                                                   "vomiting",
                                                   "anemia", 
-                                                  "aki"),
+                                                  "aki"
+                                                  ),
                                 
                                 writePrefix = table_stem,
                                 achillesSchema = results_database_schema,
@@ -107,7 +104,7 @@ if(isTRUE(run_symmetry)){
 
 
 # database and study postive and negative controls ----------
-if (isTRUE(run_symmetry)) {
+if (isTRUE(run_controls)) {
   cli::cli_text("- Running cohort symmetry for controls ({Sys.time()})")
 
   info(logger, "RUNNING COHORT SYMMETRY FOR CONTROLS")
@@ -203,56 +200,33 @@ if (isTRUE(run_age_stratification)) {
 }
 
 # hypertension stratification analysis
-if (isTRUE(run_hypertension_stratification)) {
-  cli::cli_text("- Running hypertension stratification ({Sys.time()})")
-
-  info(logger, "RUNNING HYPERTENSION STRATIFICATION")
-
-  tryCatch(
-    {
-      source(here("2_Analysis", "HypertensionStratification.R"))
-    },
-    error = function(e) {
-      writeLines(
-        as.character(e),
-        here(output_folder, paste0(
-          "/", db_name,
-          "_error_hypertension_stratification.txt"
-        ))
-      )
-    }
-  )
-  info(logger, "RAN HYPERTENSION STRATIFICATION")
-}
-
-## anticoagulants stratification analysis
-# if (isTRUE(run_anticoagulants_stratification)) {
-#   cli::cli_text("- Running anticoagulants stratification ({Sys.time()})")
-#   
-#   info(logger, "RUNNING ANTICOAGULANTS STRATIFICATION")
-#   
+# if (isTRUE(run_hypertension_stratification)) {
+#   cli::cli_text("- Running hypertension stratification ({Sys.time()})")
+# 
+#   info(logger, "RUNNING HYPERTENSION STRATIFICATION")
+# 
 #   tryCatch(
 #     {
-#       source(here("2_Analysis", "AnticoagulantsStratification.R"))
+#       source(here("2_Analysis", "HypertensionStratification.R"))
 #     },
 #     error = function(e) {
 #       writeLines(
 #         as.character(e),
 #         here(output_folder, paste0(
 #           "/", db_name,
-#           "_error_anticoagulants_stratification.txt"
+#           "_error_hypertension_stratification.txt"
 #         ))
 #       )
 #     }
 #   )
-#   info(logger, "RAN ANTICOAGULANTS STRATIFICATION")
+#   info(logger, "RAN HYPERTENSION STRATIFICATION")
 # }
 
 # sensitivity analysis of 365 day combination window using unstratified population
 if (isTRUE(run_sensitivity_365)) {
-  cli::cli_text("- Running sensitivity 365 ({Sys.time()})")
+  cli::cli_text("- Running sensitivity ({Sys.time()})")
 
-  info(logger, "RUNNING SENSITIVITY 365")
+  info(logger, "RUNNING SENSITIVITY")
 
   tryCatch(
     {
@@ -263,32 +237,32 @@ if (isTRUE(run_sensitivity_365)) {
         as.character(e),
         here(output_folder, paste0(
           "/", db_name,
-          "_error_sensitivity365.txt"
+          "_error_sensitivity.txt"
         ))
       )
     }
   )
 
-  info(logger, "RAN SENSITIVITY 365")
+  info(logger, "RAN SENSITIVITY")
 }
 
-if (isTRUE(run_sensitivity_age_sex)) {
-  info(logger, "SENSITIVITY AGE + SEX")
-  tryCatch(
-    {
-      source(here("2_Analysis", "sensitivityAgeSex.R"))
-    },
-    error = function(e) {
-      writeLines(
-        as.character(e),
-        here(output_folder, paste0(
-          "/", db_name,
-          "_error_sensitivity_age_sex.txt"
-        ))
-      )
-    }
-  )
-}
+# if (isTRUE(run_sensitivity_age_sex)) {
+#   info(logger, "SENSITIVITY AGE + SEX")
+#   tryCatch(
+#     {
+#       source(here("2_Analysis", "sensitivityAgeSex.R"))
+#     },
+#     error = function(e) {
+#       writeLines(
+#         as.character(e),
+#         here(output_folder, paste0(
+#           "/", db_name,
+#           "_error_sensitivity_age_sex.txt"
+#         ))
+#       )
+#     }
+#   )
+# }
 
 
 if (isTRUE(run_ppi_stratification)) {
