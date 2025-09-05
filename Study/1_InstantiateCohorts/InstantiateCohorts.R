@@ -303,6 +303,11 @@ cdm <- generateDrugUtilisationCohortSet(
   gapEra = 30
 ) 
 
+cdm$all_nsaids |> 
+  CohortConstructor::requireAge(indexDate = "cohort_start_date",
+                                ageRange = list(c(18, 150))) |> 
+  CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date))) 
+
 #Cox2 selective cohort
 cox_2_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "cox_2.csv"), type = "csv")
 
@@ -312,6 +317,11 @@ cdm <- generateDrugUtilisationCohortSet(
   conceptSet = cox_2_codelist,
   gapEra = 30
 )
+
+cdm$cox_2 |> 
+  CohortConstructor::requireAge(indexDate = "cohort_start_date",
+                                ageRange = list(c(18, 150))) |> 
+  CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date))) 
  
 non_selective_codelist <- omopgenerics::importCodelist(path = here::here("1_InstantiateCohorts", "Codelists", "non_selective.csv"), type = "csv")
 
@@ -322,20 +332,22 @@ cdm <- generateDrugUtilisationCohortSet(
   gapEra = 30
 )
 
+cdm$non_selective |> 
+  CohortConstructor::requireAge(indexDate = "cohort_start_date",
+                                ageRange = list(c(18, 150))) |> 
+  CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date))) 
+
  
- cdm <- omopgenerics::bind(
+cdm <- omopgenerics::bind(
+   cdm$nsaids,
    cdm$all_nsaids,
    cdm$cox_2,
    cdm$non_selective,
-   name = "nsaids_sa"
+   name = "nsaids"
  ) 
  
- cdm$nsaids_sa |> 
-   CohortConstructor::requireAge(indexDate = "cohort_start_date",
-                                 ageRange = list(c(18, 150))) |> 
-   CohortConstructor::requireInDateRange(dateRange = as.Date(c(starting_date, ending_date))) 
- 
- 
+ cli::cli_alert_info("- Got nsaids")
+ info(logger, "GOT NSAIDS")
  # Markers AESI -------
  cli::cli_alert_info("- Getting outcome definitions")
  info(logger, "GETTING OUTCOME DEFINITIONS")

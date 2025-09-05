@@ -1,5 +1,5 @@
 # run cohort symmetry on all index-marker pairs and controls (365-day version)
-sensitivity_folder <- file.path(output_folder, "sensitivity_365")
+sensitivity_folder <- file.path(output_folder, "sensitivity")
 if (!dir.exists(sensitivity_folder)) dir.create(sensitivity_folder, recursive = TRUE)
 
 ##############################
