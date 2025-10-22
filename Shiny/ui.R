@@ -138,7 +138,7 @@ ui <- dashboardPage(
         
         menuSubItem(
           text = "Forest plot",
-          tabName = "forest_plots_sa"
+          tabName = "forest_plots_sa",
         ),
         
         menuSubItem(
@@ -303,18 +303,6 @@ ui <- dashboardPage(
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
-            inputId = "overall_ssa_database_name_selector",
-            label = "Database",
-            choices = unique(ssa_estimates$`Database name`),
-            selected = unique(ssa_estimates$`Database name`)[1],
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
             inputId = "overall_ssa_signal_selector",
             label = "Signal Type",
             choices = unique(ssa_estimates$signal),
@@ -348,7 +336,6 @@ ui <- dashboardPage(
             multiple = TRUE
           )
         ),
-        
 
         htmlOutput('tbl_overall_ssa'),
         
@@ -361,23 +348,64 @@ ui <- dashboardPage(
         
       )  ,
       
+      tabItem(
+        tabName = "cs_results_pnc",
+        tags$h5("Results from PSSA analysis showing crude and adjusted sequence ratio's as well as percentages of order of index and marker."),
+
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "overall_ssa_signal_selector_pnc",
+            label = "Signal Type",
+            choices = unique(ssa_estimates_controls$signal),
+            selected = "Positive",
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+
+
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "overall_ssa_index_name_selector_pnc",
+            label = "Index Name",
+            choices = unique(ssa_estimates_controls$`Index cohort name`),
+            selected = unique(ssa_estimates_controls$`Index cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "overall_ssa_marker_name_selector_pnc",
+            label = "Marker Name",
+            choices = unique(ssa_estimates_controls$`Marker cohort name`),
+            selected = unique(ssa_estimates_controls$`Marker cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+
+
+        htmlOutput('tbl_overall_ssa_pnc'),
+
+        div(style="display:inline-block",
+            downloadButton(
+              outputId = "gt_overall_ssa_word_pnc",
+              label = "Download table as word"
+            ),
+            style="display:inline-block; float:right")
+
+      )  ,
+      
       
       
       tabItem(
         tabName = "cs_results_sex",
         tags$h5("Results from PSSA analysis showing crude and adjusted sequence ratio's as well as percentages of order of index and marker."),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "sex_ssa_database_name_selector",
-            label = "Database",
-            choices = unique(ssa_estimates_sex$`Database name`),
-            selected = unique(ssa_estimates_sex$`Database name`)[1],
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
         
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
@@ -436,18 +464,6 @@ ui <- dashboardPage(
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
-            inputId = "age_ssa_database_name_selector",
-            label = "Database",
-            choices = unique(ssa_estimates_age$`Database name`),
-            selected = unique(ssa_estimates_age$`Database name`)[1],
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
             inputId = "age_ssa_signal_selector",
             label = "Signal Type",
             choices = unique(ssa_estimates_age$signal),
@@ -497,19 +513,7 @@ ui <- dashboardPage(
       tabItem(
         tabName = "cs_results_sa",
         tags$h5("Results from PSSA analysis showing crude and adjusted sequence ratio's as well as percentages of order of index and marker."),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ssa_database_name_selector_sa",
-            label = "Database",
-            choices = unique(ssa_estimates_sa$`Database name`),
-            selected = unique(ssa_estimates_sa$`Database name`)[1],
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
+
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
@@ -521,8 +525,8 @@ ui <- dashboardPage(
             multiple = TRUE
           )
         ),
-        
-        
+
+
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
@@ -534,7 +538,7 @@ ui <- dashboardPage(
             multiple = TRUE
           )
         ),
-        
+
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
@@ -546,7 +550,7 @@ ui <- dashboardPage(
             multiple = TRUE
           )
         ),
-        
+
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
@@ -558,41 +562,16 @@ ui <- dashboardPage(
             multiple = TRUE
           )
         ),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ssa_age_name_selector_sa",
-            label = "Age",
-            choices = unique(ssa_estimates_sa$age),
-            selected = unique(ssa_estimates_sa$age),
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ssa_sex_name_selector_sa",
-            label = "Sex",
-            choices = unique(ssa_estimates_sa$sex),
-            selected = unique(ssa_estimates_sa$sex),
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        
+
         htmlOutput('tbl_ssa_sa'),
-        
+
         div(style="display:inline-block",
             downloadButton(
               outputId = "gt_sa_ssa_word",
               label = "Download table as word"
             ),
             style="display:inline-block; float:right")
-        
+
       ),
       
       tabItem(
@@ -688,18 +667,6 @@ ui <- dashboardPage(
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
-            inputId = "im_temporal_database_name_selector",
-            label = "Database",
-            choices = unique(im_temporal$cdm_name),
-            selected = unique(im_temporal$cdm_name)[1],
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
             inputId = "im_temporal_cohort_selector",
             label = "Index Marker Name",
             choices = unique(im_temporal$group_level),
@@ -727,44 +694,42 @@ ui <- dashboardPage(
       tabItem(
         tabName = "ts_plots",
         tags$h5("Temporal sequence symmetry crude plots to assess asymmetry. If there is no signal we would expect plots to be symmetrical. If there is a potential signal we might expect more counts of the marker after the index (dashed line)"),
+
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
-            inputId = "ts_plot_database_selector",
-            label = "Database",
-            choices = unique(im_temporal_test$cdm_name),
-            selected = unique(im_temporal_test$cdm_name),
+            inputId = "ts_plot_index_selector",
+            label = "Index name",
+            choices = unique(im_temporal_test$index_name),
+            selected = "ibuprofen",
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
         ),
-
         
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
             inputId = "ts_plot_marker_selector",
-            label = "Index Marker Pair",
-            choices = unique(im_temporal_test$group_level),
-            selected = grep("^ibuprofen", unique(im_temporal$group_level), value = TRUE),
+            label = "Marker name",
+            choices = unique(im_temporal_test$marker_name),
+            selected = unique(im_temporal_test$marker_name),
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
         ),
         
-        div(style="display: inline-block;vertical-align:top; width: 150px;",
-            pickerInput(inputId = "ts_plot_facet",
-                        label = "Facet by",
-                        choices = c("cdm_name", 
-                                    "group_level"),
-                        selected = c("group_level"),
-                        options = list(
-                          `actions-box` = TRUE,
-                          size = 10,
-                          `selected-text-format` = "count > 3"),
-                        multiple = TRUE,)
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "ts_plot_window_selector",
+            label = "Combination window",
+            choices = unique(im_temporal_test$combination_window),
+            selected = unique(im_temporal_test$combination_window),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
         ),
-        
         
         div(
           style = "width: 80%; height: 90%;",  # Set width to 100% for responsive design
@@ -795,21 +760,68 @@ ui <- dashboardPage(
         
         
       ) ,
+      
       tabItem(
-        tabName = "ts_plots_sex",
+        tabName = "ts_plots_pnc",
         tags$h5("Temporal sequence symmetry crude plots to assess asymmetry. If there is no signal we would expect plots to be symmetrical. If there is a potential signal we might expect more counts of the marker after the index (dashed line)"),
+
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
-            inputId = "ts_plot_database_selector_sex",
-            label = "Database",
-            choices = unique(im_temporal_test_sex$cdm_name),
-            selected = unique(im_temporal_test_sex$cdm_name),
+            inputId = "ts_plot_index_selector_pnc",
+            label = "Index name",
+            choices = unique(im_temporal_controls_test$index_name),
+            selected = unique(im_temporal_controls_test$index_name),
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
         ),
-        
+
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "ts_plot_marker_selector_pnc",
+            label = "Marker name",
+            choices = unique(im_temporal_controls_test$marker_name),
+            selected = unique(im_temporal_controls_test$marker_name),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+
+        div(
+          style = "width: 80%; height: 90%;",  # Set width to 100% for responsive design
+          plotOutput("ts_plots_pnc",
+                     height = "800px"
+          ) %>%
+            withSpinner(),
+          h4("Download Figure"),
+          div("Height:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("ts_plot_download_height_pnc", "", 30, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("Width:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("ts_plot_download_widt_pnc", "", 35, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("dpi:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block; margin-right:",
+            textInput("ts_plot_download_dpi_pnc", "", 600, width = "50px")
+          ),
+          downloadButton("ts_plot_download_plot_pnc", "Download plot")
+        )
+
+
+      ) ,
+      
+      tabItem(
+        tabName = "ts_plots_sex",
+        tags$h5("Temporal sequence symmetry crude plots to assess asymmetry. If there is no signal we would expect plots to be symmetrical. If there is a potential signal we might expect more counts of the marker after the index (dashed line)"),
         
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
@@ -833,23 +845,50 @@ ui <- dashboardPage(
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
+        ),
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "ts_plot_sex_selector_sex",
+            label = "Sex",
+            choices = unique(im_temporal_test_sex$sex),
+            selected = unique(im_temporal_test_sex$sex),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        div(
+          style = "width: 80%; height: 90%;",  # Set width to 100% for responsive design
+          plotOutput("ts_plot_sex",
+                     height = "800px"
+          ) %>%
+            withSpinner(),
+          h4("Download Figure"),
+          div("Height:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("ts_plot_download_height_sex", "", 30, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("Width:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("ts_plot_download_width_sex", "", 35, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("dpi:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block; margin-right:",
+            textInput("ts_plot_download_dpi_sex", "", 600, width = "50px")
+          ),
+          downloadButton("ts_plot_download_plot_sex", "Download plot")
         )),
         
         tabItem(
           tabName = "ts_plots_age",
           tags$h5("Temporal sequence symmetry crude plots to assess asymmetry. If there is no signal we would expect plots to be symmetrical. If there is a potential signal we might expect more counts of the marker after the index (dashed line)"),
-          div(
-            style = "display: inline-block;vertical-align:top; width: 150px;",
-            pickerInput(
-              inputId = "ts_plot_database_selector_age",
-              label = "Database",
-              choices = unique(im_temporal_test_age$cdm_name),
-              selected = unique(im_temporal_test_age$cdm_name),
-              options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-              multiple = TRUE
-            )
-          ),
-          
           
           div(
             style = "display: inline-block;vertical-align:top; width: 150px;",
@@ -909,18 +948,6 @@ ui <- dashboardPage(
       tabItem(
         tabName = "forest_plots",
         tags$h5("Forest plots showing index marker pairs"),
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "forest_plot_database_selector",
-            label = "Database Name",
-            choices = unique(ssa_estimates$`Database name`),
-            selected = unique(ssa_estimates$`Database name`),
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-
 
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
@@ -942,6 +969,18 @@ ui <- dashboardPage(
             label = "Marker Name",
             choices = unique(ssa_estimates$`Marker cohort name`),
             selected = unique(ssa_estimates$`Marker cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "forest_plot_window_selector",
+            label = "Combination window",
+            choices = unique(ssa_estimates$combination_window),
+            selected = unique(ssa_estimates$combination_window),
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
@@ -976,25 +1015,74 @@ ui <- dashboardPage(
         )
 
       ) ,
-
-      
       
       tabItem(
-        tabName = "forest_plots_sex",
-        tags$h5("Forest plots showing index marker pairs for sex stratification"),
+        tabName = "forest_plots_pnc",
+        tags$h5("Forest plots showing index marker pairs"),
+        
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
-            inputId = "forest_plot_database_sex_selector",
-            label = "Database Name",
-            choices = unique(ssa_estimates_sex$`Database name`),
-            selected = unique(ssa_estimates_sex$`Database name`),
+            inputId = "forest_plot_index_selector_pnc",
+            label = "Index Name",
+            choices = c("All (excl. aspirin)", "ACE Inhibitors", "Amiodarone"),
+            selected = c("All (excl. aspirin)", "ACE Inhibitors", "Amiodarone"),
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
         ),
         
         
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "forest_plot_marker_selector_pnc",
+            label = "Marker Name",
+            choices = c("Acute Kidney Injury", "Anemia","Cataracts","Edema","Nausea",            
+                        "Vomiting","Allopurinol","Levothyroxine","Cough"),
+            selected = c("Acute Kidney Injury", "Anemia","Cataracts","Edema","Nausea",            
+                         "Vomiting","Allopurinol","Levothyroxine","Cough"),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        div(
+          style = "width: 80%; height: 90%;",  # Set width to 100% for responsive design
+          plotOutput("forestPlot_overall_pnc",
+                     height = "800px"
+          ) %>%
+            withSpinner(),
+          h4("Download Figure"),
+          div("Height:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("forest_plot_download_height_pnc", "", 30, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("Width:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("forest_plot_download_width_pnc", "", 35, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("dpi:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block; margin-right:",
+            textInput("forest_plot_download_dpi_pnc", "", 600, width = "50px")
+          ),
+          downloadButton("forest_plot_download_plot_pnc", "Download plot")
+        )
+        
+      ) ,
+
+      
+      
+      tabItem(
+        tabName = "forest_plots_sex",
+        tags$h5("Forest plots showing index marker pairs for sex stratification"),
+
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
@@ -1054,19 +1142,7 @@ ui <- dashboardPage(
       tabItem(
         tabName = "forest_plots_age",
         tags$h5("Forest plots showing index marker pairs for sex stratification"),
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "forest_plot_database_age_selector",
-            label = "Database Name",
-            choices = unique(ssa_estimates_age$`Database name`),
-            selected = unique(ssa_estimates_age$`Database name`),
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        
+
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
@@ -1183,29 +1259,7 @@ ui <- dashboardPage(
         tabName = "forest_plots_sa",
         tags$h5("Results from PSSA analysis showing crude and adjusted sequence ratio's as well as percentages of order of index and marker."),
         
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ssa_database_name_selector_sa",
-            label = "Database",
-            choices = unique(ssa_estimates_sa$`Database name`),
-            selected = unique(ssa_estimates_sa$`Database name`)[1],
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ssa_window_selector_sa",
-            label = "Combination window",
-            choices = unique(ssa_estimates_sa$combination_window),
-            selected = "(0, 90)",
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
+        # --- Filter pickers ---
         
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
@@ -1231,56 +1285,62 @@ ui <- dashboardPage(
           )
         ),
         
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ssa_age_selector_sa",
-            label = "Age Group",
-            choices = unique(ssa_estimates_sa$age),
-            selected = "All ages",
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
+        # --- Main output area with tabs ---
+        tabsetPanel(
+          tabPanel("90 days",
+                   div(
+                     style = "width: 80%; height: 90%;",
+                     plotOutput("forestPlot_sa", height = "800px") %>% withSpinner(),
+                     
+                     h4("Download Figure"),
+                     div("Height:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+                     div(
+                       style = "display: inline-block;",
+                       textInput("forest_plot_sa_download_height", "", 30, width = "50px")
+                     ),
+                     div("cm", style = "display: inline-block; margin-right: 25px;"),
+                     div("Width:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+                     div(
+                       style = "display: inline-block;",
+                       textInput("forest_plot_sa_download_width", "", 35, width = "50px")
+                     ),
+                     div("cm", style = "display: inline-block; margin-right: 25px;"),
+                     div("dpi:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+                     div(
+                       style = "display: inline-block; margin-right:",
+                       textInput("forest_plot_sa_download_dpi", "", 600, width = "50px")
+                     ),
+                     downloadButton("forest_plot_sa_download_plot", "Download plot")
+                   )
+          ),
+          
+          tabPanel("365 days",
+                   div(
+                     style = "width: 80%; height: 90%;",
+                     plotOutput("forestPlot_sa_365", height = "800px") %>% withSpinner(),
+                     
+                     h4("Download Figure"),
+                     div("Height:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+                     div(
+                       style = "display: inline-block;",
+                       textInput("forest_plot_sa_download_height", "", 30, width = "50px")
+                     ),
+                     div("cm", style = "display: inline-block; margin-right: 25px;"),
+                     div("Width:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+                     div(
+                       style = "display: inline-block;",
+                       textInput("forest_plot_sa_download_width", "", 35, width = "50px")
+                     ),
+                     div("cm", style = "display: inline-block; margin-right: 25px;"),
+                     div("dpi:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+                     div(
+                       style = "display: inline-block; margin-right:",
+                       textInput("forest_plot_sa_download_dpi", "", 600, width = "50px")
+                     ),
+                     downloadButton("forest_plot_sa_download_plot", "Download plot")
+                   )
           )
-        ),
-        
-        div(
-          style = "display: inline-block;vertical-align:top; width: 150px;",
-          pickerInput(
-            inputId = "ssa_sex_selector_sa",
-            label = "Sex",
-            choices = unique(ssa_estimates_sa$sex),
-            selected = "Both",
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
-            multiple = TRUE
-          )
-        ),
-        div(
-          style = "width: 80%; height: 90%;",  # Set width to 100% for responsive design
-          plotOutput("forestPlot_sa",
-                     height = "800px"
-          ) %>%
-            withSpinner(),
-          h4("Download Figure"),
-          div("Height:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
-          div(
-            style = "display: inline-block;",
-            textInput("forest_plot_sa_download_height", "", 30, width = "50px")
-          ),
-          div("cm", style = "display: inline-block; margin-right: 25px;"),
-          div("Width:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
-          div(
-            style = "display: inline-block;",
-            textInput("forest_plot_sa_download_width", "", 35, width = "50px")
-          ),
-          div("cm", style = "display: inline-block; margin-right: 25px;"),
-          div("dpi:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
-          div(
-            style = "display: inline-block; margin-right:",
-            textInput("forest_plot_sa_download_dpi", "", 600, width = "50px")
-          ),
-          downloadButton("forest_plot_sa_download_plot", "Download plot")
         )
-        
       )
   
 )
