@@ -113,17 +113,16 @@ server <-	function(input, output, session) {
           
           TRUE ~ stringr::str_to_title(marker_cohort_name)),
           index_cohort_name = dplyr::case_when(
-            index_cohort_name == "All_nsaids" ~ "All (excl. aspirin)",
+            index_cohort_name == "All_nsaids" ~ "Any NSAIDs (excl. Aspirin)",
             index_cohort_name == "Non_selective" ~ "Non-selective",
             index_cohort_name == "Cox_2" ~ "Cox-2",
             TRUE ~ index_cohort_name
           )
         ) |>
-      dplyr::filter(index_cohort_name != "Acetaminophen") |>
       mutate(index_cohort_name = factor(index_cohort_name, 
-                                         levels = rev(c("All (excl. aspirin)", "Cox-2", "Celecoxib", "Etoricoxib", "Non-selective", "Aspirin", 
+                                         levels = rev(c("Any NSAIDs (excl. Aspirin)", "Cox-2", "Celecoxib", "Etoricoxib", "Non-selective", "Aspirin", 
                                                     "Diclofenac", "Etodolac", "Ibuprofen", "Indomethacin", "Mefenamate", "Meloxicam", "Naproxen",
-                                                    "Piroxicam")),
+                                                    "Piroxicam", "Acetaminophen")),
                                          ordered = TRUE),
              signal = factor(signal, levels = c("Positive", "Negative", "Null"), ordered = TRUE))
     
@@ -194,7 +193,7 @@ server <-	function(input, output, session) {
           marker_cohort_name == "cough_codes" ~ "Cough",
           TRUE ~ stringr::str_to_title(marker_cohort_name)),
         index_cohort_name = dplyr::case_when(
-          index_cohort_name == "All_nsaids" ~ "All (excl. aspirin)",
+          index_cohort_name == "All_nsaids" ~ "Any NSAIDs (excl. Aspirin)",
           index_cohort_name == "Ace_inhibitors_plain" ~ "ACE Inhibitors",
           TRUE ~ stringr::str_to_title(index_cohort_name)
         )
@@ -292,7 +291,7 @@ server <-	function(input, output, session) {
           TRUE ~ stringr::str_to_title(marker_cohort_name)  # Default capitalization
         ),
         index_cohort_name = dplyr::case_when(
-          index_cohort_name == "All_nsaids" ~ "All (excl. aspirin)",
+          index_cohort_name == "All_nsaids" ~ "Any NSAIDs (excl. Aspirin)",
           index_cohort_name == "Non_selective" ~ "Non-selective",
           index_cohort_name == "Cox_2" ~ "COX-2",
           TRUE ~ index_cohort_name
@@ -303,11 +302,10 @@ server <-	function(input, output, session) {
           TRUE ~ signal
         )
       ) |>
-      dplyr::filter(index_cohort_name != "Acetaminophen") |>
       mutate(index_cohort_name = factor(index_cohort_name, 
-                                        levels = rev(c("All (excl. aspirin)", "COX-2", "Celecoxib", "Etoricoxib", "Non-selective", "Aspirin", 
+                                        levels = rev(c("Any NSAIDs (excl. Aspirin)", "COX-2", "Celecoxib", "Etoricoxib", "Non-selective", "Aspirin", 
                                                        "Diclofenac", "Etodolac", "Ibuprofen", "Indomethacin", "Mefenamate", "Meloxicam", "Naproxen",
-                                                       "Piroxicam")),
+                                                       "Piroxicam", "Acetaminophen")),
                                         ordered = TRUE))
     
     p_sex_comparison <- ggplot(get_data, aes(
@@ -402,7 +400,7 @@ server <-	function(input, output, session) {
           
           TRUE ~ stringr::str_to_title(marker_cohort_name)),
         index_cohort_name = dplyr::case_when(
-          index_cohort_name == "All_nsaids" ~ "All (excl. aspirin)",
+          index_cohort_name == "All_nsaids" ~ "Any NSAIDs (excl. Aspirin)",
           index_cohort_name == "Non_selective" ~ "Non-selective",
           TRUE ~ index_cohort_name),
           signal = dplyr::case_when(
@@ -411,11 +409,10 @@ server <-	function(input, output, session) {
             TRUE ~ signal
           )
         ) |>
-          dplyr::filter(index_cohort_name != "Acetaminophen") |>
           mutate(index_cohort_name = factor(index_cohort_name, 
-                                            levels = rev(c("All (excl. aspirin)", "Cox-2", "Celecoxib", "Etoricoxib", "Non-selective", "Aspirin", 
+                                            levels = rev(c("Any NSAIDs (excl. Aspirin)", "Cox-2", "Celecoxib", "Etoricoxib", "Non-selective", "Aspirin", 
                                                            "Diclofenac", "Etodolac", "Ibuprofen", "Indomethacin", "Mefenamate", "Meloxicam", "Naproxen",
-                                                           "Piroxicam")),
+                                                           "Piroxicam", "Acetaminophen")),
                                             ordered = TRUE))
     
     
@@ -425,7 +422,7 @@ server <-	function(input, output, session) {
       ymin = asr_lower,
       ymax = asr_upper,
       shape = age_group,
-      color = age_group
+      color = signal
     )) +
       geom_hline(yintercept = 1, linetype = 2) +
       # Draw error bars with thicker lines
@@ -448,7 +445,7 @@ server <-	function(input, output, session) {
         y = "Adjusted Sequence Ratio"
       ) +
       scale_shape_manual(values = c("Under 65" = 17, "65 and over" = 16)) +
-      scale_color_manual(values = c("Under 65" = "#1f77b4", "65 and over" = "#d62728")) +
+      scale_color_manual(values = c("Negative / Null" = "#1f77b4", "Positive" = "#d62728")) +
       theme(
         legend.position = "right",
         legend.title = element_blank(),
@@ -869,17 +866,16 @@ server <-	function(input, output, session) {
 
           TRUE ~ stringr::str_to_title(marker_cohort_name)),
         index_cohort_name = dplyr::case_when(
-          index_cohort_name == "All_nsaids" ~ "All (excl. aspirin)",
+          index_cohort_name == "All_nsaids" ~ "Any NSAIDs (excl. Aspirin)",
           index_cohort_name == "Non_selective" ~ "Non-selective",
           index_cohort_name == "Cox_2" ~ "COX-2",
           TRUE ~ index_cohort_name
         )
       ) |>
-      filter(!index_cohort_name %in% "Acetaminophen") |>
       mutate(index_cohort_name = factor(index_cohort_name,
-                                        levels = rev(c("All (excl. aspirin)", "COX-2", "Celecoxib", "Etoricoxib", "Non-selective", "Aspirin",
+                                        levels = rev(c("Any NSAIDs (excl. Aspirin)", "COX-2", "Celecoxib", "Etoricoxib", "Non-selective", "Aspirin",
                                                        "Diclofenac", "Etodolac", "Ibuprofen", "Indomethacin", "Mefenamate", "Meloxicam", "Naproxen",
-                                                       "Piroxicam")),
+                                                       "Piroxicam","Acetaminophen")),
                                         ordered = TRUE))
 
 
@@ -910,7 +906,7 @@ server <-	function(input, output, session) {
       ) +
       scale_y_discrete(
         labels = c(
-          "<b>All (excl. aspirin)</b>",
+          "<b>Any NSAIDs (excl. Aspirin)</b>",
           "<b>COX-2</b>",
           "Celecoxib",
           "Etoricoxib",
@@ -930,7 +926,7 @@ server <-	function(input, output, session) {
         legend.position = "right",
         legend.title = element_blank(),
         strip.text = element_text(face = "bold", size = 16),
-        axis.text.x = ggtext::element_markdown(size = 14),
+        axis.text = ggplot2::element_text(size = 14),
         axis.title = ggplot2::element_text(size = 16)
       )
 
@@ -982,7 +978,7 @@ server <-	function(input, output, session) {
 
           TRUE ~ stringr::str_to_title(marker_cohort_name)),
         index_cohort_name = dplyr::case_when(
-          index_cohort_name == "All_nsaids" ~ "All (excl. aspirin)",
+          index_cohort_name == "All_nsaids" ~ "Any NSAIDs (excl. Aspirin)",
           index_cohort_name == "Non_selective" ~ "Non-selective",
           index_cohort_name == "Cox_2" ~ "COX-2",
           TRUE ~ index_cohort_name
@@ -992,11 +988,10 @@ server <-	function(input, output, session) {
           TRUE ~ sex
         )
       ) |>
-      filter(!index_cohort_name %in% "Acetaminophen") |>
        mutate(index_cohort_name = factor(index_cohort_name,
-                                         levels = rev(c("All (excl. aspirin)", "COX-2", "Celecoxib", "Etoricoxib", "Non-selective", "Aspirin",
+                                         levels = rev(c("Any NSAIDs (excl. Aspirin)", "COX-2", "Celecoxib", "Etoricoxib", "Non-selective", "Aspirin",
                                                         "Diclofenac", "Etodolac", "Ibuprofen", "Indomethacin", "Ketoprofen", "Mefenamate", "Meloxicam", "Nabumetone",
-                                                        "Naproxen", "Piroxicam")),
+                                                        "Naproxen", "Piroxicam", "Acetaminophen")),
                                          ordered = TRUE))
 
 
@@ -1100,7 +1095,7 @@ server <-	function(input, output, session) {
       mutate(
         index_cohort_name = stringr::str_to_title(index_cohort_name),
         index_cohort_name = dplyr::case_when(
-          index_cohort_name == "All_nsaids" ~ "All NSAIDs (excl. Aspirin)",
+          index_cohort_name == "All_nsaids" ~ "Any NSAIDs (excl. Aspirin)",
           TRUE ~ index_cohort_name
         ),
         marker_cohort_name = dplyr::case_when(
@@ -1193,14 +1188,13 @@ server <-	function(input, output, session) {
   
   
   
-  output$gt_age_ssa_word <- downloadHandler(
+  output$gt_ppi_ssa_word <- downloadHandler(
     filename = function() {
-      "age_ssa_estimates.docx"
+      "ppi_ssa_estimates.docx"
     },
     content = function(file) {
-      x <- gt(get_ssa_age_estimates())
+      x <- gt(get_ssa_ppi_estimates())
       gtsave(x, file)
     }
   )
-   
 }

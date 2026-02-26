@@ -132,7 +132,7 @@ ui <- dashboardPage(
       ),  
       
       menuItem(
-        text = "Sensitivity Analysis",
+        text = "Sensitivity Analysis - Time",
         tabName = "cs_sa",
         icon = shiny::icon("star-half-stroke") ,
         
@@ -153,6 +153,27 @@ ui <- dashboardPage(
         
       ),  
       
+      menuItem(
+        text = "Sensitivity Analysis - PPI",
+        tabName = "cs_ppi",
+        icon = shiny::icon("star-half-stroke") ,
+        
+        menuSubItem(
+          text = "Forest plot",
+          tabName = "forest_plots_ppi",
+        ),
+        
+        menuSubItem(
+          text = "Estimates",
+          tabName = "cs_results_ppi"
+        ) ,
+        
+        menuSubItem(
+          text = "Temporal Sequence Plots",
+          tabName = "ts_plots_ppi"
+        )
+        
+      ),  
       
       menuItem(
         text = "Attrition",
@@ -572,6 +593,58 @@ ui <- dashboardPage(
             ),
             style="display:inline-block; float:right")
 
+      ),
+      
+      tabItem(
+        tabName = "cs_results_ppi",
+        tags$h5("Results from PSSA analysis showing crude and adjusted sequence ratio's as well as percentages of order of index and marker."),
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "ppi_ssa_signal_selector",
+            label = "Signal Type",
+            choices = unique(ssa_estimates_ppi_bind$signal),
+            selected = "Positive",
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "ppi_ssa_index_name_selector",
+            label = "Index Name",
+            choices = unique(ssa_estimates_ppi_bind$`Index cohort name`),
+            selected = unique(ssa_estimates_ppi_bind$`Index cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "ppi_ssa_marker_name_selector",
+            label = "Marker Name",
+            choices = unique(ssa_estimates_ppi_bind$`Marker cohort name`),
+            selected = unique(ssa_estimates_ppi_bind$`Marker cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        htmlOutput('tbl_ppi_ssa'),
+        
+        div(style="display:inline-block",
+            downloadButton(
+              outputId = "gt_ppi_ssa_word",
+              label = "Download table as word"
+            ),
+            style="display:inline-block; float:right")
+        
       ),
       
       tabItem(
@@ -1025,8 +1098,8 @@ ui <- dashboardPage(
           pickerInput(
             inputId = "forest_plot_index_selector_pnc",
             label = "Index Name",
-            choices = c("All (excl. aspirin)", "ACE Inhibitors", "Amiodarone"),
-            selected = c("All (excl. aspirin)", "ACE Inhibitors", "Amiodarone"),
+            choices = c("Any NSAIDs (excl. Aspirin)", "ACE Inhibitors", "Amiodarone"),
+            selected = c("Any NSAIDs (excl. Aspirin)", "ACE Inhibitors", "Amiodarone"),
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
             multiple = TRUE
           )
@@ -1140,9 +1213,68 @@ ui <- dashboardPage(
       
       
       tabItem(
+        tabName = "forest_plots_ppi",
+        tags$h5("Forest plots showing index marker pairs for PPI stratification"),
+
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "ssa_index_selector_ppi",
+            label = "Index Name",
+            choices = unique(ssa_estimates_ppi_bind$`Index cohort name`),
+            selected = unique(ssa_estimates_ppi_bind$`Index cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        div(
+          style = "display: inline-block;vertical-align:top; width: 150px;",
+          pickerInput(
+            inputId = "ssa_marker_selector_ppi",
+            label = "Marker Name",
+            choices = unique(ssa_estimates_ppi_bind$`Marker cohort name`),
+            selected = unique(ssa_estimates_ppi_bind$`Marker cohort name`),
+            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3"),
+            multiple = TRUE
+          )
+        ),
+        
+        
+        div(
+          style = "width: 80%; height: 90%;",  # Set width to 100% for responsive design
+          plotOutput("forestPlot_ppi",
+                     height = "800px"
+          ) %>%
+            withSpinner(),
+          h4("Download Figure"),
+          div("Height:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("forest_plot_ppi_download_height", "", 30, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("Width:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block;",
+            textInput("forest_plot_ppi_download_width", "", 35, width = "50px")
+          ),
+          div("cm", style = "display: inline-block; margin-right: 25px;"),
+          div("dpi:", style = "display: inline-block; font-weight: bold; margin-right: 5px;"),
+          div(
+            style = "display: inline-block; margin-right:",
+            textInput("forest_plot_ppi_download_dpi", "", 600, width = "50px")
+          ),
+          downloadButton("forest_plot_ppi_download_plot", "Download plot")
+        )
+        
+      ),
+      
+      tabItem(
         tabName = "forest_plots_age",
         tags$h5("Forest plots showing index marker pairs for sex stratification"),
-
+        
         div(
           style = "display: inline-block;vertical-align:top; width: 150px;",
           pickerInput(
@@ -1196,7 +1328,7 @@ ui <- dashboardPage(
           downloadButton("forest_plot_age_download_plot", "Download plot")
         )
         
-      ) ,
+      ),
       
       tabItem(
         tabName = "sens_atc",

@@ -173,6 +173,7 @@ ssa_estimates_files <- ssa_estimates_files[!stringr::str_detect(ssa_estimates_fi
 ssa_estimates_files <- ssa_estimates_files[!stringr::str_detect(ssa_estimates_files, "_90")]
 ssa_estimates_files <- ssa_estimates_files[!stringr::str_detect(ssa_estimates_files, "controls")]
 ssa_estimates_files <- ssa_estimates_files[!stringr::str_detect(ssa_estimates_files, "_ppi")]
+ssa_estimates_files <- ssa_estimates_files[!stringr::str_detect(ssa_estimates_files, "_dose")]
 ssa_estimates <- list()
 
 for(i in seq_along(ssa_estimates_files)){
@@ -513,7 +514,8 @@ im_temporal_controls_test <- im_temporal_controls %>%
     group_level = str_replace(group_level, "(?<=&&& )levothyroxine$", "Levothyroxine"),
     group_level = str_replace(group_level, "(?<=&&& )[a-z0-9]+$", function(x) toupper(x))
   ) |>
-  omopgenerics::splitGroup()
+  omopgenerics::splitGroup() |>
+  dplyr::mutate(combination_window = "(0, 180)")
 
 }
 
@@ -1082,7 +1084,7 @@ ssa_estimates_no_ppi <-  omopgenerics::importSummarisedResult(ssa_estimates_ppi_
 
 ssa_estimates_ppi <-  omopgenerics::importSummarisedResult(ssa_estimates_ppi_files[[2]]) 
 
-#ssa_estimates_overall_ppi <-  omopgenerics::importSummarisedResult(ssa_estimates_ppi_files[[3]]) 
+ssa_estimates_overall_ppi <-  omopgenerics::importSummarisedResult(ssa_estimates_ppi_files[[3]]) 
 
 ssa_estimates_ppi <- ssa_estimates_ppi %>% 
   visOmopResults::visOmopTable(
@@ -1196,60 +1198,60 @@ ssa_estimates_no_ppi <- ssa_estimates_no_ppi %>%
   )) |>
   dplyr::mutate(type = "No PPI")
 
-# ssa_estimates_overall_ppi <- ssa_estimates_overall_ppi %>% 
-#   visOmopResults::visOmopTable(
-#     estimateName = c("N (%)" = "<count> (<percentage>%)",
-#                      "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
-#     header = c("variable_name", "estimate_name"),
-#     groupColumn = "cdm_name",
-#     type = "tibble"
-#   ) %>% 
-#   rename_with(
-#     ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
-#   rename_with(
-#     ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>% 
-#   rename_with(
-#     ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>% 
-#   rename_with(
-#     ~ if_else(str_detect(., "]marker"), "Marker N (%)", .)) %>% 
-#   group_by(
-#     `CDM name`,
-#     `Index cohort name`,
-#     `Marker cohort name`
-#   ) %>%
-#   summarise(
-#     `Index N (%)` = na.omit(`Index N (%)`)[1],
-#     `Marker N (%)` = na.omit(`Marker N (%)`)[1],
-#     `CSR (99% CI)` = na.omit(`CSR (99% CI)`)[1],
-#     `ASR (99% CI)` = na.omit(`ASR (99% CI)`)[1],
-#     `Variable level` = paste(unique(na.omit(`Variable level`)), collapse = ", "),
-#     .groups = "drop"
-#   ) %>%
-#   mutate(
-#     `CSR (99% CI)` = if_else(
-#       `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
-#       NA_character_,
-#       `CSR (99% CI)`
-#     ),
-#     `ASR (99% CI)` = if_else(
-#       `ASR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
-#       NA_character_,
-#       `ASR (99% CI)`
-#     )
-#   ) %>%
-#   extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
-#           regex = "(\\d+\\.?\\d*)\\s*\\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]", # Adjusted regex for potential spaces
-#           convert = TRUE, remove = FALSE) %>%
-#   rename("Database name" = "CDM name") %>%
-#   mutate(signal = case_when(
-#     asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
-#     asr_upper < 1 ~ "Negative", 
-#     asr == 0 ~ NA_character_,
-#     is.na(asr) ~ NA_character_,
-#     `Index N (%)` == "<5" ~ NA_character_,
-#     `Marker N (%)` == "<5" ~ NA_character_,
-#     TRUE ~ "Null"                  # All other cases
-#   )) |>
-#   dplyr::mutate(type = "PPI")
+ssa_estimates_overall_ppi <- ssa_estimates_overall_ppi %>%
+  visOmopResults::visOmopTable(
+    estimateName = c("N (%)" = "<count> (<percentage>%)",
+                     "SR [CI 99%]" = "<point_estimate> [<lower_CI> - <upper_CI>]"),
+    header = c("variable_name", "estimate_name"),
+    groupColumn = "cdm_name",
+    type = "tibble"
+  ) %>%
+  rename_with(
+    ~ if_else(str_detect(., "crude"), "CSR (99% CI)", .) ) %>%
+  rename_with(
+    ~ if_else(str_detect(., "adjusted"), "ASR (99% CI)", .) ) %>%
+  rename_with(
+    ~ if_else(str_detect(., "index"), "Index N (%)", .)) %>%
+  rename_with(
+    ~ if_else(str_detect(., "]marker"), "Marker N (%)", .)) %>%
+  group_by(
+    `CDM name`,
+    `Index cohort name`,
+    `Marker cohort name`
+  ) %>%
+  summarise(
+    `Index N (%)` = na.omit(`Index N (%)`)[1],
+    `Marker N (%)` = na.omit(`Marker N (%)`)[1],
+    `CSR (99% CI)` = na.omit(`CSR (99% CI)`)[1],
+    `ASR (99% CI)` = na.omit(`ASR (99% CI)`)[1],
+    `Variable level` = paste(unique(na.omit(`Variable level`)), collapse = ", "),
+    .groups = "drop"
+  ) %>%
+  mutate(
+    `CSR (99% CI)` = if_else(
+      `CSR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `CSR (99% CI)`
+    ),
+    `ASR (99% CI)` = if_else(
+      `ASR (99% CI)` == "Inf [Inf - Inf]" | `Index N (%)` == "<5" | `Marker N (%)` == "<5",
+      NA_character_,
+      `ASR (99% CI)`
+    )
+  ) %>%
+  extract(`ASR (99% CI)`, into = c("asr", "asr_lower", "asr_upper"),
+          regex = "(\\d+\\.?\\d*)\\s*\\[\\s*(\\d+\\.?\\d*)\\s*-\\s*(\\d+\\.?\\d*)\\s*\\]", # Adjusted regex for potential spaces
+          convert = TRUE, remove = FALSE) %>%
+  rename("Database name" = "CDM name") %>%
+  mutate(signal = case_when(
+    asr_lower > 1 ~ "Positive",    # If the lower ASR is greater than 1
+    asr_upper < 1 ~ "Negative",
+    asr == 0 ~ NA_character_,
+    is.na(asr) ~ NA_character_,
+    `Index N (%)` == "<5" ~ NA_character_,
+    `Marker N (%)` == "<5" ~ NA_character_,
+    TRUE ~ "Null"                  # All other cases
+  )) |>
+  dplyr::mutate(type = "PPI")
 
 ssa_estimates_ppi_bind <- rbind(ssa_estimates_no_ppi, ssa_estimates_ppi)
