@@ -12,6 +12,7 @@
 
 This repo is organized as follows:
 - [Study](https://github.com/oxford-pharmacoepi/SSA_nsaids_aesi/tree/main/Study): please find there the relevant code to obtain the study results.
+- [NSAID Codelists](https://github.com/oxford-pharmacoepi/SSA_nsaids_aesi/blob/main/Study/1_InstantiateCohorts/generateCodelists.R): please find here the code used to produce the NSAID codelists. 
 - [Shiny](https://github.com/oxford-pharmacoepi/SSA_nsaids_aesi/tree/main/Shiny): please find there the code to visualise the results with the shiny app.
 
 ---
