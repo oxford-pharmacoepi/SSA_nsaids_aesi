@@ -372,20 +372,6 @@ cdm <- omopgenerics::bind(
  cli::cli_alert_success("- Got outcome definitions")
  info(logger, "GOT OUTCOME DEFINITIONS")
  
-
- 
- ###
- if(isTRUE(run_hypertension_stratification)){
- 
- hyper_codelist <- omopgenerics::importCodelist(path = "1_InstantiateCohorts/Codelists/hypertension.csv", type = "csv")
- 
- cdm$hypertension <- CohortConstructor::conceptCohort(
-   cdm = cdm,
-   conceptSet = hyper_codelist,
-   name = "hypertension"
- )
- }
- 
 ## anticoagulants
  # anticoagulants <- getATCCodes(
  #   cdm,
