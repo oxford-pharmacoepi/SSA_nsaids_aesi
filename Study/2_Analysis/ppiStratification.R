@@ -1,35 +1,4 @@
 if(isTRUE(run_ppi_stratification)){
-  cdm <- CDMConnector::cdmFromCon(con = db,
-                                  cdmSchema = cdm_database_schema,
-                                  writeSchema = results_database_schema,
-                                  cohortTables = c( "nsaids", 
-                                                    "aesi", 
-                                                    "medications", 
-                                                    "conditions", 
-                                                    "all_nsaids", 
-                                                    "cox_2", 
-                                                    "non_selective", 
-                                                    "nsaids_sa", 
-                                                    "amiodarone", 
-                                                    "levothyroxine", 
-                                                    "allopurinol", 
-                                                    "ace_inh", 
-                                                    "cough", 
-                                                    "asthma", 
-                                                    "edema",
-                                                    "hypertension",
-                                                    "cataracts", 
-                                                    "nausea", 
-                                                    "vomiting",
-                                                    "ppi",
-                                                    "anemia", 
-                                                    "aki"),
-                                  
-                                  writePrefix = table_stem,
-                                  achillesSchema = results_database_schema,
-                                  cdmName = db_name)
-
-
 
 ppi_strat_folder <- file.path(output_folder, "ppi_stratification")
 if (!dir.exists(ppi_strat_folder)) dir.create(ppi_strat_folder, recursive = TRUE)

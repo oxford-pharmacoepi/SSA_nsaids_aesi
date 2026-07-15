@@ -68,41 +68,4 @@ write_csv(summary_temp_trends_months_sex, file.path(sex_strat_folder, paste0(cdm
 info(logger, "WROTE CSV FOR TEMPORAL SEQUENCE SUMMARY")
 
 
-#365 day analysis
-cdm <- CohortSymmetry::generateSequenceCohortSet(
-  cdm = cdm,
-  name = "nsaids_aesi_sex_365",
-  cohortDateRange = c(starting_date, ending_date),
-  daysPriorObservation = 365,
-  combinationWindow = c(0, 365),
-  washoutWindow = 365,
-  indexTable = "nsaids_sex",
-  markerTable = "aesi"
-)
-
-results_sex_365 <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi_sex_365"]])
-
-exportSummarisedResult(results_sex_365, 
-                       path = here::here(sex_strat_folder), 
-                       fileName = paste0(db_name,"_result_sex_365.csv"))
-
-#90 day analysis
-cdm <- CohortSymmetry::generateSequenceCohortSet(
-  cdm = cdm,
-  name = "nsaids_aesi_sex_90",
-  cohortDateRange = c(starting_date, ending_date),
-  daysPriorObservation = 365,
-  combinationWindow = c(0, 90),
-  washoutWindow = 365,
-  indexTable = "nsaids_sex",
-  markerTable = "aesi"
-)
-
-results_sex_90 <- CohortSymmetry::summariseSequenceRatios(cdm[["nsaids_aesi_sex_90"]])
-
-exportSummarisedResult(results_sex_90, 
-                       path = here::here(sex_strat_folder), 
-                       fileName = paste0(db_name,"_result_sex_90.csv"))
-
-
 info(logger, "COMPLETED SEX STRATIFICATION ANALYSIS")
