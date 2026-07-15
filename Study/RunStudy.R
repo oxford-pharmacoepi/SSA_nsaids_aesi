@@ -12,13 +12,11 @@ if (!file.exists(output_folder)) {
 sex_strat_folder <- file.path(output_folder, "sex_stratification")
 age_strat_folder <- file.path(output_folder, "age_stratification")
 sensitivity_folder <- file.path(output_folder, "sensitivity")
-sensitivity_as_folder <- file.path(output_folder, "sensitivity_age_sex")
 characterisation_folder <- file.path(output_folder, "characterisation")
 symmetry_folder <- file.path(output_folder, "symmetry")
 
 folders <- list(sex_strat_folder, 
                 age_strat_folder, 
-                htn_strat_folder, 
                 sensitivity_folder, 
                 characterisation_folder, 
                 symmetry_folder)
@@ -58,25 +56,26 @@ if(isTRUE(instantiated)){
 cdm <- CDMConnector::cdmFromCon(con = db,
                                 cdmSchema = cdm_database_schema,
                                 writeSchema = results_database_schema,
-                                cohortTables = c( "nsaids", 
-                                                  "aesi",
-                                                  "all_nsaids",
-                                                  "cox_2",
-                                                  "non_selective",
-                                                  "medications", 
-                                                  "conditions", 
-                                                  "amiodarone", 
-                                                  "levothyroxine", 
-                                                  "allopurinol", 
-                                                  "ace_inh", 
-                                                  "cough", 
-                                                  "asthma", 
-                                                  "edema",
-                                                  "cataracts", 
-                                                  "nausea", 
-                                                  "vomiting",
-                                                  "anemia", 
-                                                  "aki"
+                                cohortTables = c("nsaids", 
+                                                 "aesi",
+                                                 "all_nsaids",
+                                                 "cox_2",
+                                                 "non_selective",
+                                                 "medications", 
+                                                 "conditions", 
+                                                 "amiodarone", 
+                                                 "levothyroxine", 
+                                                 "allopurinol", 
+                                                 "ace_inh", 
+                                                 "cough", 
+                                                 "asthma", 
+                                                 "edema",
+                                                 "cataracts", 
+                                                 "nausea", 
+                                                 "vomiting",
+                                                 "anemia", 
+                                                 "aki",
+                                                 "ppi"
                                                   ),
                                 
                                 writePrefix = table_stem,
@@ -136,7 +135,7 @@ if (isTRUE(run_characterisation)) {
 
   tryCatch(
     {
-      source(here("2_Analysis", "characterisation.R"))
+      source(here("2_Analysis", "char2.R"))
     },
     error = function(e) {
       writeLines(
@@ -223,7 +222,7 @@ if (isTRUE(run_age_stratification)) {
 # }
 
 # sensitivity analysis of 365 day combination window using unstratified population
-if (isTRUE(run_sensitivity_365)) {
+if (isTRUE(run_sensitivity)) {
   cli::cli_text("- Running sensitivity ({Sys.time()})")
 
   info(logger, "RUNNING SENSITIVITY")
@@ -277,6 +276,24 @@ if (isTRUE(run_ppi_stratification)) {
         here(output_folder, paste0(
           "/", db_name,
           "_error_sensitivity_ppi.txt"
+        ))
+      )
+    }
+  )
+}
+
+if (isTRUE(run_dose_summary)) {
+  info(logger, "DOSE SUMMARY")
+  tryCatch(
+    {
+      source(here("2_Analysis", "DoseSummary.R"))
+    },
+    error = function(e) {
+      writeLines(
+        as.character(e),
+        here(output_folder, paste0(
+          "/", db_name,
+          "_error_sensitivity_dose.txt"
         ))
       )
     }
