@@ -282,25 +282,6 @@ if (isTRUE(run_ppi_stratification)) {
   )
 }
 
-if (isTRUE(run_dose_summary)) {
-  info(logger, "DOSE SUMMARY")
-  tryCatch(
-    {
-      source(here("2_Analysis", "DoseSummary.R"))
-    },
-    error = function(e) {
-      writeLines(
-        as.character(e),
-        here(output_folder, paste0(
-          "/", db_name,
-          "_error_sensitivity_dose.txt"
-        ))
-      )
-    }
-  )
-}
-
-
 # zip results ----
 cli::cli_text("- Zipping Results ({Sys.time()})")
 info(logger, "ZIPPING RESULTS")
